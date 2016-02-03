@@ -2,6 +2,8 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Scale;
+import javafx.scene.transform.Transform;
 import javafx.stage.Stage;
 
 
@@ -22,7 +24,10 @@ public class Main extends Application {
             simulator.requestFocus();
         });
 
-        Scene scene = new Scene(new Group(content), 800, 600, Color.WHITE);
+        Scene scene = new Scene(new Group(content), Constants.WIDTH, Constants.HEIGHT, Color.WHITE);
+
+        Scale scale = Transform.scale(1, 1, 0, 0);
+        content.getTransforms().add(scale);
 
         primaryStage.setScene(scene);
         primaryStage.setTitle("BoidsFX");

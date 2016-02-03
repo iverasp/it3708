@@ -10,24 +10,23 @@ public class Boid {
 
     private IntegerProperty x = new SimpleIntegerProperty(0);
     private IntegerProperty y = new SimpleIntegerProperty(0);
-    private int angle;
-    private float velocityX;
-    private float velocityY;
+    private IntegerProperty angle = new SimpleIntegerProperty(0);
+    public float velocityX;
+    public float velocityY;
 
-    private int maxVelocity = 12;
-    public int separationWeight = 120;
-    public int alignmentWeight = 60;
+    public int separationWeight = 70;
+    public int alignmentWeight = 35;
     public int cohersionWeight = 20;
 
     public Boid() {}
 
     public Boid(int x, int y, int angle) {
-        System.out.println("Boid created at: " + x + ":" + y);
+        //System.out.println("Boid created at: " + x + "," + y);
         this.x.set(x);
         this.y.set(y);
-        this.angle = angle;
-        this.velocityX = ThreadLocalRandom.current().nextInt(-1, 2) * maxVelocity;
-        this.velocityY = ThreadLocalRandom.current().nextInt(-1, 2) * maxVelocity;
+        this.angle.set(angle);
+        this.velocityX = ThreadLocalRandom.current().nextInt(-1, 2) * Constants.MAXVELOCITY;
+        this.velocityY = ThreadLocalRandom.current().nextInt(-1, 2) * Constants.MAXVELOCITY;
     }
 
     public int getX() {
@@ -36,6 +35,18 @@ public class Boid {
 
     public int getY() {
         return y.get();
+    }
+
+    public void setX(int x) {
+        this.x.set(x);
+    }
+
+    public void setY(int y) {
+        this.y.set(y);
+    }
+
+    public void setAngle(int angle) {
+        this.angle.set(angle);
     }
 
     public IntegerProperty getXProperty() {
@@ -88,14 +99,23 @@ public class Boid {
                         cohesionForce[1] * cohersionWeight +
                         avoidObstacle[1] * 500 +
                         avoidPredators[1] * 500;
-        if (Math.abs(this.velocityX) > maxVelocity || Math.abs(this.velocityY) > maxVelocity) {
+        if (Math.abs(this.velocityX) > Constants.MAXVELOCITY || Math.abs(this.velocityY) > Constants.MAXVELOCITY) {
             double maximumDirection = Math.max(Math.abs(velocityX), Math.abs(velocityY));
-            velocityX = (float) (velocityX / maximumDirection) * maxVelocity;
-            velocityY = (float) (velocityY / maximumDirection) * maxVelocity;
+            velocityX = (float) (velocityX / maximumDirection) * Constants.MAXVELOCITY;
+            velocityY = (float) (velocityY / maximumDirection) * Constants.MAXVELOCITY;
         }
-        angle = (int) Math.toDegrees(Math.atan2(velocityY, velocityX)) % 360;
-        x.set((int) (getX() + getVelocityX()) % 600);
-        y.set((int) (getY() + getVelocityY()) % 800);
+        angle.set(((int) Math.toDegrees(Math.atan2(velocityY, velocityX)) % 360) - 45);
+        x.set((int) (getX() + getVelocityX()) % Constants.WIDTH);
+        y.set((int) (getY() + getVelocityY()) % Constants.HEIGHT);
+
+        wrapAroundWorld();
+    }
+
+    public void wrapAroundWorld() {
+        if (this.getX() >= Constants.WIDTH) this.setX(1);
+        if (this.getY() >= Constants.HEIGHT) this.setY(1);
+        if (this.getX() <= 1) this.setX(Constants.WIDTH);
+        if (this.getY() <= 1) this.setY(Constants.HEIGHT);
     }
 
     public double[] calcSeparation(ArrayList<BoidRelation> neighbors) {
@@ -139,5 +159,9 @@ public class Boid {
         averageX -= this.getX();
         averageY -= this.getY();
         return new double[]{averageX, averageY};
+    }
+
+    public IntegerProperty getAngleProperty() {
+        return angle;
     }
 }

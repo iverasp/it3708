@@ -1,4 +1,5 @@
 import javafx.animation.AnimationTimer;
+import javafx.animation.RotateTransition;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -7,15 +8,19 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.Rotate;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Simulator extends Pane {
 
-    private final int FLOCK_SIZE = 150;
+    private final int FLOCK_SIZE = 200;
     private final int RADIUS = 50;
+    private final int BOIDSIZE = 10;
 
     private Runnable onStart = () -> {};
 
@@ -25,9 +30,6 @@ public class Simulator extends Pane {
     private ArrayList<Predator> predators;
     private SimulatorLoop loop = new SimulatorLoop();
 
-    private final Image bird = new Image("/res/arrow_right.png", 20, 20, true, true);
-    private final Rectangle bird2 = new Rectangle(20, 20);
-
     public void setOnStart(Runnable onStart)
     {
         this.onStart = onStart;
@@ -35,7 +37,7 @@ public class Simulator extends Pane {
 
     public Simulator() {
         System.out.println("Simulator started");
-        setPrefSize(800, 600);
+        setPrefSize(Constants.WIDTH, Constants.HEIGHT);
         setStyle("-fx-background-color: #FFF");
         setOnKeyPressed(this::onKeyTyped);
         setOnMouseClicked(this::onMouseClicked);
@@ -46,10 +48,21 @@ public class Simulator extends Pane {
         this.predators = new ArrayList<>();
 
         for (Boid boid : flock.getBoids()) {
-            final Rectangle rect = new Rectangle(20, 20, Paint.valueOf("black"));
-            rect.translateXProperty().bind(boid.getXProperty());
-            rect.translateYProperty().bind(boid.getYProperty());
-            getChildren().add(rect);
+            final Circle circle = new Circle(BOIDSIZE, Paint.valueOf("blue"));
+            final Line line = new Line(0,0,7,7);
+            line.translateXProperty().bind(boid.getXProperty());
+            line.translateYProperty().bind(boid.getYProperty());
+
+            Rotate rotation = new Rotate();
+            rotation.pivotXProperty().bind(line.startXProperty());
+            rotation.pivotYProperty().bind(line.startYProperty());
+            rotation.angleProperty().bind(boid.getAngleProperty());
+            line.getTransforms().add(rotation);
+
+            circle.translateXProperty().bind(boid.getXProperty());
+            circle.translateYProperty().bind(boid.getYProperty());
+
+            getChildren().addAll(circle, line);
         }
 
         loop.start();
@@ -89,7 +102,7 @@ public class Simulator extends Pane {
     }
 
     public void addObstacle(int x, int y) {
-        int radius = ThreadLocalRandom.current().nextInt(0, 20);
+        int radius = 20; //ThreadLocalRandom.current().nextInt(0, 20);
         final Circle obstacle = new Circle(x, y, radius, Paint.valueOf("black"));
         getChildren().add(obstacle);
         this.obstacleNodes.add(obstacle);
@@ -106,10 +119,21 @@ public class Simulator extends Pane {
 
     public void addPredator() {
         Predator predator = new Predator(flock, RADIUS);
-        final Rectangle rect = new Rectangle(20, 20, Paint.valueOf("red"));
-        rect.translateXProperty().bind(predator.getXProperty());
-        rect.translateYProperty().bind(predator.getYProperty());
-        getChildren().add(rect);
+        final Circle circle = new Circle(BOIDSIZE, Paint.valueOf("red"));
+        circle.translateXProperty().bind(predator.getXProperty());
+        circle.translateYProperty().bind(predator.getYProperty());
+
+        final Line line = new Line(0,0,7,7);
+        line.translateXProperty().bind(predator.getXProperty());
+        line.translateYProperty().bind(predator.getYProperty());
+
+        Rotate rotation = new Rotate();
+        rotation.pivotXProperty().bind(line.startXProperty());
+        rotation.pivotYProperty().bind(line.startYProperty());
+        rotation.angleProperty().bind(predator.getAngleProperty());
+        line.getTransforms().add(rotation);
+
+        getChildren().addAll(circle, line);
         this.predators.add(predator);
     }
 

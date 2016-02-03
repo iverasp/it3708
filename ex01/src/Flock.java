@@ -19,9 +19,9 @@ public class Flock {
     public void addBoid() {
         this.boids.add(
                 new Boid(
-                        ThreadLocalRandom.current().nextInt(0, 801),
-                        ThreadLocalRandom.current().nextInt(0, 601),
-                        ThreadLocalRandom.current().nextInt(0, 361)
+                        ThreadLocalRandom.current().nextInt(0, Constants.WIDTH + 1),
+                        ThreadLocalRandom.current().nextInt(0, Constants.HEIGHT + 1),
+                        ThreadLocalRandom.current().nextInt(0, 360 + 1)
                 )
         );
     }
