@@ -18,8 +18,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Simulator extends Pane {
 
-    private final int FLOCK_SIZE = 200;
-    private final int RADIUS = 50;
+    private final int FLOCK_SIZE = 300;
     private final int BOIDSIZE = 10;
 
     private Runnable onStart = () -> {};
@@ -28,6 +27,9 @@ public class Simulator extends Pane {
     private ArrayList<Obstacle> obstacles;
     private ArrayList<Node> obstacleNodes;
     private ArrayList<Predator> predators;
+    private ArrayList<Node> predatorNodes;
+    private ArrayList<Node> predatorLineNodes;
+    private Controls controls;
     private SimulatorLoop loop = new SimulatorLoop();
 
     public void setOnStart(Runnable onStart)
@@ -42,10 +44,15 @@ public class Simulator extends Pane {
         setOnKeyPressed(this::onKeyTyped);
         setOnMouseClicked(this::onMouseClicked);
 
-        this.flock = new Flock(FLOCK_SIZE, RADIUS);
+        this.controls = new Controls(70, 35, 20);
+        this.flock = new Flock(FLOCK_SIZE, Constants.RADIUS, controls);
         this.obstacles = new ArrayList<>();
         this.obstacleNodes = new ArrayList<>();
         this.predators = new ArrayList<>();
+        this.predatorNodes = new ArrayList<>();
+        this.predatorLineNodes = new ArrayList<>();
+
+
 
         for (Boid boid : flock.getBoids()) {
             final Circle circle = new Circle(BOIDSIZE, Paint.valueOf("blue"));
@@ -97,7 +104,7 @@ public class Simulator extends Pane {
     public void updateGame(double delta) {
         flock.update(obstacles, predators);
         for (Predator predator : predators) {
-            predator.update();
+            predator.update(obstacles);
         }
     }
 
@@ -115,10 +122,11 @@ public class Simulator extends Pane {
             getChildren().remove(obstacle);
         }
         obstacleNodes.clear();
+        obstacles.clear();
     }
 
     public void addPredator() {
-        Predator predator = new Predator(flock, RADIUS);
+        Predator predator = new Predator(flock, Constants.RADIUS, controls);
         final Circle circle = new Circle(BOIDSIZE, Paint.valueOf("red"));
         circle.translateXProperty().bind(predator.getXProperty());
         circle.translateYProperty().bind(predator.getYProperty());
@@ -135,6 +143,20 @@ public class Simulator extends Pane {
 
         getChildren().addAll(circle, line);
         this.predators.add(predator);
+        this.predatorNodes.add(circle);
+        this.predatorLineNodes.add(line);
+    }
+
+    public void removeAllPredators() {
+        for (Node predator : predatorNodes) {
+            getChildren().remove(predator);
+        }
+        for (Node line : predatorLineNodes) {
+            getChildren().remove(line);
+        }
+        predators.clear();
+        predatorNodes.clear();
+        predatorLineNodes.clear();
     }
 
     private void onKeyTyped(KeyEvent event) {
@@ -143,6 +165,33 @@ public class Simulator extends Pane {
         }
         if (event.getCode() == KeyCode.C) {
             removeAllObstacles();
+        }
+        if (event.getCode() == KeyCode.R) {
+            removeAllPredators();
+        }
+        if (event.getCode() == KeyCode.H) {
+            controls.setAlignmentWeight(controls.getAlignmentWeight() - 5);
+            System.out.println("Alignment weight set to: " + controls.getAlignmentWeight());
+        }
+        if (event.getCode() == KeyCode.J) {
+            controls.setAlignmentWeight(controls.getAlignmentWeight() + 5);
+            System.out.println("Alignment weight set to: " + controls.getAlignmentWeight());
+        }
+        if (event.getCode() == KeyCode.F) {
+            controls.setSeparationWeight(controls.getSeparationWeight() - 5);
+            System.out.println("Separation weight set to: " + controls.getSeparationWeight());
+        }
+        if (event.getCode() == KeyCode.G) {
+            controls.setSeparationWeight(controls.getSeparationWeight() +5);
+            System.out.println("Separation weight set to: " + controls.getSeparationWeight());
+        }
+        if (event.getCode() == KeyCode.K) {
+            controls.setCohesionWeight(controls.getCohesionWeight() -5);
+            System.out.println("Cohesion weight set to: " + controls.getCohesionWeight());
+        }
+        if (event.getCode() == KeyCode.L) {
+            controls.setCohesionWeight(controls.getCohesionWeight() + 5);
+            System.out.println("Cohesion weight set to: " + controls.getCohesionWeight());
         }
     }
 

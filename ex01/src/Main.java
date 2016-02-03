@@ -16,7 +16,7 @@ public class Main extends Application {
 
         Simulator simulator = new Simulator();
         Group content = new Group();
-        content.getChildren().add(simulator);
+        content.getChildren().addAll(simulator);
 
         simulator.setOnStart(() -> {
             content.getChildren().clear();
@@ -24,7 +24,7 @@ public class Main extends Application {
             simulator.requestFocus();
         });
 
-        Scene scene = new Scene(new Group(content), Constants.WIDTH, Constants.HEIGHT, Color.WHITE);
+        Scene scene = new Scene(new Group(content), Constants.WIDTH + 200, Constants.HEIGHT, Color.WHITE);
 
         Scale scale = Transform.scale(1, 1, 0, 0);
         content.getTransforms().add(scale);

@@ -7,26 +7,23 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Boid {
 
-
+    private Controls controls;
     private IntegerProperty x = new SimpleIntegerProperty(0);
     private IntegerProperty y = new SimpleIntegerProperty(0);
     private IntegerProperty angle = new SimpleIntegerProperty(0);
     public float velocityX;
     public float velocityY;
 
-    public int separationWeight = 70;
-    public int alignmentWeight = 35;
-    public int cohersionWeight = 20;
-
     public Boid() {}
 
-    public Boid(int x, int y, int angle) {
+    public Boid(int x, int y, int angle, Controls controls) {
         //System.out.println("Boid created at: " + x + "," + y);
+        this.controls = controls;
         this.x.set(x);
         this.y.set(y);
         this.angle.set(angle);
-        this.velocityX = ThreadLocalRandom.current().nextInt(-1, 2) * Constants.MAXVELOCITY;
-        this.velocityY = ThreadLocalRandom.current().nextInt(-1, 2) * Constants.MAXVELOCITY;
+        this.velocityX = ThreadLocalRandom.current().nextInt(-1, 2) * Constants.MAXVELOCITYBIRDS;
+        this.velocityY = ThreadLocalRandom.current().nextInt(-1, 2) * Constants.MAXVELOCITYBIRDS;
     }
 
     public int getX() {
@@ -88,21 +85,21 @@ public class Boid {
         }
 
         this.velocityX +=
-                        separationForce[0] * separationWeight +
-                        alignmentForce[0] * alignmentWeight +
-                        cohesionForce[0] * cohersionWeight +
-                        avoidObstacle[0] * 500 +
+                        separationForce[0] * controls.getSeparationWeight() +
+                        alignmentForce[0] * controls.getAlignmentWeight() +
+                        cohesionForce[0] * controls.getCohesionWeight() +
+                        avoidObstacle[0] * 50 +
                         avoidPredators[0] * 500;
         this.velocityY +=
-                        separationForce[1] * separationWeight +
-                        alignmentForce[1] * alignmentWeight +
-                        cohesionForce[1] * cohersionWeight +
-                        avoidObstacle[1] * 500 +
+                        separationForce[1] * controls.getSeparationWeight() +
+                        alignmentForce[1] * controls.getAlignmentWeight() +
+                        cohesionForce[1] * controls.getCohesionWeight() +
+                        avoidObstacle[1] * 50 +
                         avoidPredators[1] * 500;
-        if (Math.abs(this.velocityX) > Constants.MAXVELOCITY || Math.abs(this.velocityY) > Constants.MAXVELOCITY) {
+        if (Math.abs(this.velocityX) > Constants.MAXVELOCITYBIRDS || Math.abs(this.velocityY) > Constants.MAXVELOCITYBIRDS) {
             double maximumDirection = Math.max(Math.abs(velocityX), Math.abs(velocityY));
-            velocityX = (float) (velocityX / maximumDirection) * Constants.MAXVELOCITY;
-            velocityY = (float) (velocityY / maximumDirection) * Constants.MAXVELOCITY;
+            velocityX = (float) (velocityX / maximumDirection) * Constants.MAXVELOCITYBIRDS;
+            velocityY = (float) (velocityY / maximumDirection) * Constants.MAXVELOCITYBIRDS;
         }
         angle.set(((int) Math.toDegrees(Math.atan2(velocityY, velocityX)) % 360) - 45);
         x.set((int) (getX() + getVelocityX()) % Constants.WIDTH);

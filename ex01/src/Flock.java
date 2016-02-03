@@ -7,21 +7,22 @@ public class Flock {
     private int radius;
     private ArrayList<Boid> boids;
 
-    public Flock(int size, int radius) {
+    public Flock(int size, int radius, Controls controls) {
         System.out.println("Flock created of size: " + size);
         this.radius = radius;
         this.boids = new ArrayList<>();
         for (int i = 0; i < size; i++) {
-            addBoid();
+            addBoid(controls);
         }
     }
 
-    public void addBoid() {
+    public void addBoid(Controls controls) {
         this.boids.add(
                 new Boid(
                         ThreadLocalRandom.current().nextInt(0, Constants.WIDTH + 1),
                         ThreadLocalRandom.current().nextInt(0, Constants.HEIGHT + 1),
-                        ThreadLocalRandom.current().nextInt(0, 360 + 1)
+                        ThreadLocalRandom.current().nextInt(0, 360 + 1),
+                        controls
                 )
         );
     }
