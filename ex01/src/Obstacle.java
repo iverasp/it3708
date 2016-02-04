@@ -12,7 +12,7 @@ public class Obstacle {
     }
 
     public boolean isWithin(int x, int y) {
-        return Math.pow(x - this.x, 2) + Math.pow(y - this.y, 2) < Math.pow(this.radius + 20, 2);
+        return Math.pow(x - this.x, 2) + Math.pow(y - this.y, 2) < Math.pow(this.radius + 40, 2);
     }
 
     public int getX() {
