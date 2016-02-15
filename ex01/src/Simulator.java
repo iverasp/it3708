@@ -44,7 +44,7 @@ public class Simulator extends Pane {
         setOnKeyPressed(this::onKeyTyped);
         setOnMouseClicked(this::onMouseClicked);
 
-        this.controls = new Controls(50, 50, 50);
+        this.controls = new Controls(70, 35, 20);
         this.flock = new Flock(FLOCK_SIZE, Constants.RADIUS, controls);
         this.obstacles = new ArrayList<>();
         this.obstacleNodes = new ArrayList<>();

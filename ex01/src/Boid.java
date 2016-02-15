@@ -78,6 +78,8 @@ public class Boid {
         double[] avoidPredators = {0., 0.};
 
         if (obstacle != null) {
+            //int[] choices = new int[]{-1, 1};
+            //int choice = choices[ThreadLocalRandom.current().nextInt(0,2)];
             avoidObstacle = new double[]{-this.getVelocityY(), this.getVelocityX()};
         }
         if (!predators.isEmpty()) {
