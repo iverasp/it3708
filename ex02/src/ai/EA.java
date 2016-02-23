@@ -1,3 +1,4 @@
+package ai;
 
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
@@ -11,20 +12,33 @@ public class EA {
     private int populationSize;
     private int numberOfAdults;
     private int generations;
-    private int epsilon;
-    private int crossoverRate;
-    private int mutationRate;
-    private int adultToChildRatio;
-    private int k;
-    private int threshold;
+    private double epsilon;
+    private double crossoverRate;
+    private double mutationRate;
+    private double adultToChildRatio;
+    private double k;
+    private double threshold;
     private ArrayList<Double> averages;
     private ArrayList<Double> maximums;
     private ArrayList<Double> standardDeviations;
+    private int genotypeSize;
 
-    public EA(Problem problem, int populationSize, int generations, int epsilon, int crossoverRate, int mutationRate, int adultToChildRatio, int k, int threshold, ArrayList<Double> averages, ArrayList<Double> maximums) {
+    public EA(
+            Problem problem,
+            int populationSize,
+            int generations,
+            double epsilon,
+            double crossoverRate,
+            double mutationRate,
+            double adultToChildRatio,
+            double k,
+            double threshold,
+            int genotypeSize
+    ) {
         this.problem = problem;
         this.populationSize = populationSize;
-        this.numberOfAdults = populationSize * adultToChildRatio;
+        this.numberOfAdults = (int) (populationSize * adultToChildRatio);
+        System.out.println("Number of adults: " + numberOfAdults);
         this.generations = generations;
         this.epsilon = epsilon;
         this.crossoverRate = crossoverRate;
@@ -32,28 +46,33 @@ public class EA {
         this.adultToChildRatio = adultToChildRatio;
         this.k = k;
         this.threshold = threshold;
-        this.averages = averages;
-        this.maximums = maximums;
+        this.averages = new ArrayList<>();
+        this.maximums = new ArrayList<>();
         this.standardDeviations = new ArrayList<>();
+        this.genotypeSize = genotypeSize;
     }
 
     public void solveProblem() {
-        ArrayList<Individual> population = problem.createInitialPopulation(populationSize - numberOfAdults);
+        System.out.println("Solving problem...");
+        ArrayList<Individual> population = problem.createInitialPopulation(populationSize - numberOfAdults, genotypeSize);
+        System.out.println("Population size when starting: " + population.size());
 
+        boolean analyzeAfterLoop = true;
+        mainloop:
         for (int i = 0; i < generations; i++) {
             int total = 0;
             double generationMaxFitness = -1;
             String generationMaxPhenotype = "";
             ArrayList<Double> fitnesses = new ArrayList<>();
             boolean completed = false;
-            boolean analyzeAfterLoop = true;
 
             for (Individual individual : population) {
-                if (!individual.getPhenotype().equals("0"))
+                if (individual.getPhenotype().isEmpty())
                     individual.setPhenotype(problem.genotypeToPhenotype(individual.getGenotype()));
-                if (individual.getFitness() != 0)
+                //if (individual.getFitness() != 0)
                     individual.setFitness(problem.fitness(individual.getPhenotype()));
-                if (individual.getFitness() > this.threshold || individual.getFitness() == 0.0) {
+                if (individual.getFitness() == this.threshold) {
+                    System.out.println("should be completed now");
                     completed = true;
                     analyzeAfterLoop = false;
                 }
@@ -69,7 +88,7 @@ public class EA {
                 maximums.add(generationMaxFitness);
                 standardDeviations.add(computeStandardDeviation(fitnesses));
 
-                if (completed) break;
+                if (completed) break mainloop;
 
                 population = problem.adultSelection(population);
 
@@ -113,11 +132,13 @@ public class EA {
                 for (Individual individual : population) {
                     if (individual.getPhenotype().isEmpty())
                         individual.setPhenotype(problem.genotypeToPhenotype(individual.getGenotype()));
-                    if (individual.getFitness() == 0)
+                    //if (individual.getFitness() == 0)
                         individual.setFitness(problem.fitness(individual.getPhenotype()));
                     if (individual.getFitness() > threshold || individual.getFitness() == 1.0) {
                         completed = true;
                         analyzeAfterLoop = false;
+                        System.out.println("Fittest individual: " + individual.getFitness());
+                        break mainloop;
                     }
                     total += individual.getFitness();
                     fitnesses.add(individual.getFitness());
@@ -132,7 +153,16 @@ public class EA {
                 maximums.add(generationMaxFitness);
                 standardDeviations.add(computeStandardDeviation(fitnesses));
             }
+
+            System.out.println("Generation: " + i + " / " + generations);
+            System.out.println("Best fitness: " + maximums.get(maximums.size() - 1));
+            System.out.println("Average fitness: " + averages.get(averages.size() - 1));
+            System.out.println("Standard deviation of fitness: " + standardDeviations.get(standardDeviations.size() - 1));
         }
+        System.out.println("Generation: " + generations + " / " + generations);
+        System.out.println("Best fitness: " + maximums.get(maximums.size() - 1));
+        System.out.println("Average fitness: " + averages.get(averages.size() - 1));
+        System.out.println("Standard deviation of fitness: " + standardDeviations.get(standardDeviations.size() - 1));
     }
 
     private double computeStandardDeviation(ArrayList<Double> values) {
