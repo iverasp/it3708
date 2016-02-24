@@ -1,3 +1,5 @@
+package core;
+
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -14,7 +16,10 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         System.out.println("JavaFX application started");
 
-        Simulator simulator = new Simulator();
+
+
+        Simulator simulator = new Simulator(primaryStage);
+        Thread t = new Thread(simulator);
         Group content = new Group();
         content.getChildren().addAll(simulator);
 
@@ -28,12 +33,14 @@ public class Main extends Application {
 
         Scale scale = Transform.scale(1, 1, 0, 0);
         content.getTransforms().add(scale);
-
+        /*
         primaryStage.setScene(scene);
         primaryStage.setTitle("Evolution");
         primaryStage.show();
 
         simulator.requestFocus();
+        */
+        t.start();
     }
 
     public static void main(String... args) {

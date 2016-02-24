@@ -35,7 +35,7 @@ public class OneMax extends AbstractProblem implements Problem {
         }
 
         double fitness = 1 - ((double) error / (double) this.genotypeSize);
-        System.out.println("Fitness: " + fitness);
+        //System.out.println("Fitness: " + fitness);
 
         return fitness;
     }
@@ -60,27 +60,4 @@ public class OneMax extends AbstractProblem implements Problem {
         return mutatePerGenome(population, rate);
     }
 
-    public Individual tournamentSelection(ArrayList<Individual> population, double k, double epsilon, double... args) {
-        //ArrayList<Individual> sampleGroup = (ArrayList<Individual>) population.clone();
-        ArrayList<Individual> group = new ArrayList<>();
-        for (int i = 0; i < k; i++) {
-            Collections.shuffle(population);
-            group.add(population.get(0));
-        }
-        double chance = ThreadLocalRandom.current().nextDouble();
-        if (chance < epsilon)
-            return group.get(ThreadLocalRandom.current().nextInt(0, group.size()));
-        double fittest = 0;
-        Individual fittestIndividual = population.get(0);
-        for (Individual individual : group) {
-            if (individual.getPhenotype().isEmpty()) individual.setPhenotype(genotypeToPhenotype(individual.getGenotype()));
-            individual.setFitness(fitness(individual.getPhenotype()));
-            if (individual.getFitness() > fittest) {
-                fittest = individual.getFitness();
-                fittestIndividual = individual;
-            }
-        }
-        System.out.println("fittest: " + fittest);
-        return fittestIndividual;
-    }
 }

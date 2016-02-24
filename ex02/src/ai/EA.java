@@ -1,12 +1,15 @@
 package ai;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import core.Listener;
+import core.Observable;
 
 /**
  * Created by iver on 15/02/16.
  */
-public class EA {
+public class EA implements Observable {
 
     private Problem problem;
     private int populationSize;
@@ -83,40 +86,19 @@ public class EA {
                     generationMaxPhenotype = individual.getPhenotype();
                 }
 
-                double average = total / population.size();
+                double average = total / (double) population.size();
                 averages.add(average);
                 maximums.add(generationMaxFitness);
                 standardDeviations.add(computeStandardDeviation(fitnesses));
+                fire("STD");
+                fire("AVG");
+                fire("MAX");
 
                 if (completed) break mainloop;
 
                 population = problem.adultSelection(population);
 
-                int openSlots = populationSize - population.size();
-                int temperature = Math.max(1, generations - averages.size());
-                ArrayList<Individual> parents1 = new ArrayList<>();
-                ArrayList<Individual> parents2 = new ArrayList<>();
-                for (int j = 0; j < openSlots; j++) {
-                    parents1.add(problem.parentSelection(population, this.k, this.epsilon, temperature));
-                    parents2.add(problem.parentSelection(population, this.k, this.epsilon, temperature));
-                }
-
-                ArrayList<Individual> children = new ArrayList<>();
-                while (children.size() < openSlots) {
-                    Individual parent1 = parents1.get(parents1.size() - 1);
-                    Individual parent2 = parents2.get(parents2.size() - 1);
-                    parents1.remove(parent1);
-                    parents2.remove(parent2);
-                    double chance = ThreadLocalRandom.current().nextDouble();
-                    if (chance < this.crossoverRate)
-                        children.add(problem.crossover(parent1, parent2));
-                    else {
-                        Individual child1 = new Individual(parent1.getGenotype());
-                        Individual child2 = new Individual(parent2.getGenotype());
-                        children.add(child1);
-                        if (openSlots > children.size()) children.add(child2);
-                    }
-                }
+                ArrayList<Individual> children = generateChildren(population);
 
                 children = problem.mutate(children, this.mutationRate);
                 population.addAll(children);
@@ -148,7 +130,7 @@ public class EA {
                     }
                 }
 
-                double average = total / population.size();
+                double average = total / (double) population.size();
                 averages.add(average);
                 maximums.add(generationMaxFitness);
                 standardDeviations.add(computeStandardDeviation(fitnesses));
@@ -165,6 +147,35 @@ public class EA {
         System.out.println("Standard deviation of fitness: " + standardDeviations.get(standardDeviations.size() - 1));
     }
 
+    private ArrayList<Individual> generateChildren(ArrayList<Individual> population) {
+        int openSlots = populationSize - population.size();
+        int temperature = Math.max(1, generations - averages.size());
+        ArrayList<Individual> parents1 = new ArrayList<>();
+        ArrayList<Individual> parents2 = new ArrayList<>();
+        for (int j = 0; j < openSlots; j++) {
+            parents1.add(problem.parentSelection(population, this.k, this.epsilon, temperature));
+            parents2.add(problem.parentSelection(population, this.k, this.epsilon, temperature));
+        }
+
+        ArrayList<Individual> children = new ArrayList<>();
+        while (children.size() < openSlots) {
+            Individual parent1 = parents1.get(parents1.size() - 1);
+            Individual parent2 = parents2.get(parents2.size() - 1);
+            parents1.remove(parent1);
+            parents2.remove(parent2);
+            double chance = ThreadLocalRandom.current().nextDouble();
+            if (chance < this.crossoverRate)
+                children.add(problem.crossover(parent1, parent2));
+            else {
+                Individual child1 = new Individual(parent1.getGenotype());
+                Individual child2 = new Individual(parent2.getGenotype());
+                children.add(child1);
+                if (openSlots > children.size()) children.add(child2);
+            }
+        }
+        return children;
+    }
+
     private double computeStandardDeviation(ArrayList<Double> values) {
         double mean = 0;
         double tmp = 0;
@@ -173,8 +184,41 @@ public class EA {
         }
         mean /= values.size();
         for (Double value : values) {
-            tmp += Math.sqrt(value - mean);
+            tmp += Math.pow((value - mean), 2);
         }
-        return Math.sqrt(tmp/values.size());
+        return tmp /= values.size();
     }
+
+    // code to maintain listeners
+    private List<Listener> listeners = new ArrayList<Listener>();
+    public void add(Listener listener) {listeners.add(listener);}
+    public void remove(Listener listener) {listeners.remove(listener);}
+
+    // a sample field
+    private int field;
+    public int getField() {return field;}
+    public void setField(int value) {
+        field = value;
+        fire("field");
+    }
+
+    public double getLastestStd() {
+        return standardDeviations.get(standardDeviations.size() - 1);
+    }
+
+    public double getLastestMax() {
+        return maximums.get(maximums.size() - 1);
+    }
+
+    public double getLastestAvg() {
+        return averages.get(averages.size() - 1);
+    }
+
+    // notification code
+    private void fire(String attribute) {
+        for (Listener listener:listeners) {
+            listener.fieldChanged(this, attribute);
+        }
+    }
+
 }
