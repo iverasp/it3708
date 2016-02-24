@@ -2,6 +2,7 @@ package ai;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -9,13 +10,14 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public abstract class AbstractProblem {
 
-    public ArrayList<Individual> createInitialPopulation(int size, int genotypeSize) {
+    public List<Individual> createInitialPopulation(int size, int genotypeSize) {
         //System.out.println("Initial genotypes");
-        ArrayList<Individual> individuals = new ArrayList<>();
+        List<Individual> individuals = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             String genotype = "";
             for (int j = 0; j < genotypeSize; j++) {
-                genotype += Integer.toString(ThreadLocalRandom.current().nextInt(0, 2));
+                char randomChar = (char) ThreadLocalRandom.current().nextInt(65, 67);
+                genotype += randomChar;
             }
             //System.out.println(genotype);
             individuals.add(new Individual(genotype));
@@ -27,7 +29,7 @@ public abstract class AbstractProblem {
         return genotype;
     }
 
-    public ArrayList<Individual> fullReplacement(ArrayList<Individual> population) {
+    public List<Individual> fullReplacement(List<Individual> population) {
         ArrayList<Individual> result = new ArrayList<>();
         for (Individual individual : population) {
             if (!individual.isMature()) {
@@ -38,7 +40,8 @@ public abstract class AbstractProblem {
         return result;
     }
 
-    public ArrayList<Individual> overProduction(ArrayList<Individual> population, int numberOfAdults) {
+    public List<Individual> overProduction(List<Individual> population, int numberOfAdults) {
+
         ArrayList<Individual> result = new ArrayList<>();
         for (Individual individual : population) {
             if (!individual.isMature()) {
@@ -46,7 +49,11 @@ public abstract class AbstractProblem {
                 result.add(individual);
             }
         }
-        return result;
+        Collections.sort(result);
+        Collections.reverse(result);
+
+        if (result.size() <= numberOfAdults) return result;
+        return result.subList(0, numberOfAdults);
     }
 
     public Individual setAdult(Individual individual) {
@@ -54,22 +61,23 @@ public abstract class AbstractProblem {
         return individual;
     }
 
-    public ArrayList<Individual> mutatePerGenome(ArrayList<Individual> population, double rate) {
+    public List<Individual> mutatePerGenome(List<Individual> population, double rate) {
         for (Individual individual : population) {
             double chance = ThreadLocalRandom.current().nextDouble();
             if (chance <= rate) {
-                int randomIndex = ThreadLocalRandom.current().nextInt(0, individual.getGenotype().length());
-                char mutation = mutateGenomeComponentSimple(individual.getGenotype().charAt(randomIndex));
+                individual.setPhenotype(genotypeToPhenotype(individual.getGenotype()));
+                int randomIndex = ThreadLocalRandom.current().nextInt(0, individual.getPhenotype().length());
+                char mutation = mutateGenomeComponentSimple(individual.getPhenotype().charAt(randomIndex));
 
-                StringBuilder mutationString = new StringBuilder(individual.getGenotype());
+                StringBuilder mutationString = new StringBuilder(individual.getPhenotype());
                 mutationString.setCharAt(randomIndex, mutation);
-                individual.setGenotype(mutationString.toString());
+                individual.setPhenotype(mutationString.toString());
             }
         }
         return population;
     }
 
-    public ArrayList<Individual> mutatePerGenomeComponent(ArrayList<Individual> population, double rate) {
+    public List<Individual> mutatePerGenomeComponent(List<Individual> population, double rate) {
         for (Individual individual : population) {
             for (int i = 0; i < individual.getGenotype().length(); i++) {
                 double chance = ThreadLocalRandom.current().nextDouble();
@@ -85,7 +93,7 @@ public abstract class AbstractProblem {
     }
 
     public char mutateGenomeComponentSimple(char component) {
-        return component == '1' ? '0' : '1';
+        return component == 'B' ? 'A' : 'B';
     }
 
     public Individual onePointCrossover(Individual parent1, Individual parent2) {
@@ -96,22 +104,23 @@ public abstract class AbstractProblem {
         return new Individual(genotype);
     }
 
-    public Individual tournamentSelection(ArrayList<Individual> population, double k, double epsilon, double... args) {
-        //ArrayList<Individual> sampleGroup = (ArrayList<Individual>) population.clone();
+    public Individual tournamentSelection(List<Individual> population, double k, double epsilon, double... args) {
+        List<Individual> sampleGroup = population;
         ArrayList<Individual> group = new ArrayList<>();
         for (int i = 0; i < k; i++) {
-            Collections.shuffle(population);
-            group.add(population.get(0));
+            Collections.shuffle(sampleGroup);
+            group.add(sampleGroup.get(0));
         }
         double chance = ThreadLocalRandom.current().nextDouble();
         if (chance < epsilon)
             return group.get(ThreadLocalRandom.current().nextInt(0, group.size()));
-        double fittest = 0;
         Individual fittestIndividual = population.get(0);
+        double fittest = fittestIndividual.getFitness();
         for (Individual individual : group) {
             if (individual.getPhenotype().isEmpty()) individual.setPhenotype(genotypeToPhenotype(individual.getGenotype()));
             individual.setFitness(fitness(individual.getPhenotype()));
             if (individual.getFitness() > fittest) {
+
                 fittest = individual.getFitness();
                 fittestIndividual = individual;
             }

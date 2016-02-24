@@ -2,6 +2,7 @@ package ai;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -16,14 +17,14 @@ public class OneMax extends AbstractProblem implements Problem {
         this.genotypeSize = genotypeSize;
         this.ideal = "";
         for (int i = 0; i < genotypeSize; i ++) {
-            if (random) ideal += Integer.toString(ThreadLocalRandom.current().nextInt(0, 2));
-            else ideal += "1";
+            if (random) ideal += (char) ThreadLocalRandom.current().nextInt(65, 67);
+            else ideal += "B";
         }
     }
 
     @Override
     public char mutateGenomeComponent(char component) {
-        return component == '1' ? '0' : '1';
+        return component == 'B' ? 'A' : 'B';
     }
 
     @Override
@@ -35,18 +36,21 @@ public class OneMax extends AbstractProblem implements Problem {
         }
 
         double fitness = 1 - ((double) error / (double) this.genotypeSize);
-        //System.out.println("Fitness: " + fitness);
+        System.out.println("Fitness: " + fitness + " - " + phenotype);
+        if (fitness == 1.0) {
+            System.out.println("break here");
+        }
 
         return fitness;
     }
 
     @Override
-    public ArrayList<Individual> adultSelection(ArrayList<Individual> population) {
+    public List<Individual> adultSelection(List<Individual> population) {
         return fullReplacement(population);
     }
 
     @Override
-    public Individual parentSelection(ArrayList<Individual> population, double k, double epsilon, double... args) {
+    public Individual parentSelection(List<Individual> population, double k, double epsilon, double... args) {
         return tournamentSelection(population, k, epsilon);
     }
 
@@ -56,7 +60,7 @@ public class OneMax extends AbstractProblem implements Problem {
     }
 
     @Override
-    public ArrayList<Individual> mutate(ArrayList<Individual> population, double rate) {
+    public List<Individual> mutate(List<Individual> population, double rate) {
         return mutatePerGenome(population, rate);
     }
 

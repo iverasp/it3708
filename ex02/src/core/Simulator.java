@@ -1,7 +1,12 @@
 package core;
 
 import ai.EA;
+import ai.LocalSurprisingSequence;
 import ai.OneMax;
+import ai.SurprisingSequence;
+import javafx.application.Platform;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -9,10 +14,12 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.util.concurrent.CountDownLatch;
+
 /**
  * Created by iver on 23/02/16.
  */
-public class Simulator extends Pane implements Listener, Runnable {
+public class Simulator extends Pane implements Listener {
 
     private Runnable onStart = () -> {};
 
@@ -43,14 +50,47 @@ public class Simulator extends Pane implements Listener, Runnable {
         Scene scene = new Scene(lineChart, 800, 600);
         stage.setScene(scene);
         stage.show();
+        service.start();
     }
 
     public void runEA() {
 
+        /*
+        EA runner1 = new EA(
+                new SurprisingSequence(10, 26, 60), // problem
+                200, // population size
+                20000, // generations
+                0.05, //epsilon
+                0.09, // crossover rate
+                0.1, // mutation rate
+                0.3, // adult to child ratio
+                8, // k
+                1.0, // threshold,
+                26 // genotype size
+        );
+        runner1.add(this);
+        runner1.solveProblem();
+        /*
+        EA runner1 = new EA(
+                new LocalSurprisingSequence(20,50, 60), // problem
+                200, // population size
+                20000, // generations
+                0.05, //epsilon
+                0.01, // crossover rate
+                0.009, // mutation rate
+                0.3, // adult to child ratio
+                32, // k
+                1.0, // threshold,
+                50 // genotype size
+        );
+        runner1.add(this);
+        runner1.solveProblem();
+        */
+
         EA runner1 = new EA(
                 new OneMax(40, false), // problem
                 600, // population size
-                10, // generations
+                100, // generations
                 0.05, //epsilon
                 0.8, // crossover rate
                 0.01, // mutation rate
@@ -61,6 +101,7 @@ public class Simulator extends Pane implements Listener, Runnable {
         );
         runner1.add(this);
         runner1.solveProblem();
+
         /*
         EA runner1 = new EA(
                 new LOLZ(21, 40), // problem
@@ -86,29 +127,58 @@ public class Simulator extends Pane implements Listener, Runnable {
         //System.out.println("FIELD CHANGED!");
         switch(attribute) {
             case "STD":
-                System.out.println("STD: " + ((EA) source).getLastestStd());
+                //System.out.println("STD: " + ((EA) source).getLastestStd());
                 stdSeries.getData().add(new XYChart.Data(getTimeSinceStart(), ((EA) source).getLastestStd()));
                 break;
             case "MAX":
-                System.out.println("MAX: " + ((EA) source).getLastestMax());
+                //System.out.println("MAX: " + ((EA) source).getLastestMax());
                 maxSeries.getData().add(new XYChart.Data(getTimeSinceStart(), ((EA) source).getLastestMax()));
                 break;
             case "AVG":
-                System.out.println("AVG: " + ((EA) source).getLastestAvg());
+                //System.out.println("AVG: " + ((EA) source).getLastestAvg());
                 avgSeries.getData().add(new XYChart.Data(getTimeSinceStart(), ((EA) source).getLastestAvg()));
                 break;
 
         }
     }
 
+    /*
     @Override
     public void run() {
         runEA();
     }
+    */
 
     int lol = 1;
     public int getTimeSinceStart() {
         return lol++;
     }
+
+    Service<Void> service = new Service<Void>() {
+        @Override
+        protected Task<Void> createTask() {
+            return new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    //Background work
+                    final CountDownLatch latch = new CountDownLatch(1);
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                runEA();
+                            } finally {
+                                latch.countDown();
+                            }
+                        }
+                    });
+                    latch.await();
+                    //Keep with the background work
+                    return null;
+                }
+            };
+        }
+    };
+
 
 }

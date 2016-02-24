@@ -1,21 +1,19 @@
 package ai;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by iver on 24/02/16.
  */
-public class SurprisingSequence extends AbstractProblem implements Problem {
+public class LocalSurprisingSequence extends AbstractProblem implements Problem {
 
     int symbols;
     int genotypeSize;
     int numberOfAdults;
 
-    public SurprisingSequence(int symbols, int genotypeSize, int numberOfAdults) {
+    public LocalSurprisingSequence(int symbols, int genotypeSize, int numberOfAdults) {
         this.symbols = symbols;
         this.genotypeSize = genotypeSize;
         this.numberOfAdults = numberOfAdults;
@@ -37,28 +35,26 @@ public class SurprisingSequence extends AbstractProblem implements Problem {
 
     @Override
     public char mutateGenomeComponent(char component) {
-        return (char) ThreadLocalRandom.current().nextInt(65, symbols + 65);
+        return Integer.toString(ThreadLocalRandom.current().nextInt(65, symbols + 65)).charAt(0);
     }
 
     @Override
     public double fitness(String phenotype) {
         ArrayList<String> stuff = new ArrayList<>();
         int error = 0;
-        for (int i = 0; i < phenotype.length(); i++) {
-            for (int j = i + 1; j < phenotype.length(); j++) {
-                String sequence = phenotype.charAt(i) + "-" + phenotype.charAt(j) + ":" + Integer.toString(j - i);
+        for (int i = 0; i < phenotype.length() - 1; i++) {
+                String sequence = phenotype.charAt(i) + "-" + phenotype.charAt(i+1);
                 if (stuff.contains(sequence)) error++;
                 else stuff.add(sequence);
-            }
         }
 
         double maxError = (phenotype.length() * (phenotype.length() - 1)) / 2;
         double result = (maxError - error) / maxError;
 
-        if (result == 1.0) {
-            //System.out.println("FOUND IT! " + phenotype);
-        }
         //System.out.println("Fitness of phenotype " + ": " + result);
+        if (result == 1.0) {
+            //System.out.println("FOUND THE BASTARD!");
+        }
         return result;
     }
 

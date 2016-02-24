@@ -19,7 +19,7 @@ public class Main extends Application {
 
 
         Simulator simulator = new Simulator(primaryStage);
-        Thread t = new Thread(simulator);
+        //Thread t = new Thread(simulator);
         Group content = new Group();
         content.getChildren().addAll(simulator);
 
@@ -40,7 +40,7 @@ public class Main extends Application {
 
         simulator.requestFocus();
         */
-        t.start();
+        //t.start();
     }
 
     public static void main(String... args) {

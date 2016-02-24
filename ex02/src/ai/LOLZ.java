@@ -2,6 +2,7 @@ package ai;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -32,19 +33,19 @@ public class LOLZ extends AbstractProblem implements Problem {
             if (phenotype.charAt(i) != count) break;
             counter += 1;
         }
-        if (count == '0') counter = Integer.toString(Math.min(this.z, counter)).charAt(0);
+        if (count == 'A') counter = Integer.toString(Math.min(this.z, counter)).charAt(0);
         double lol = this.genotypeSize - counter;
 
         return 1 - lol / (double) this.genotypeSize;
     }
 
     @Override
-    public ArrayList<Individual> adultSelection(ArrayList<Individual> population) {
+    public List<Individual> adultSelection(List<Individual> population) {
         return fullReplacement(population);
     }
 
     @Override
-    public Individual parentSelection(ArrayList<Individual> population, double k, double epsilon, double... args) {
+    public Individual parentSelection(List<Individual> population, double k, double epsilon, double... args) {
         return tournamentSelection(population, k, epsilon);
     }
 
@@ -54,7 +55,7 @@ public class LOLZ extends AbstractProblem implements Problem {
     }
 
     @Override
-    public ArrayList<Individual> mutate(ArrayList<Individual> population, double rate) {
+    public List<Individual> mutate(List<Individual> population, double rate) {
         return mutatePerGenome(population, rate);
     }
 

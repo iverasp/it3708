@@ -3,7 +3,7 @@ package ai;
 /**
  * Created by iver on 15/02/16.
  */
-public class Individual {
+public class Individual implements Comparable<Individual> {
 
     private boolean mature;
     private String genotype;
@@ -47,5 +47,11 @@ public class Individual {
 
     public void setFitness(double fitness) {
         this.fitness = fitness;
+    }
+
+    @Override
+    public int compareTo(Individual o) {
+        if (o.getFitness() == this.getFitness()) return 0;
+        return (this.getFitness() > o.getFitness()) ? 1 : -1;
     }
 }
