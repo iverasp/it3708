@@ -1,0 +1,45 @@
+javac -cp ../lib/commons-cli-1.3.1.jar:. core/Main.java
+java -cp ../lib/commons-cli-1.3.1.jar:. core.Main --adult full_replaceent --adult_ratio 0.5 --crossover 0.99 --epsilon 0.05 --generation 200 --genotype 40 --k 8 --L 30 --mutation 0.001 --parent tournament --population 200 --problem onemax --S 21 --s 10 --z 21
+
+
+tested values:
+
+ONEMAX
+
+pop 800
+gen 100
+e 0.05
+cross 0.99
+mut 0.001
+adult 0.5
+k 8
+
+LOLZ
+
+pop 1500
+gen 100
+e 0.05
+cross 0.99
+mut 0.001
+adult 0.5
+k 8
+
+LOCAL
+
+pop 500
+e 0.05
+cross 0.85
+mut 0.009
+adult 0.3
+k 32
+
+GLOBAL
+
+pop 500
+gen 20000
+e 0.05
+cross 0.09
+mut 0.01
+adult 0.3
+k 8
+

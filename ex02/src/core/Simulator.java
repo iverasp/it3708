@@ -10,6 +10,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import org.apache.commons.cli.CommandLine;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -29,8 +30,9 @@ public class Simulator extends Pane implements Listener {
     XYChart.Series avgSeries;
     XYChart.Series stdSeries;
     LineChart<Number,Number> lineChart;
+    CommandLine line;
 
-    public Simulator(Stage stage) {
+    public Simulator(Stage stage, CommandLine line) {
         final NumberAxis xAxis = new NumberAxis();
         final NumberAxis yAxis = new NumberAxis();
         xAxis.setLabel("Generation");
@@ -47,14 +49,63 @@ public class Simulator extends Pane implements Listener {
         Scene scene = new Scene(lineChart, 800, 600);
         stage.setScene(scene);
         stage.show();
+        this.line = line;
         service.start();
     }
 
     public void runEA() {
+        Problem problem;
 
+        String problemArg = line.getOptionValue("problem");
+        double adultRatioArg = Double.valueOf(line.getOptionValue("adult_ratio"));
+        int popArg = Integer.valueOf(line.getOptionValue("population"));
+        int numberOfAdults = (int) (popArg * adultRatioArg);
+        int genoArg = Integer.valueOf(line.getOptionValue("genotype"));
+        int zArg = Integer.valueOf(line.getOptionValue("z"));
+        int sArg = Integer.valueOf(line.getOptionValue("s"));
+        double epsilonArg = Double.valueOf(line.getOptionValue("epsilon"));
+        double kArg = Double.valueOf(line.getOptionValue("k"));
+        double crossArg = Double.valueOf(line.getOptionValue("crossover"));
+        double mutArg = Double.valueOf(line.getOptionValue("mutation"));
+        String adultArg = line.getOptionValue("adult");
+        String parentArg = line.getOptionValue("parent");
+        switch (problemArg) {
+            case "onemax":
+                problem = new OneMax(genoArg, false, numberOfAdults);
+                break;
+            case "lolz":
+                problem = new LOLZ(zArg, genoArg, numberOfAdults);
+                break;
+            case "surprise_sequence":
+                problem = new SurprisingSequence(sArg, genoArg, numberOfAdults);
+                break;
+            case "local_surprise_sequence":
+                problem = new LocalSurprisingSequence(sArg, genoArg, numberOfAdults);
+                break;
+            default:
+                problem = new OneMax(genoArg, false, numberOfAdults);
+        }
+        problem.setAdultMechanism(adultArg);
+        problem.setParentMechanism(parentArg);
+
+        EA runner = new EA(
+                problem,
+                popArg,
+                popArg,
+                epsilonArg,
+                crossArg,
+                mutArg,
+                adultRatioArg,
+                kArg,
+                1.0,
+                genoArg
+        );
+        runner.add(this);
+        runner.solveProblem();
+        /*
 
         EA runner1 = new EA(
-                new SurprisingSequence(20, 35, 150), // problem
+                new SurprisingSequence(37, 75, 150), // problem
                 500, // population size
                 20000, // generations
                 0.05, //epsilon
@@ -63,11 +114,11 @@ public class Simulator extends Pane implements Listener {
                 0.3, // adult to child ratio
                 8, // k
                 1.0, // threshold,
-                35 // genotype size
+                75 // genotype size
         );
         runner1.add(this);
         runner1.solveProblem();
-
+        */
 
         /*
         EA runner1 = new EA(

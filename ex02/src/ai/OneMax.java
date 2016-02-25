@@ -12,9 +12,11 @@ public class OneMax extends AbstractProblem implements Problem {
 
     private int genotypeSize;
     private String ideal;
+    private int numberOfAdults;
 
-    public OneMax(int genotypeSize, boolean random) {
+    public OneMax(int genotypeSize, boolean random, int numberOfAdults) {
         this.genotypeSize = genotypeSize;
+        this.numberOfAdults = numberOfAdults;
         this.ideal = "";
         for (int i = 0; i < genotypeSize; i ++) {
             if (random) ideal += (char) ThreadLocalRandom.current().nextInt(65, 67);
@@ -42,18 +44,6 @@ public class OneMax extends AbstractProblem implements Problem {
         }
 
         return fitness;
-    }
-
-    @Override
-    public List<Individual> adultSelection(List<Individual> population) {
-        return fullReplacement(population);
-    }
-
-    @Override
-    public Individual parentSelection(List<Individual> population, double k, double epsilon, double... args) {
-        //return boltzmanSelection(population, 1);
-        return tournamentSelection(population, k, epsilon);
-        //return fitnessProportionateSelection(population);
     }
 
     @Override

@@ -10,6 +10,10 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public abstract class AbstractProblem {
 
+    private String adultMec;
+    private String parentMec;
+    private int numberOfAdults;
+
     public List<Individual> createInitialPopulation(int size, int genotypeSize) {
         //System.out.println("Initial genotypes");
         List<Individual> individuals = new ArrayList<>();
@@ -52,6 +56,19 @@ public abstract class AbstractProblem {
         Collections.sort(result);
         Collections.reverse(result);
 
+        if (result.size() <= numberOfAdults) return result;
+        return result.subList(0, numberOfAdults);
+    }
+
+    public List<Individual> generationalMixing(List<Individual> population) {
+        List<Individual> result = new ArrayList<>();
+        for (Individual individual : population) {
+            if (!individual.isMature()) setAdult(individual);
+            result.add(individual);
+        }
+
+        Collections.sort(result);
+        Collections.reverse(result);
         if (result.size() <= numberOfAdults) return result;
         return result.subList(0, numberOfAdults);
     }
@@ -173,6 +190,86 @@ public abstract class AbstractProblem {
             if (risk > chance) return population.get(i);
         }
         return population.get(0);
+    }
+
+    public Individual sigmaScalingSelection(List<Individual> population, double temperature) {
+        double totalFitness = 0;
+        List<Double> fitnesses = new ArrayList<>();
+        for (Individual individual : population) {
+            individual.setPhenotype(genotypeToPhenotype(individual.getGenotype()));
+            individual.setFitness(fitness(individual.getPhenotype()));
+            totalFitness += individual.getFitness();
+            fitnesses.add(individual.getFitness());
+        }
+        double average = totalFitness / (double) population.size();
+        double std = computeStandardDeviation(fitnesses);
+        double totaltScaledFitness = 0;
+        List<Double> sigmaScaled = new ArrayList<>();
+        for (Double fitness : fitnesses) {
+            double scaledFitness = 1 + ((fitness - average) / 2 * std);
+            sigmaScaled.add(scaledFitness);
+            totaltScaledFitness += scaledFitness;
+        }
+        double chance = ThreadLocalRandom.current().nextDouble();
+        double risk = 0;
+        for (int i = 0; i < population.size(); i++) {
+            risk += sigmaScaled.get(0);
+            if (risk > chance) return population.get(i);
+        }
+        return population.get(0);
+    }
+
+    public void setAdultMechanism(String mechanism) {
+        this.adultMec = mechanism;
+    }
+
+    public void setParentMechanism(String mechanism) {
+        this.parentMec = mechanism;
+    }
+
+    public String getAdultMechanism() { return this.adultMec; }
+
+    public String getParentMechanism() { return this.parentMec; }
+
+    private double computeStandardDeviation(List<Double> values) {
+        double mean = 0;
+        double tmp = 0;
+        for (Double value : values) {
+            mean += value;
+        }
+        mean /= (double) values.size();
+        for (Double value : values) {
+            tmp += Math.pow((value - mean), 2);
+        }
+        return tmp / (double) values.size();
+    }
+
+    public Individual parentSelection(List<Individual> population, double k, double epsilon, double... args) {
+        switch (getParentMechanism()) {
+            case "fitness_proportionate":
+                return fitnessProportionateSelection(population);
+            case "tournament":
+                return tournamentSelection(population, k, epsilon);
+            case "sigma":
+                return sigmaScalingSelection(population, 1);
+            case "boltzman":
+                return boltzmanSelection(population, 1);
+            default:
+                return tournamentSelection(population, k, epsilon);
+        }
+    }
+
+    public List<Individual> adultSelection(List<Individual> population) {
+        switch (getAdultMechanism()) {
+            case "full_replacement":
+                return fullReplacement(population);
+            case "over_production":
+                return overProduction(population, numberOfAdults);
+            case "generational_mixing":
+                return generationalMixing(population);
+            default:
+                return fullReplacement(population);
+        }
     }
 }
 

@@ -16,5 +16,9 @@ public interface Problem {
     Individual parentSelection(List<Individual> population, double k , double epsilon, double... args);
     Individual crossover(Individual parent1, Individual parent2);
     List<Individual> mutate(List<Individual> population, double rate);
+    void setAdultMechanism(String mechanism);
+    void setParentMechanism(String mechanism);
+    String getAdultMechanism();
+    String getParentMechanism();
 
 }

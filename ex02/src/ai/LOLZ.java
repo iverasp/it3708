@@ -12,10 +12,12 @@ public class LOLZ extends AbstractProblem implements Problem {
 
     private int z;
     private int genotypeSize;
+    private int numberOfAdults;
 
-    public LOLZ(int z, int genotypeSize) {
+    public LOLZ(int z, int genotypeSize, int numberOfAdults) {
         this.z = z;
         this.genotypeSize = genotypeSize;
+        this.numberOfAdults = numberOfAdults;
     }
 
     @Override
@@ -38,17 +40,6 @@ public class LOLZ extends AbstractProblem implements Problem {
         return (double) counter / (double) phenotype.length();
 
 
-    }
-
-    @Override
-    public List<Individual> adultSelection(List<Individual> population) {
-        return fullReplacement(population);
-    }
-
-    @Override
-    public Individual parentSelection(List<Individual> population, double k, double epsilon, double... args) {
-        //return tournamentSelection(population, k, epsilon);
-        return fitnessProportionateSelection(population);
     }
 
     @Override

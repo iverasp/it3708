@@ -64,16 +64,6 @@ public class LocalSurprisingSequence extends AbstractProblem implements Problem 
     }
 
     @Override
-    public List<Individual> adultSelection(List<Individual> population) {
-        return overProduction(population, numberOfAdults);
-    }
-
-    @Override
-    public Individual parentSelection(List<Individual> population, double k, double epsilon, double... args) {
-        return tournamentSelection(population, k, epsilon, args);
-    }
-
-    @Override
     public Individual crossover(Individual parent1, Individual parent2) {
         return onePointCrossover(parent1, parent2);
     }

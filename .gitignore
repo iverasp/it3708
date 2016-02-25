@@ -188,7 +188,7 @@ $RECYCLE.BIN/
 .mtj.tmp/
 
 # Package Files #
-*.jar
+#*.jar
 *.war
 *.ear
 
@@ -384,7 +384,7 @@ $RECYCLE.BIN/
 .mtj.tmp/
 
 # Package Files #
-*.jar
+#*.jar
 *.war
 *.ear
 

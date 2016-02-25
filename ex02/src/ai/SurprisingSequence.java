@@ -69,24 +69,6 @@ public class SurprisingSequence extends AbstractProblem implements Problem {
         return result;
     }
 
-    @Override
-    public List<Individual> adultSelection(List<Individual> population) {
-        return overProduction(population, numberOfAdults);
-    }
-
-    @Override
-    public Individual parentSelection(List<Individual> population, double k, double epsilon, double... args) {
-        switch (parentMethod) {
-            case "TOURNAMENT_SELECTION":
-                return tournamentSelection(population, k, epsilon, args);
-            case "BOLTZMAN_SELECTION":
-                return boltzmanSelection(population, 1);
-            case "FITNESS_PROPORTIONATE_SELECTION":
-                return fitnessProportionateSelection(population);
-            default:
-                return tournamentSelection(population, k, epsilon, args);
-        }
-    }
 
     @Override
     public Individual crossover(Individual parent1, Individual parent2) {
