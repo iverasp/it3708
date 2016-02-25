@@ -26,8 +26,9 @@ public class EA implements Observable {
     private ArrayList<Double> maximums;
     private ArrayList<Double> standardDeviations;
     private int genotypeSize;
-    private int total = 0;
+    private double total = 0;
     private String generationMaxPhenotype;
+    private int generationRun = 0;
 
     public EA(
             Problem problem,
@@ -58,28 +59,29 @@ public class EA implements Observable {
         this.genotypeSize = genotypeSize;
     }
 
-    private boolean runIteration(List<Individual> population, int run) {
+    private boolean runGeneration(List<Individual> population, int run) {
         total = 0;
         double generationMaxFitness = -1;
         generationMaxPhenotype = "";
         List<Double> fitnesses = new ArrayList<>();
         boolean completed = false;
 
-        for (Individual individual : population) {
-            if (individual.getPhenotype().isEmpty())
-                individual.setPhenotype(problem.genotypeToPhenotype(individual.getGenotype()));
-            individual.setFitness(problem.fitness(individual.getPhenotype()));
-            if (individual.getFitness() == this.threshold) {
+        for (int i = 0; i < population.size(); i++) {
+            generationRun++;
+            if (population.get(i).getPhenotype().isEmpty())
+                population.get(i).setPhenotype(problem.genotypeToPhenotype(population.get(i).getGenotype()));
+            population.get(i).setFitness(problem.fitness(population.get(i).getPhenotype()));
+            if (population.get(i).getFitness() == this.threshold) {
                 completed = true;
             }
-            total += individual.getFitness();
-            fitnesses.add(individual.getFitness());
-            if (individual.getFitness() > generationMaxFitness) {
-                generationMaxFitness = individual.getFitness();
-                generationMaxPhenotype = individual.getPhenotype();
+            total += population.get(i).getFitness();
+            fitnesses.add(population.get(i).getFitness());
+            if (population.get(i).getFitness() > generationMaxFitness) {
+                generationMaxFitness = population.get(i).getFitness();
+                generationMaxPhenotype = population.get(i).getPhenotype();
             }
 
-            double average = (double) total / (double) population.size();
+            double average = total / (double) population.size();
             averages.add(average);
             maximums.add(generationMaxFitness);
             standardDeviations.add(computeStandardDeviation(fitnesses));
@@ -87,8 +89,9 @@ public class EA implements Observable {
             notifyListener();
 
             if (completed) return true;
+            if (generationRun == generations) return true;
 
-            System.out.println("it: " + run + " fit: " + individual.getFitness() + " phe: " + individual.getPhenotype());
+            System.out.println("it: " + (generationRun + 1) + " fit: " + population.get(i).getFitness() + " phe: " + population.get(i).getPhenotype());
 
             population = problem.adultSelection(population);
 
@@ -100,7 +103,7 @@ public class EA implements Observable {
             */
 
             population = generateChildren(population);
-            System.out.println("pop size " + population.size());
+            //System.out.println("pop size " + population.size());
         }
         return false;
     }
@@ -111,7 +114,7 @@ public class EA implements Observable {
         System.out.println("Population size when starting: " + population.size());
 
         for (int i = 0; i < generations; i++) {
-            if (runIteration(population, i)) {
+            if (runGeneration(population, i)) {
                 printStats(i);
                 return;
             }
@@ -119,10 +122,10 @@ public class EA implements Observable {
     }
 
     private void printStats(int run) {
-        System.out.println("Generation: " + (run + 1) + " / " + generations);
-        System.out.println("Best fitness: " + maximums.get(run));
-        System.out.println("Average fitness: " + averages.get(run));
-        System.out.println("Standard deviation of fitness: " + standardDeviations.get(run));
+        System.out.println("Generation: " + (generationRun - 1) + " / " + generations);
+        System.out.println("Best fitness: " + maximums.get(generationRun - 1));
+        System.out.println("Average fitness: " + averages.get(generationRun - 1));
+        System.out.println("Standard deviation of fitness: " + standardDeviations.get(generationRun - 1));
         System.out.println("Found phenotype: " + generationMaxPhenotype);
     }
 
@@ -131,12 +134,12 @@ public class EA implements Observable {
         int temperature = Math.max(1, generations - averages.size());
         List<Individual> parents1 = new ArrayList<>();
         List<Individual> parents2 = new ArrayList<>();
-        System.out.println("slots " + openSlots);
+        //System.out.println("slots " + openSlots);
         for (int j = 0; j < openSlots; j++) {
             parents1.add(problem.parentSelection(population, this.k, this.epsilon, temperature));
             parents2.add(problem.parentSelection(population, this.k, this.epsilon, temperature));
         }
-        System.out.println("while");
+        //System.out.println("while");
         List<Individual> children = new ArrayList<>();
         while (children.size() < openSlots) {
             Individual parent1 = parents1.get(parents1.size() - 1);

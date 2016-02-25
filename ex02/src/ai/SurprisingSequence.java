@@ -14,11 +14,13 @@ public class SurprisingSequence extends AbstractProblem implements Problem {
     int symbols;
     int genotypeSize;
     int numberOfAdults;
+    String parentMethod;
 
     public SurprisingSequence(int symbols, int genotypeSize, int numberOfAdults) {
         this.symbols = symbols;
         this.genotypeSize = genotypeSize;
         this.numberOfAdults = numberOfAdults;
+        this.parentMethod = "";
     }
 
     @Override
@@ -37,6 +39,11 @@ public class SurprisingSequence extends AbstractProblem implements Problem {
 
     @Override
     public char mutateGenomeComponent(char component) {
+        return (char) ThreadLocalRandom.current().nextInt(65, symbols + 65);
+    }
+
+    @Override
+    public char mutateGenomeComponentSimple(char component) {
         return (char) ThreadLocalRandom.current().nextInt(65, symbols + 65);
     }
 
@@ -69,7 +76,16 @@ public class SurprisingSequence extends AbstractProblem implements Problem {
 
     @Override
     public Individual parentSelection(List<Individual> population, double k, double epsilon, double... args) {
-        return tournamentSelection(population, k, epsilon, args);
+        switch (parentMethod) {
+            case "TOURNAMENT_SELECTION":
+                return tournamentSelection(population, k, epsilon, args);
+            case "BOLTZMAN_SELECTION":
+                return boltzmanSelection(population, 1);
+            case "FITNESS_PROPORTIONATE_SELECTION":
+                return fitnessProportionateSelection(population);
+            default:
+                return tournamentSelection(population, k, epsilon, args);
+        }
     }
 
     @Override

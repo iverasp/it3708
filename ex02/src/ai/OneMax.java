@@ -36,9 +36,9 @@ public class OneMax extends AbstractProblem implements Problem {
         }
 
         double fitness = 1 - ((double) error / (double) this.genotypeSize);
-        System.out.println("Fitness: " + fitness + " - " + phenotype);
+        //System.out.println("Fitness: " + fitness + " - " + phenotype);
         if (fitness == 1.0) {
-            System.out.println("break here");
+            //System.out.println("break here");
         }
 
         return fitness;
@@ -51,7 +51,9 @@ public class OneMax extends AbstractProblem implements Problem {
 
     @Override
     public Individual parentSelection(List<Individual> population, double k, double epsilon, double... args) {
+        //return boltzmanSelection(population, 1);
         return tournamentSelection(population, k, epsilon);
+        //return fitnessProportionateSelection(population);
     }
 
     @Override

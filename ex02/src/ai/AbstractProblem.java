@@ -105,7 +105,7 @@ public abstract class AbstractProblem {
     }
 
     public Individual tournamentSelection(List<Individual> population, double k, double epsilon, double... args) {
-        List<Individual> sampleGroup = population;
+        List<Individual> sampleGroup = population.subList(0, population.size());
         ArrayList<Individual> group = new ArrayList<>();
         for (int i = 0; i < k; i++) {
             Collections.shuffle(sampleGroup);
@@ -117,7 +117,8 @@ public abstract class AbstractProblem {
         Individual fittestIndividual = population.get(0);
         double fittest = fittestIndividual.getFitness();
         for (Individual individual : group) {
-            if (individual.getPhenotype().isEmpty()) individual.setPhenotype(genotypeToPhenotype(individual.getGenotype()));
+            if (individual.getPhenotype().isEmpty())
+                individual.setPhenotype(genotypeToPhenotype(individual.getGenotype()));
             individual.setFitness(fitness(individual.getPhenotype()));
             if (individual.getFitness() > fittest) {
 
@@ -130,4 +131,48 @@ public abstract class AbstractProblem {
     }
 
     public abstract double fitness(String phenotype);
+
+    public Individual fitnessProportionateSelection(List<Individual> population) {
+        double totaltFitness = 0;
+        for (Individual individual : population) {
+            individual.setPhenotype(genotypeToPhenotype(individual.getGenotype()));
+            individual.setFitness(fitness(individual.getPhenotype()));
+            totaltFitness += individual.getFitness();
+        }
+        double chance = ThreadLocalRandom.current().nextDouble(0, totaltFitness);
+        double tmp = 0;
+        for (Individual individual : population) {
+            tmp += individual.getFitness();
+            if (tmp > chance) return individual;
+
+        }
+        return population.get(0);
+    }
+
+    public Individual boltzmanSelection(List<Individual> population, double temperature) {
+        double totalFitness = 0;
+        double totalFitnessScaled = 0;
+        double expTotalFitness = 0;
+        List<Double> temperatureScaled = new ArrayList<>();
+        for (Individual individual : population) {
+            individual.setPhenotype(genotypeToPhenotype(individual.getGenotype()));
+            individual.setFitness(fitness(individual.getPhenotype()));
+            totalFitness += individual.getFitness();
+            expTotalFitness += Math.exp(individual.getFitness()) / temperature;
+        }
+        expTotalFitness /= (double) population.size();
+        for (Individual individual : population) {
+            double lol = Math.exp(individual.getFitness() / temperature) / expTotalFitness;
+            temperatureScaled.add(lol);
+            totalFitnessScaled += lol;
+        }
+        double chance = ThreadLocalRandom.current().nextDouble(0, totalFitnessScaled + 1);
+        double risk = 0;
+        for (int i = 0; i < population.size(); i++) {
+            risk += temperatureScaled.get(i);
+            if (risk > chance) return population.get(i);
+        }
+        return population.get(0);
+    }
 }
+

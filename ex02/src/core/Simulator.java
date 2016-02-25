@@ -1,9 +1,6 @@
 package core;
 
-import ai.EA;
-import ai.LocalSurprisingSequence;
-import ai.OneMax;
-import ai.SurprisingSequence;
+import ai.*;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
@@ -36,7 +33,7 @@ public class Simulator extends Pane implements Listener {
     public Simulator(Stage stage) {
         final NumberAxis xAxis = new NumberAxis();
         final NumberAxis yAxis = new NumberAxis();
-        xAxis.setLabel("Time");
+        xAxis.setLabel("Generation");
         yAxis.setLabel("Value");
         stage.setTitle("Evolution");
         lineChart = new LineChart<>(xAxis,yAxis);
@@ -55,45 +52,48 @@ public class Simulator extends Pane implements Listener {
 
     public void runEA() {
 
-        /*
+
         EA runner1 = new EA(
-                new SurprisingSequence(10, 26, 60), // problem
-                200, // population size
+                new SurprisingSequence(20, 35, 150), // problem
+                500, // population size
                 20000, // generations
                 0.05, //epsilon
                 0.09, // crossover rate
-                0.1, // mutation rate
+                0.01, // mutation rate
                 0.3, // adult to child ratio
                 8, // k
                 1.0, // threshold,
-                26 // genotype size
+                35 // genotype size
         );
         runner1.add(this);
         runner1.solveProblem();
+
+
         /*
         EA runner1 = new EA(
-                new LocalSurprisingSequence(20,50, 60), // problem
-                200, // population size
+                new LocalSurprisingSequence(20,250, 150), // problem
+                500, // population size
                 20000, // generations
                 0.05, //epsilon
-                0.01, // crossover rate
+                0.85, // crossover rate
                 0.009, // mutation rate
                 0.3, // adult to child ratio
                 32, // k
                 1.0, // threshold,
-                50 // genotype size
+                250 // genotype size
         );
         runner1.add(this);
         runner1.solveProblem();
         */
 
+        /*
         EA runner1 = new EA(
                 new OneMax(40, false), // problem
-                600, // population size
+                800, // population size
                 100, // generations
                 0.05, //epsilon
-                0.8, // crossover rate
-                0.01, // mutation rate
+                0.99, // crossover rate
+                0.001, // mutation rate
                 0.5, // adult to child ratio
                 8, // k
                 1.0, // threshold,
@@ -101,15 +101,16 @@ public class Simulator extends Pane implements Listener {
         );
         runner1.add(this);
         runner1.solveProblem();
+        */
 
         /*
         EA runner1 = new EA(
                 new LOLZ(21, 40), // problem
-                600, // population size
-                10, // generations
+                1500, // population size
+                100, // generations
                 0.05, //epsilon
-                0.8, // crossover rate
-                0.01, // mutation rate
+                0.99, // crossover rate
+                0.001, // mutation rate
                 0.5, // adult to child ratio
                 8, // k
                 1.0, // threshold,
@@ -151,7 +152,8 @@ public class Simulator extends Pane implements Listener {
 
     int lol = 1;
     public int getTimeSinceStart() {
-        return lol++;
+        lol++;
+        return lol/3;
     }
 
     Service<Void> service = new Service<Void>() {

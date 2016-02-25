@@ -34,8 +34,13 @@ public class LocalSurprisingSequence extends AbstractProblem implements Problem 
     }
 
     @Override
+    public char mutateGenomeComponentSimple(char component) {
+        return (char) ThreadLocalRandom.current().nextInt(65, symbols + 65);
+    }
+
+    @Override
     public char mutateGenomeComponent(char component) {
-        return Integer.toString(ThreadLocalRandom.current().nextInt(65, symbols + 65)).charAt(0);
+        return (char) ThreadLocalRandom.current().nextInt(65, symbols + 65);
     }
 
     @Override

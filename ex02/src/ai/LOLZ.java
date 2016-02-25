@@ -26,17 +26,18 @@ public class LOLZ extends AbstractProblem implements Problem {
     @Override
     public double fitness(String phenotype) {
         //System.out.println("Phenotype: " + phenotype);
+
         int counter = 0;
-        char count = phenotype.charAt(0);
+        char first = phenotype.charAt(0);
 
         for (int i = 0; i < phenotype.length(); i++) {
-            if (phenotype.charAt(i) != count) break;
-            counter += 1;
+            if (phenotype.charAt(i) == first) counter++;
+            else break;
         }
-        if (count == 'A') counter = Integer.toString(Math.min(this.z, counter)).charAt(0);
-        double lol = this.genotypeSize - counter;
+        if (first == 'A' && counter > this.z) counter = this.z;
+        return (double) counter / (double) phenotype.length();
 
-        return 1 - lol / (double) this.genotypeSize;
+
     }
 
     @Override
@@ -46,7 +47,8 @@ public class LOLZ extends AbstractProblem implements Problem {
 
     @Override
     public Individual parentSelection(List<Individual> population, double k, double epsilon, double... args) {
-        return tournamentSelection(population, k, epsilon);
+        //return tournamentSelection(population, k, epsilon);
+        return fitnessProportionateSelection(population);
     }
 
     @Override
