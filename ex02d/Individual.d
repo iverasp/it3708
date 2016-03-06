@@ -1,5 +1,7 @@
 import std.string;
 import std.random;
+import std.stdio;
+import std.conv;
 
 public class Individual {
 
@@ -14,12 +16,15 @@ public class Individual {
 
   this() {}
 
-  this(int genotype_length) {
+  this(int gl) {
     adult = false;
     age = 0;
     fitness = 0.;
     fitness_range = 0.;
-    genotype_length = genotype_length;
+    genotype_length = gl;
+    //writeln("len " ~ to!string(gl));
+    genotype = new int[](genotype_length);
+    phenotype = new int[](genotype_length);
   }
 
   public void mature() {
@@ -44,6 +49,7 @@ public class Individual {
     for (int i = 0; i < genotype_length; i++) {
       phenotype[i] = genotype[i];
     }
+    //writeln("phe " ~ to!string(phenotype.length));
   }
 
   public void evaluate_fitness() {

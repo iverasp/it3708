@@ -30,7 +30,7 @@ public class SurprisingIndividual : Individual {
 
   override public void evaluate_fitness() {
     if (global) fitness = evaluate_fitness_global();
-    else if (!global) fitness = evaluate_fitness_local();
+    else fitness = evaluate_fitness_local();
   }
 
   private double evaluate_fitness_global() {
