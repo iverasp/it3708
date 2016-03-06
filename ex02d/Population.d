@@ -17,7 +17,6 @@ public class Population {
   double average_fitness;
   double standard_deviation;
   int genotype_length;
-  auto gen = Random();
   int number_of_children;
 
   this(int childs, int gl, double temperature) {
@@ -33,7 +32,7 @@ public class Population {
   private Individual[] generate_children() {
     Individual[] result = new Individual[number_of_children];
     for (int i = 0; i < number_of_children; i++) {
-      Individual individual = new Individual(genotype_length);
+      auto individual = new Individual(genotype_length);
       individual.generate_genotype();
       //writeln("child " ~ to!string(individual.genotype.length));
       result[i] = individual;
@@ -42,20 +41,22 @@ public class Population {
   }
 
   public void develop() {
+    //writeln("childs " ~ to!string(children.length));
     for (int i = 0; i < children.length; i++) {
+      //writeln(to!string(i));
       children[i].generate_phenotype();
     }
   }
 
   public void evaluate() {
-    Individual[] children_fitness = new Individual[number_of_children];
+    children_fitness = new Individual[number_of_children];
     for (int i = 0; i < children.length; i++) {
       children[i].evaluate_fitness();
       children_fitness[i] = children[i];
     }
 
     bool myComp(Individual x, Individual y) @safe pure nothrow {
-      return x.fitness > y.fitness;
+      return x.fitness < y.fitness;
     }
 
     sort!(myComp)(children);
@@ -88,10 +89,10 @@ public class Population {
   }
 
   private void tournament_selection() {
-    Individual[][] myParents = new Individual[][](100);
+    auto myParents = new Individual[][](100); // TODO: number_of_children
 
     bool myComp(Individual x, Individual y) @safe pure nothrow {
-      return x.fitness > y.fitness;
+      return x.fitness < y.fitness;
     }
 
     int newparents = 0;
@@ -111,55 +112,76 @@ public class Population {
           }
         }
       }
-      for (int i = 0; i < tournament_groups.length; i++) {
-        auto chance = uniform(0.0f, 1.0f, gen);
-        if (chance < 1 - 0.2) { // TODO: epsilon
+      foreach (i; 0 .. tournament_groups.length) {
+        auto chance = uniform(0.0f, 1.0f);
+        if (chance < 1f - 0.2f) { // TODO: epsilon
           sort!(myComp)(tournament_groups[i]);
+          /*
+          writeln("sorted?");
+          foreach (x; 0 .. 10) {
+            write(to!string(tournament_groups[i][x].fitness) ~ ", ");
+          }
+          writeln();
+          */
         }
         auto pair = new Individual[2];
         pair[0] = tournament_groups[i][tournament_groups[i].length - 1];
         pair[1] = tournament_groups[i][tournament_groups[i].length - 2];
         //writeln("Adding to parents " ~ to!string(parents.length));
-        myParents[newparents] = pair;
+        myParents[newparents] = pair.dup;
         //writeln("parent length " ~ to!string(newparents));
         newparents++;
 
         if (!newparents < 100) break; // TODO: number_of_children / children_per_pair
       }
     }
-    parents = myParents;
+    parents = myParents.dup;
+    /*
+    foreach (i; 0 .. parents.length) {
+      foreach (j; 0 .. parents[i].length)
+      writeln(parents[i][j].phenotype);
+    }
+    */
   }
 
   public void reproduce() {
-    Individual[] children = new Individual[](0);
-    for (int i = 0; i < parents.length; i++) {
-      auto chance = uniform(0.0f, 1.0f, gen);
-      if (chance < 0.01) { // TODO: crossover rate
-        for (int j = 0; j < 1; j++) { // TODO: children per pair
+    children = new Individual[](0);
+    foreach (i; 0 .. parents.length) {
+      auto chance = uniform(0.0f, 1.0f);
+      if (chance < 0.01f) { // TODO: crossover rate
+        foreach (j; 0 .. 1) { // TODO: children per pair
           int phenlength = to!int(parents[i][0].phenotype.length);
-          int crossoverpoint = uniform(1, phenlength, gen);
-          Individual newborn = new Individual(genotype_length);
-          newborn.genotype = parents[i][0].genotype[0..crossoverpoint] ~ parents[i][1].genotype[crossoverpoint..parents[i][1].genotype.length];
+          //writeln("phenlength " ~ to!string(phenlength));
+          int crossoverpoint = uniform(1, phenlength + 1);
+          auto newborn = new Individual(genotype_length);
+          newborn.genotype = parents[i][0].genotype[0..crossoverpoint].dup ~ parents[i][1].genotype[crossoverpoint..parents[i][1].genotype.length].dup;
           children.length = children.length + 1;
+          //writeln("newborn " ~ to!string(newborn.genotype));
+          //writeln("children length " ~ to!string(children.length));
           children[children.length - 1] = newborn;
         }
       } else {
-        for (int j = 0; j < 1; j++) { // TODO: children per pair
+        foreach (j; 0 .. 1) { // TODO: children per pair
           int parent_index = j % 2;
-          Individual newborn = new Individual(genotype_length);
+          //writeln("parent index " ~ to!string(parent_index));
+          auto newborn = new Individual(genotype_length);
           //writeln("gen " ~ to!string(genotype_length));
-          newborn.generate_genotype();
-          newborn.generate_phenotype();
-          if (chance < 1) {// TODO: mutation rate
+          //newborn.generate_genotype();
+          //newborn.generate_phenotype();
+          if (chance < 0.99f) { // TODO: mutation rate
             //writeln("index " ~ to!string(j) ~ ":" ~ to!string(parent_index));
-            parents[j][parent_index].generate_genotype();
-            parents[j][parent_index].generate_phenotype();
-            auto genotype = parents[j][parent_index].phenotype.dup;
+            //parents[j][parent_index].generate_genotype();
+            //parents[j][parent_index].generate_phenotype();
+            auto genotype = parents[i][parent_index].phenotype.dup;
             //writeln(to!string(genotype.length));
-            auto index = uniform(0, genotype.length, gen);
+            auto index = uniform(0, genotype.length);
             if (genotype[index] == 0) genotype[index] = 1;
             else genotype[index] = 0;
             newborn.genotype = genotype;
+            //writeln("newborn " ~ to!string(newborn.genotype));
+
+          } else {
+            newborn.genotype = parents[i][parent_index].phenotype.dup;
           }
           children.length = children.length + 1;
           children[children.length - 1] = newborn;

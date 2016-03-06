@@ -18,7 +18,7 @@ public class SurprisingIndividual : Individual {
 
   override public void generate_genotype() {
     for (int i = 0; i < genotype_length; i++) {
-      genotype[i] = uniform(0, symbol_set + 1, gen);
+      genotype[i] = uniform(0, symbol_set + 1);
     }
   }
 

@@ -14,28 +14,29 @@ public void main() {
 
   auto population = new Population(100, 21, 1);
 
-  foreach (i; 0 .. 200) {
+  foreach (i; 0 .. 2000) {
     writeln("Generation: " ~ to!string(i + 1));
     population.develop();
-    writeln("Developed");
+    //writeln("Developed");
     population.evaluate();
-    writeln("Evaluated");
+    //writeln("Evaluated");
     population.adult_selection();
-    writeln("Adults selected");
+    //writeln("Adults selected");
     population.parent_selection();
-    writeln("Parents selected");
+    //writeln("Parents selected");
     population.reproduce();
-    writeln("Reproduced");
+    //writeln("Reproduced");
 
     double highest_fitness = 0;
-    Individual fittest_adult;
+    string fittest_phenotype = "";
     for (int j = 0; j < population.adults.length; j++) {
       if (population.adults[j].fitness > highest_fitness) {
-        highest_fitness = population.adults[i].fitness;
-        fittest_adult = population.adults[i];
+        highest_fitness = population.adults[j].fitness;
+        fittest_phenotype = to!string(population.adults[j].phenotype);
       }
     }
     writeln("Highest fitness: " ~ to!string(highest_fitness));
-    writeln("Fittest phenotype: " ~ to!string(fittest_adult.phenotype));
+    writeln("Fittest phenotype: " ~ fittest_phenotype);
+    if (highest_fitness == 21) break;
   }
 }

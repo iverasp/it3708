@@ -12,7 +12,6 @@ public class Individual {
   public double fitness;
   public double fitness_range;
   public int genotype_length;
-  public auto gen = Random();
 
   this() {}
 
@@ -41,7 +40,7 @@ public class Individual {
 
   public void generate_genotype() {
     for (int i = 0; i < genotype_length; i++) {
-      genotype[i] = uniform(0, 2, gen);
+      genotype[i] = uniform(0, 2);
     }
   }
 
