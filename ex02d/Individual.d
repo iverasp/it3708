@@ -13,8 +13,6 @@ public class Individual {
   public double fitness_range;
   public int genotype_length;
 
-  this() {}
-
   this(int gl) {
     adult = false;
     age = 0;

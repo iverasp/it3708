@@ -4,9 +4,9 @@ public class LolzIndividual : Individual {
 
   private int z_value;
 
-  this(int genotype_length, int z_value) {
-    super(genotype_length);
-    this.z_value = z_value;
+  this(int gl, int z) {
+    super(gl);
+    z_value = z;
   }
 
   override public void evaluate_fitness() {

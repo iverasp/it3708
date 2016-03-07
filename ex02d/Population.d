@@ -13,23 +13,20 @@ public class Population {
   Individual[] adults;
   Individual[] children_fitness;
   Individual[][] parents;
-  double temperature;
   double average_fitness;
   double standard_deviation;
   int genotype_length;
   int number_of_children;
 
-  this(int childs, int gl, double temperature) {
+  this(int childs, int gl) {
     number_of_children = childs;
     //children = new Individual[number_of_children];
     genotype_length = gl;
     children = generate_children();
     //writeln("Children " ~ to!string(children.length));
-
-    temperature = temperature;
   }
 
-  private Individual[] generate_children() {
+  public Individual[] generate_children() {
     Individual[] result = new Individual[number_of_children];
     for (int i = 0; i < number_of_children; i++) {
       auto individual = new Individual(genotype_length);

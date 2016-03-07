@@ -2,17 +2,17 @@ import std.stdio;
 import std.string;
 import std.conv;
 
-import LolzIndividual;
+//import LolzIndividual;
 import SurprisingIndividual;
-import Population;
+//import Population;
+import SurprisingPopulation;
 
 // TODO: change for to foreach(i; 0 .. range) wow such speed
 // also use "auto" all over
 
 public void main() {
-  writeln("hello world");
 
-  auto population = new Population(100, 21, 1);
+  auto population = new SurprisingPopulation(100, 25, 9, true);
 
   foreach (i; 0 .. 2000) {
     writeln("Generation: " ~ to!string(i + 1));
@@ -37,6 +37,6 @@ public void main() {
     }
     writeln("Highest fitness: " ~ to!string(highest_fitness));
     writeln("Fittest phenotype: " ~ fittest_phenotype);
-    if (highest_fitness == 21) break;
+    if (highest_fitness == 1.0f) break;
   }
 }
