@@ -1,0 +1,5 @@
+name "ex03"
+description "Exercise 03 in IT3708."
+copyright "Copyright © 2016, iver"
+authors "iver"
+dependency "pyd" version="0.9.8"
