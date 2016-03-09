@@ -1,7 +1,13 @@
 ## Install compilers and package manager
 
 brew install ldc dmd dub
+sudo pip3 install pyd
 
-## Run
+## Build dependencies
 
-dub run
+dub build
+
+## Build modules for Python
+
+cd source/py
+python3 setup.py build
