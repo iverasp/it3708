@@ -6,7 +6,7 @@ setup(
     name=projName,
     version='0.1',
     ext_modules=[
-        Extension(projName, ['../Population.d', '../Individual.d'],
+        Extension(projName, ['ea/Population.d', 'ea/Individual.d'],
             build_deimos=True,
             d_lump=True)
     ],

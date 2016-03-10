@@ -10,9 +10,11 @@ libDir = os.path.join('build', 'lib.%s-%s' % (
 sys.path.append(os.path.abspath(libDir))
 from population import Population, Individual
 
-population = Population(100, 20)
+population = Population(100, 21)
 
-for x in range(200):
+gen = 0
+
+while True:
     population.develop()
     population.evaluate()
     population.adult_selection()
@@ -22,7 +24,8 @@ for x in range(200):
     higest_fitness = 0
     fittest_phenotype = ""
 
-    print("Generation:", x+1)
+    print("Generation:", gen+1)
+    gen += 1
     for adult in population.getAdults():
         if adult.getFitness() > higest_fitness:
             highest_fitness = adult.getFitness()

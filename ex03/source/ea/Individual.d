@@ -1,4 +1,4 @@
-module individual;
+module ea.individual;
 
 import std.string;
 import std.random;

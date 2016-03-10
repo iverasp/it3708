@@ -1,4 +1,4 @@
-module population;
+module ea.population;
 
 import std.container;
 import std.random;
@@ -9,7 +9,7 @@ import std.stdio;
 
 import pyd.pyd;
 
-import individual;
+import ea.individual;
 
 public class Population {
 
