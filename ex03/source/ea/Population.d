@@ -40,7 +40,7 @@ public class Population {
 
   public Individual[] generate_children() {
     Individual[] result = new Individual[number_of_children];
-    for (int i = 0; i < number_of_children; i++) {
+    foreach (i; 0 .. number_of_children) {
       auto individual = new Individual(genotype_length);
       individual.generate_genotype();
       //writeln("child " ~ to!string(individual.genotype.length));
@@ -51,7 +51,7 @@ public class Population {
 
   public void develop() {
     //writeln("childs " ~ to!string(children.length));
-    for (int i = 0; i < children.length; i++) {
+    foreach(i; 0 .. children.length) {
       //writeln(to!string(i));
       children[i].generate_phenotype();
     }
@@ -59,7 +59,7 @@ public class Population {
 
   public void evaluate() {
     children_fitness = new Individual[number_of_children];
-    for (int i = 0; i < children.length; i++) {
+    foreach(i; 0 .. children.length) {
       children[i].evaluate_fitness();
       children_fitness[i] = children[i];
     }
@@ -90,7 +90,7 @@ public class Population {
 
   private void full_replacement() {
     adults = new Individual[number_of_children];
-    for (int i = 0; i < children.length; i++) {
+    foreach(i; 0 .. children.length) {
       children[i].mature();
       adults[i] = children[i];
     }

@@ -21,13 +21,13 @@ while True:
     population.parent_selection()
     population.reproduce()
 
-    higest_fitness = 0
+    highest_fitness = 0
     fittest_phenotype = ""
 
     print("Generation:", gen+1)
     gen += 1
     for adult in population.getAdults():
-        if adult.getFitness() > higest_fitness:
+        if adult.getFitness() > highest_fitness:
             highest_fitness = adult.getFitness()
             fittest_phenotype = adult.getPhenotype()
     print("Highest fitness:", highest_fitness)

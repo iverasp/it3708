@@ -4,6 +4,7 @@ import std.string;
 import std.random;
 import std.stdio;
 import std.conv;
+import std.algorithm;
 
 import pyd.pyd;
 
@@ -55,32 +56,11 @@ public class Individual {
   }
 
   public void generate_phenotype() {
-    for (int i = 0; i < genotype_length; i++) {
-      phenotype[i] = genotype[i];
-    }
+    phenotype = genotype.dup;
     //writeln("phe " ~ to!string(phenotype.length));
   }
 
   public void evaluate_fitness() {
-    fitness = 0.;
-    for (int i = 0; i < genotype_length; i++) {
-      fitness += genotype[i];
-    }
-    fitness = fitness / genotype_length;
+    fitness = to!double(genotype.sum) / to!double(genotype.length);
   }
 }
-
-/*
-
-// PyD API
-
-extern(C) void PydMain() {
-  module_init();
-  wrap_class!(
-    Individual,
-    Init!(int),
-    Def!(Individual.getPhenotype),
-    Def!(Individual.getFitness)
-  )();
-}
-*/

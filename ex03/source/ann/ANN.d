@@ -80,7 +80,7 @@ public class ANN {
       writeln(to!string(synapsis0));
       writeln(to!string(temp0));
       //synapsis0 = synapsis0 + temp0;
-      //synapsis1 = synapsis1 + temp1;
+      synapsis1 = synapsis1 + temp1;
 
 
     }

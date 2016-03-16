@@ -5,11 +5,19 @@ import std.conv;
 
 import ann.ann;
 import ann.matrix;
+import ann.neuron;
+import ann.neuronlayer;
+import ann.neuralnetwork;
 
 public void main() {
+
+  NeuralNetwork ann = new NeuralNetwork(4, 4, 2, 2);
+
+
+  /*
   ANN ann = new ANN();
   ann.learn(1);
-  /*
+
   Matrix m1 = new Matrix(2,2);
   m1.randomize();
   Matrix m2 = new Matrix(2,2);
