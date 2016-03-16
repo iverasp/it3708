@@ -15,35 +15,34 @@ public class Population {
 
   Individual[] children;
   Individual[] adults;
-  Individual[] children_fitness;
+  Individual[] childrenFitness;
   Individual[][] parents;
-  double average_fitness;
-  double standard_deviation;
-  int genotype_length;
-  int number_of_children;
+  double averageFitness;
+  double standardDeviation;
+  int genotypeLength;
+  int numberOfChildren;
 
   this(int childs, int gl) {
-    number_of_children = childs;
+    numberOfChildren = childs;
     //children = new Individual[number_of_children];
-    genotype_length = gl;
-    children = generate_children();
+    genotypeLength = gl;
+    children = generateChildren();
     //writeln("Children " ~ to!string(children.length));
   }
 
   override string toString() {
-    return "Children: " ~ to!string(number_of_children) ~ " Genotype length: " ~ to!string(genotype_length);
+    return "Children: " ~ to!string(numberOfChildren) ~ " Genotype length: " ~ to!string(genotypeLength);
   }
 
   public Individual[] getAdults() {
     return adults;
   }
 
-  public Individual[] generate_children() {
-    Individual[] result = new Individual[number_of_children];
+  public Individual[] generateChildren() {
+    Individual[] result = new Individual[numberOfChildren];
     foreach (i; 0 .. number_of_children) {
-      auto individual = new Individual(genotype_length);
-      individual.generate_genotype();
-      //writeln("child " ~ to!string(individual.genotype.length));
+      auto individual = new Individual(genotypeLength);
+      individual.generateGenotype();
       result[i] = individual;
     }
     return result;
@@ -53,15 +52,16 @@ public class Population {
     //writeln("childs " ~ to!string(children.length));
     foreach(i; 0 .. children.length) {
       //writeln(to!string(i));
-      children[i].generate_phenotype();
+      children[i].generatePhenotype();
     }
   }
 
   public void evaluate() {
-    children_fitness = new Individual[number_of_children];
+
+    childrenFitness = new Individual[numberOfChildren];
     foreach(i; 0 .. children.length) {
-      children[i].evaluate_fitness();
-      children_fitness[i] = children[i];
+      children[i].evaluateFitness();
+      childrenFitness[i] = children[i];
     }
 
     bool myComp(Individual x, Individual y) @safe pure nothrow {
@@ -80,24 +80,25 @@ public class Population {
     */
   }
 
-  public void adult_selection() {
-    full_replacement();
+  public void adultSelection() {
+    fullReplacement();
   }
 
-  public void parent_selection() {
-    tournament_selection();
+  public void parentSelection() {
+    tournamentSelection();
   }
 
-  private void full_replacement() {
-    adults = new Individual[number_of_children];
+
+  private void fullReplacement() {
+    adults = new Individual[numberOfChildren];
     foreach(i; 0 .. children.length) {
       children[i].mature();
       adults[i] = children[i];
     }
-    children = new Individual[number_of_children];
+    children = new Individual[numberOfChildren];
   }
 
-  private void tournament_selection() {
+  private void tournamentSelection() {
     auto myParents = new Individual[][](100); // TODO: number_of_children
 
     bool myComp(Individual x, Individual y) @safe pure nothrow {
@@ -107,24 +108,24 @@ public class Population {
     int newparents = 0;
     while (newparents < 100) { // TODO: number_of_children / children_per_pair
       //writeln("Parents selection, size " ~ to!string(parents.length));
-      auto adult_pool = adults.dup;
-      randomShuffle(adult_pool);
-      auto tournament_groups = new Individual[][](10, 10);
-      auto adult_index = adult_pool.length;
+      auto adultPool = adults.dup;
+      randomShuffle(adultPool);
+      auto tournamentGroups = new Individual[][](10, 10);
+      auto adultIndex = adultPool.length;
       //writeln("Pool " ~ to!string(adult_index));
       foreach(i; 0 .. 10) { // TODO: population_size / group_size
         foreach(j; 0 .. 10) { // TODO: group_size
           //writeln(to!string(adult_index));
-          if (adult_index > -1.0f) {
-            tournament_groups[i][j] = adult_pool[adult_index-- - 1];
+          if (adultIndex > -1.0f) {
+            tournamentGroups[i][j] = adultPool[adultIndex-- - 1];
             //writeln("Adult index " ~ to!string(adult_index));
           }
         }
       }
-      foreach (i; 0 .. tournament_groups.length) {
+      foreach (i; 0 .. tournamentGroups.length) {
         auto chance = uniform(0.0f, 1.0f);
         if (chance < 1f - 0.2f) { // TODO: epsilon
-          sort!(myComp)(tournament_groups[i]);
+          sort!(myComp)(tournamentGroups[i]);
           /*
           writeln("sorted?");
           foreach (x; 0 .. 10) {
@@ -134,8 +135,8 @@ public class Population {
           */
         }
         auto pair = new Individual[2];
-        pair[0] = tournament_groups[i][tournament_groups[i].length - 1];
-        pair[1] = tournament_groups[i][tournament_groups[i].length - 2];
+        pair[0] = tournamentGroups[i][tournamentGroups[i].length - 1];
+        pair[1] = tournamentGroups[i][tournamentGroups[i].length - 2];
         //writeln("Adding to parents " ~ to!string(parents.length));
         myParents[newparents] = pair.dup;
         //writeln("parent length " ~ to!string(newparents));
@@ -162,7 +163,7 @@ public class Population {
           int phenlength = to!int(parents[i][0].phenotype.length);
           //writeln("phenlength " ~ to!string(phenlength));
           int crossoverpoint = uniform(1, phenlength + 1);
-          auto newborn = new Individual(genotype_length);
+          auto newborn = new Individual(genotypeLength);
           newborn.genotype = parents[i][0].genotype[0..crossoverpoint].dup ~ parents[i][1].genotype[crossoverpoint..parents[i][1].genotype.length].dup;
           children.length = children.length + 1;
           //writeln("newborn " ~ to!string(newborn.genotype));
@@ -171,9 +172,9 @@ public class Population {
         }
       } else {
         foreach (j; 0 .. 1) { // TODO: children per pair
-          int parent_index = j % 2;
+          int parentIndex = j % 2;
           //writeln("parent index " ~ to!string(parent_index));
-          auto newborn = new Individual(genotype_length);
+          auto newborn = new Individual(genotypeLength);
           //writeln("gen " ~ to!string(genotype_length));
           //newborn.generate_genotype();
           //newborn.generate_phenotype();
@@ -181,7 +182,7 @@ public class Population {
             //writeln("index " ~ to!string(j) ~ ":" ~ to!string(parent_index));
             //parents[j][parent_index].generate_genotype();
             //parents[j][parent_index].generate_phenotype();
-            auto genotype = parents[i][parent_index].phenotype.dup;
+            auto genotype = parents[i][parentIndex].phenotype.dup;
             //writeln(to!string(genotype.length));
             auto index = uniform(0, genotype.length);
             if (genotype[index] == 0) genotype[index] = 1;
@@ -190,7 +191,7 @@ public class Population {
             //writeln("newborn " ~ to!string(newborn.genotype));
 
           } else {
-            newborn.genotype = parents[i][parent_index].phenotype.dup;
+            newborn.genotype = parents[i][parentIndex].phenotype.dup;
           }
           children.length = children.length + 1;
           children[children.length - 1] = newborn;
@@ -202,21 +203,21 @@ public class Population {
     }
   }
 
-  public void generate_information() {
-    double total_fitness = 0;
-    int number_of_adults = 0;
-    double variance_numerator = 0;
+  public void generateInformation() {
+    double totalFitness = 0;
+    int numberOfAdults = 0;
+    double varianceNumerator = 0;
     double variance = 0;
     for (int i = 0; i < adults.length; i++) {
-      total_fitness += adults[i].fitness;
-      number_of_adults++;
+      totalFitness += adults[i].fitness;
+      numberOfAdults++;
     }
-    average_fitness = total_fitness / number_of_adults;
+    averageFitness = totalFitness / numberOfAdults;
     for (int i = 0; i < adults.length; i++) {
-      variance_numerator += pow(adults[i].fitness - average_fitness, 2);
+      varianceNumerator += pow(adults[i].fitness - averageFitness, 2);
     }
-    variance = variance_numerator / number_of_adults;
-    standard_deviation = sqrt(variance);
+    variance = varianceNumerator / numberOfAdults;
+    standardDeviation = sqrt(variance);
   }
 
 }
@@ -228,10 +229,10 @@ extern(C) void PydMain() {
     wrap_class!(
         Population,
         Init!(int, int),
-        Def!(Population.generate_information),
+        Def!(Population.generateInformation),
         Def!(Population.reproduce),
-        Def!(Population.parent_selection),
-        Def!(Population.adult_selection),
+        Def!(Population.parentSelection),
+        Def!(Population.adultSelection),
         Def!(Population.evaluate),
         Def!(Population.develop),
         Repr!(Population.toString),

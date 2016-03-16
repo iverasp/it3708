@@ -17,8 +17,8 @@ gen = 0
 while True:
     population.develop()
     population.evaluate()
-    population.adult_selection()
-    population.parent_selection()
+    population.adultSelection()
+    population.parentSelection()
     population.reproduce()
 
     highest_fitness = 0

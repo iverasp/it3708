@@ -15,18 +15,18 @@ public class Individual {
   public int[] genotype;
   public int[] phenotype;
   public double fitness;
-  public double fitness_range;
-  public int genotype_length;
+  public double fitnessRange;
+  public int genotypeLength;
 
   this(int gl) {
     adult = false;
     age = 0;
     fitness = 0.;
-    fitness_range = 0.;
-    genotype_length = gl;
+    fitnessRange = 0.;
+    genotypeLength = gl;
     //writeln("len " ~ to!string(gl));
-    genotype = new int[](genotype_length);
-    phenotype = new int[](genotype_length);
+    genotype = new int[](genotypeLength);
+    phenotype = new int[](genotypeLength);
   }
 
   public int[] getPhenotype() {
@@ -45,22 +45,23 @@ public class Individual {
     age++;
   }
 
-  public int[] get_genotype() {
+  public int[] getGenotype() {
     return genotype;
   }
 
-  public void generate_genotype() {
-    for (int i = 0; i < genotype_length; i++) {
+  public void generateGenotype() {
+    for (int i = 0; i < genotypeLength; i++) {
       genotype[i] = uniform(0, 2);
     }
   }
 
-  public void generate_phenotype() {
+  public void generatePhenotype() {
     phenotype = genotype.dup;
     //writeln("phe " ~ to!string(phenotype.length));
   }
 
-  public void evaluate_fitness() {
+  public void evaluateFitness() {
     fitness = to!double(genotype.sum) / to!double(genotype.length);
+
   }
 }
