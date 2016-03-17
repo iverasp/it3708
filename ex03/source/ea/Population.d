@@ -40,7 +40,7 @@ public class Population {
 
   public Individual[] generateChildren() {
     Individual[] result = new Individual[numberOfChildren];
-    foreach (i; 0 .. number_of_children) {
+    foreach (i; 0 .. numberOfChildren) {
       auto individual = new Individual(genotypeLength);
       individual.generateGenotype();
       result[i] = individual;
