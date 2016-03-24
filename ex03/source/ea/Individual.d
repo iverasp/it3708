@@ -5,18 +5,25 @@ import std.random;
 import std.stdio;
 import std.conv;
 import std.algorithm;
-
 import pyd.pyd;
 
 public class Individual {
 
-  public bool adult;
-  public int age;
-  public int[] genotype;
-  public int[] phenotype;
-  public double fitness;
-  public double fitnessRange;
-  public int genotypeLength;
+    /// These are generic variables
+    private bool adult;
+    private int age;
+    private float[] genotype;
+    private float[] phenotype;
+    private double fitness;
+    private double fitnessRange;
+    private int genotypeLength;
+
+    /// These are problem specific variables
+    private int devouredFood;
+    private int devouredPoison;
+
+    /// #TODO 1) fix indenting and fitness calculation
+    /// 2) Test wether private variables break anything
 
   this(int gl) {
     adult = false;
@@ -25,11 +32,11 @@ public class Individual {
     fitnessRange = 0.;
     genotypeLength = gl;
     //writeln("len " ~ to!string(gl));
-    genotype = new int[](genotypeLength);
-    phenotype = new int[](genotypeLength);
+    genotype = new float[](genotypeLength);
+    phenotype = new float[](genotypeLength);
   }
 
-  public int[] getPhenotype() {
+  public float[] getPhenotype() {
     return phenotype;
   }
 
@@ -45,13 +52,13 @@ public class Individual {
     age++;
   }
 
-  public int[] getGenotype() {
+  public float[] getGenotype() {
     return genotype;
   }
 
   public void generateGenotype() {
     for (int i = 0; i < genotypeLength; i++) {
-      genotype[i] = uniform(0, 2);
+      genotype[i] = uniform01();
     }
   }
 
@@ -62,6 +69,5 @@ public class Individual {
 
   public void evaluateFitness() {
     fitness = to!double(genotype.sum) / to!double(genotype.length);
-
   }
 }
