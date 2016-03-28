@@ -1,3 +1,5 @@
+# Subsymbolic methods in AI, exercise 03
+
 ## Install D compilers and D package manager
 
     brew install ldc dmd dub
