@@ -3,7 +3,10 @@
 ## Install D compilers and D package manager
 
     brew install ldc dmd dub
-    sudo pip3 install pyd
+
+## Install Python dependencies
+
+    sudo pip3 install -r requirements.txt
 
 ## Build dependencies for D
 
