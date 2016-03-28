@@ -66,6 +66,5 @@ while True:
 print("\nFinished intelligencing the artificial agent")
 print("Visualizing run")
 print("Press escape to exit")
-#moves = [0,0,0,0,0,3,3,3,3,3,2,2,2,2,1,1,1,0,0,0] # TODO: get actual moves
-moves = [0,0,0,0,0,0,0,0,0,0,0,0]
+moves = np.random.randint(3, size=1000)
 GUI = FlatlandGUI(cells=cells, start=START, moves=moves)

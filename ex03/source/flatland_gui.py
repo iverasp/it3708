@@ -105,5 +105,3 @@ class FlatlandGUI:
                 if self.agent_pos[0] < 0:
                     self.agent_pos = (self.mapsize - 1, self.agent_pos[1])
                 self.agent_tile = pygame.transform.rotate(self.agent_tile_org, 90)
-
-            print(self.agent_pos)
