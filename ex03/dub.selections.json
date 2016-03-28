@@ -1,6 +1,7 @@
 {
 	"fileVersion": 1,
 	"versions": {
+		"scid": "0.3.0",
 		"pyd": "0.9.8"
 	}
 }
