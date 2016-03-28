@@ -2,6 +2,7 @@ import os.path, sys
 import distutils.util
 from flatland_gui import FlatlandGUI
 import numpy as np
+from random import choice, seed
 
 # Append the directory in which the binaries were placed to Python's sys.path,
 # then import the D DLL.
@@ -13,8 +14,25 @@ sys.path.append(os.path.abspath(libDir))
 from population import Population, Individual
 
 # Generate random map
+seed(1) # not random when testing
 N = 10
-cells = np.random.randint(3, size=(N, N)) # TODO: generate proper map
+# Make array of zeros
+cells = np.zeros((N,N), dtype=np.int)
+# Generate a list of tuples of all array positions
+places = [(x, y) for x in range(N) for y in range(N)]
+START = (6, 6)
+places.remove(START)
+
+FOODITEMS = int(N*N*0.33)
+POISONITEMS = int((N*N - FOODITEMS) * 0.33)
+for food in range(FOODITEMS):
+    pos = choice(places)
+    cells[pos[0]][pos[1]] = 1
+    places.remove(pos)
+for poison in range(POISONITEMS):
+    pos = choice(places)
+    cells[pos[0]][pos[1]] = 2
+    places.remove(pos)
 
 # Setup EA
 population = Population(100, 21)
@@ -46,4 +64,4 @@ print("\nFinished intelligencing the artificial agent")
 print("Visualizing run")
 print("Press escape to exit")
 moves = [0,0,0,0,0,3,3,3,3,3,2,2,2,2,1,1,1,0,0,0] # TODO: get actual moves
-GUI = FlatlandGUI(cells=cells, start=(N - 1, N - 1), moves=moves)
+GUI = FlatlandGUI(cells=cells, start=START, moves=moves)
