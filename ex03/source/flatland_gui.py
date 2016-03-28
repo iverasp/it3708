@@ -35,73 +35,83 @@ class FlatlandGUI:
         self.agent_pos = start
 
         self.mapsize = len(cells)
+        self.move = 0
 
         pygame.init()
         self.display = pygame.display.set_mode((self.mapsize*self.TILESIZE, self.mapsize*self.TILESIZE))
         self.run()
 
     def run(self):
-        move = 0
+        clock = pygame.time.get_ticks()
+        self.update()
         while True:
+            self.listen()
+            pygame.time.wait(5) # do not hog the CPU
+            if clock + self.DELAY <= pygame.time.get_ticks():
+                clock = pygame.time.get_ticks()
+                self.update()
 
-            # Listen for quit
-            for event in pygame.event.get():
-                if event.type == QUIT:
+    def listen(self):
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
                     pygame.quit()
                     exit()
-                if event.type == KEYDOWN:
-                    if event.key == K_ESCAPE:
-                        pygame.quit()
-                        exit()
+                if event.key == K_MINUS:
+                    self.DELAY += 50
+                    print("Delay set to:", self.DELAY)
+                if event.key == K_PLUS:
+                    self.DELAY -= 50
+                    print("Delay set to:", self.DELAY)
 
-            # Draw the map
-            self.display.fill(Color('white'))
-            for row in range(self.mapsize):
-                for column in range(self.mapsize):
-                    self.display.blit(
-                        self.tilemap[self.cells[row][column]],
-                        pygame.rect.Rect(column*self.TILESIZE, row*self.TILESIZE, self.TILESIZE, self.TILESIZE)
-                    )
+    def update(self):
+        # Draw the map
+        self.display.fill(Color('white'))
+        for row in range(self.mapsize):
+            for column in range(self.mapsize):
+                self.display.blit(
+                    self.tilemap[self.cells[row][column]],
+                    pygame.rect.Rect(column*self.TILESIZE, row*self.TILESIZE, self.TILESIZE, self.TILESIZE)
+                )
 
-            # Draw the agent
-            self.display.blit(
-                self.agent_tile,
-                pygame.rect.Rect(self.agent_pos[0] * self.TILESIZE, self.agent_pos[1] * self.TILESIZE, self.TILESIZE, self.TILESIZE)
-            )
+        # Draw the agent
+        self.display.blit(
+            self.agent_tile,
+            pygame.rect.Rect(self.agent_pos[0] * self.TILESIZE, self.agent_pos[1] * self.TILESIZE, self.TILESIZE, self.TILESIZE)
+        )
 
-            pygame.display.flip()
-            #pygame.display.update()
+        pygame.display.flip()
 
-            # Do not go too fast
-            pygame.time.delay(self.DELAY)
+        # No more moves? Wait until user quits
+        if self.move == len(self.moves) - 1:
+            return
 
-            # No more moves? Wait until user quits
-            if move == len(self.moves) - 1:
-                continue
-
-            # Find next position for agent and rotate. Also wrap-around our world
-            move += 1
-            # Up
-            if (self.moves[move]) == 0:
-                self.agent_pos = (self.agent_pos[0], self.agent_pos[1] - 1)
-                if self.agent_pos[1] < 0:
-                    self.agent_pos = (self.agent_pos[0], self.mapsize - 1)
-                self.agent_tile = self.agent_tile_org
-            # Right
-            elif (self.moves[move]) == 1:
-                self.agent_pos = (self.agent_pos[0] + 1, self.agent_pos[1])
-                if self.agent_pos[0] > self.mapsize - 1:
-                    self.agent_pos = (0, self.agent_pos[1])
-                self.agent_tile = pygame.transform.rotate(self.agent_tile_org, 270)
-            # Down
-            elif (self.moves[move]) == 2:
-                self.agent_pos = (self.agent_pos[0], self.agent_pos[1] + 1)
-                if self.agent_pos[1] > self.mapsize - 1:
-                    self.agent_pos = (self.agent_pos[0], 0)
-                self.agent_tile = pygame.transform.rotate(self.agent_tile_org, 180)
-            # Left
-            elif (self.moves[move]) == 3:
-                self.agent_pos = (self.agent_pos[0] - 1, self.agent_pos[1])
-                if self.agent_pos[0] < 0:
-                    self.agent_pos = (self.mapsize - 1, self.agent_pos[1])
-                self.agent_tile = pygame.transform.rotate(self.agent_tile_org, 90)
+        # Find next position for agent and rotate. Also wrap-around our world
+        self.move += 1
+        # Up
+        if (self.moves[self.move]) == 0:
+            self.agent_pos = (self.agent_pos[0], self.agent_pos[1] - 1)
+            if self.agent_pos[1] < 0:
+                self.agent_pos = (self.agent_pos[0], self.mapsize - 1)
+            self.agent_tile = self.agent_tile_org
+        # Right
+        elif (self.moves[self.move]) == 1:
+            self.agent_pos = (self.agent_pos[0] + 1, self.agent_pos[1])
+            if self.agent_pos[0] > self.mapsize - 1:
+                self.agent_pos = (0, self.agent_pos[1])
+            self.agent_tile = pygame.transform.rotate(self.agent_tile_org, 270)
+        # Down
+        elif (self.moves[self.move]) == 2:
+            self.agent_pos = (self.agent_pos[0], self.agent_pos[1] + 1)
+            if self.agent_pos[1] > self.mapsize - 1:
+                self.agent_pos = (self.agent_pos[0], 0)
+            self.agent_tile = pygame.transform.rotate(self.agent_tile_org, 180)
+        # Left
+        elif (self.moves[self.move]) == 3:
+            self.agent_pos = (self.agent_pos[0] - 1, self.agent_pos[1])
+            if self.agent_pos[0] < 0:
+                self.agent_pos = (self.mapsize - 1, self.agent_pos[1])
+            self.agent_tile = pygame.transform.rotate(self.agent_tile_org, 90)
