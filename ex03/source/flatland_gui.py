@@ -79,21 +79,31 @@ class FlatlandGUI:
             if move == len(self.moves) - 1:
                 continue
 
-            # Find next position for agent and rotate
+            # Find next position for agent and rotate. Also wrap-around our world
             move += 1
             # Up
             if (self.moves[move]) == 0:
                 self.agent_pos = (self.agent_pos[0], self.agent_pos[1] - 1)
+                if self.agent_pos[1] < 0:
+                    self.agent_pos = (self.agent_pos[0], self.mapsize - 1)
                 self.agent_tile = self.agent_tile_org
             # Right
             elif (self.moves[move]) == 1:
                 self.agent_pos = (self.agent_pos[0] + 1, self.agent_pos[1])
+                if self.agent_pos[0] > self.mapsize - 1:
+                    self.agent_pos = (0, self.agent_pos[1])
                 self.agent_tile = pygame.transform.rotate(self.agent_tile_org, 270)
             # Down
             elif (self.moves[move]) == 2:
                 self.agent_pos = (self.agent_pos[0], self.agent_pos[1] + 1)
+                if self.agent_pos[1] > self.mapsize - 1:
+                    self.agent_pos = (self.agent_pos[0], 0)
                 self.agent_tile = pygame.transform.rotate(self.agent_tile_org, 180)
             # Left
             elif (self.moves[move]) == 3:
                 self.agent_pos = (self.agent_pos[0] - 1, self.agent_pos[1])
+                if self.agent_pos[0] < 0:
+                    self.agent_pos = (self.mapsize - 1, self.agent_pos[1])
                 self.agent_tile = pygame.transform.rotate(self.agent_tile_org, 90)
+
+            print(self.agent_pos)

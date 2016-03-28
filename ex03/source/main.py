@@ -23,8 +23,11 @@ places = [(x, y) for x in range(N) for y in range(N)]
 START = (6, 6)
 places.remove(START)
 
+# FPD of (1/3, 1/3)
 FOODITEMS = int(N*N*0.33)
 POISONITEMS = int((N*N - FOODITEMS) * 0.33)
+
+# Place food and the poison items in array. Remove places that has been used.
 for food in range(FOODITEMS):
     pos = choice(places)
     cells[pos[0]][pos[1]] = 1
@@ -63,5 +66,6 @@ while True:
 print("\nFinished intelligencing the artificial agent")
 print("Visualizing run")
 print("Press escape to exit")
-moves = [0,0,0,0,0,3,3,3,3,3,2,2,2,2,1,1,1,0,0,0] # TODO: get actual moves
+#moves = [0,0,0,0,0,3,3,3,3,3,2,2,2,2,1,1,1,0,0,0] # TODO: get actual moves
+moves = [0,0,0,0,0,0,0,0,0,0,0,0]
 GUI = FlatlandGUI(cells=cells, start=START, moves=moves)
