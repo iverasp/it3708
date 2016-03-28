@@ -1,0 +1,99 @@
+import pygame
+from sys import exit
+from pygame.locals import *
+from os.path import join
+
+class FlatlandGUI:
+
+    # Delay between screen updates (ms)
+    DELAY = 400
+
+    # Set resources and map to cell integers
+    TILESIZE = 80
+    empty_tile = pygame.image.load(join('res', 'empty' + str(TILESIZE) + '.png'))
+    food_tile = pygame.image.load(join('res', 'food' + str(TILESIZE) + '.png'))
+    poison_tile = pygame.image.load(join('res', 'poison' + str(TILESIZE) + '.png'))
+    agent_tile_org = pygame.image.load(join('res', 'agent' + str(TILESIZE) + '.png'))
+    agent_tile = agent_tile_org
+
+    tilemap = {
+        0: empty_tile,
+        1: food_tile,
+        2: poison_tile
+    }
+
+    """
+    Initialize GUI
+    Cells is a 2D array containing integers [0, 3)
+    denoting the content of a tile: 0 = blank, 1 = food, 2 = posion.
+    Moves is an array of moves where 0 = up, 1 = right, 2 = down, 3 = left.
+    Start is a tuple of the starting cordinates for the agent.
+    """
+    def __init__(self, cells, start, moves):
+        self.moves = moves
+        self.cells = cells
+        self.agent_pos = start
+
+        self.mapsize = len(cells)
+
+        pygame.init()
+        self.display = pygame.display.set_mode((self.mapsize*self.TILESIZE, self.mapsize*self.TILESIZE))
+        self.run()
+
+    def run(self):
+        move = 0
+        while True:
+
+            # Listen for quit
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    pygame.quit()
+                    exit()
+                if event.type == KEYDOWN:
+                    if event.key == K_ESCAPE:
+                        pygame.quit()
+                        exit()
+
+            # Draw the map
+            self.display.fill(Color('white'))
+            for row in range(self.mapsize):
+                for column in range(self.mapsize):
+                    self.display.blit(
+                        self.tilemap[self.cells[row][column]],
+                        pygame.rect.Rect(column*self.TILESIZE, row*self.TILESIZE, self.TILESIZE, self.TILESIZE)
+                    )
+
+            # Draw the agent
+            self.display.blit(
+                self.agent_tile,
+                pygame.rect.Rect(self.agent_pos[0] * self.TILESIZE, self.agent_pos[1] * self.TILESIZE, self.TILESIZE, self.TILESIZE)
+            )
+
+            pygame.display.flip()
+            #pygame.display.update()
+
+            # Do not go too fast
+            pygame.time.delay(self.DELAY)
+
+            # No more moves? Wait until user quits
+            if move == len(self.moves) - 1:
+                continue
+
+            # Find next position for agent and rotate
+            move += 1
+            # Up
+            if (self.moves[move]) == 0:
+                self.agent_pos = (self.agent_pos[0], self.agent_pos[1] - 1)
+                self.agent_tile = self.agent_tile_org
+            # Right
+            elif (self.moves[move]) == 1:
+                self.agent_pos = (self.agent_pos[0] + 1, self.agent_pos[1])
+                self.agent_tile = pygame.transform.rotate(self.agent_tile_org, 270)
+            # Down
+            elif (self.moves[move]) == 2:
+                self.agent_pos = (self.agent_pos[0], self.agent_pos[1] + 1)
+                self.agent_tile = pygame.transform.rotate(self.agent_tile_org, 180)
+            # Left
+            elif (self.moves[move]) == 3:
+                self.agent_pos = (self.agent_pos[0] - 1, self.agent_pos[1])
+                self.agent_tile = pygame.transform.rotate(self.agent_tile_org, 90)
