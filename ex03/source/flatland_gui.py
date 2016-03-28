@@ -37,6 +37,9 @@ class FlatlandGUI:
         self.mapsize = len(cells)
         self.move = 0
 
+        self.food_eaten = 0
+        self.poison_eaten = 0
+
         pygame.init()
         self.display = pygame.display.set_mode((self.mapsize*self.TILESIZE, self.mapsize*self.TILESIZE))
         self.run()
@@ -89,6 +92,9 @@ class FlatlandGUI:
         if self.move == len(self.moves) - 1:
             return
 
+        # Check if agent ate something
+        self.remove_item(self.agent_pos)
+
         # Find next position for agent and rotate. Also wrap-around our world
         self.move += 1
         # Up
@@ -115,3 +121,14 @@ class FlatlandGUI:
             if self.agent_pos[0] < 0:
                 self.agent_pos = (self.mapsize - 1, self.agent_pos[1])
             self.agent_tile = pygame.transform.rotate(self.agent_tile_org, 90)
+
+    def remove_item(self, position):
+        item = self.cells[position[1]][position[0]]
+        if item == 0: return
+        if item == 1:
+            self.food_eaten += 1
+            print(self.food_eaten, "foods eaten")
+        if item == 2:
+            self.poison_eaten += 1
+            print(self.poison_eaten, "poisons eaten")
+        self.cells[position[1]][position[0]] = 0
