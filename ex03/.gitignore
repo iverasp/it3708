@@ -7,7 +7,7 @@ __dummy.html
 !/**/
 !*.*
 *.o
-
+source/__pycache__
 
 # Created by https://www.gitignore.io/api/intellij
 
@@ -59,4 +59,3 @@ fabric.properties
 
 ### Intellij Patch ###
 *.iml
-
