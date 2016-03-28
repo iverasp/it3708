@@ -104,8 +104,7 @@ class FlatlandGUI:
                 self.agent_angle = self.agent_angle + angle + 360
             else: self.agent_angle = self.agent_angle + angle
 
-        # Forward
-        if self.moves[self.move] == 0:
+        def move_forward():
             direction = int((self.agent_angle / 360) * 4)
             if direction == 4: direction = 0
             self.agent_pos = tuple(
@@ -118,16 +117,22 @@ class FlatlandGUI:
             elif self.agent_pos[1] < 0: self.agent_pos = (self.agent_pos[0], self.mapsize - 1)
             elif self.agent_pos[1] > self.mapsize - 1: self.agent_pos = (self.agent_pos[0], 0)
 
+        # Find next position for agent and rotate
+        # Forward
+        if self.moves[self.move] == 0:
+            move_forward()
 
         # Right
         elif self.moves[self.move] == 1:
             update_angle(-90)
             self.agent_tile = pygame.transform.rotate(self.agent_tile, -90)
+            move_forward()
 
         # Left
         elif self.moves[self.move] == 2:
             update_angle(+90)
             self.agent_tile = pygame.transform.rotate(self.agent_tile, +90)
+            move_forward()
 
         # Draw the agent
         self.display.blit(
@@ -140,7 +145,6 @@ class FlatlandGUI:
         # Check if agent ate something
         self.remove_item(self.agent_pos)
 
-        # Find next position for agent and rotate
         self.move += 1
 
     def remove_item(self, position):

@@ -66,6 +66,6 @@ while True:
 print("\nFinished intelligencing the artificial agent")
 print("Visualizing run")
 print("Press escape to exit")
-moves = np.random.randint(2, size=1000)
+moves = np.random.randint(3, size=1000)
 #moves = [1,1,0,0,0,0,0,0,0,1,0,0,0]
 GUI = FlatlandGUI(cells=cells, start=START, moves=moves)
