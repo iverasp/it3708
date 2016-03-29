@@ -6,14 +6,14 @@ class Config {
 
     auto populationSize = 100;
     auto numberOfChildren = 100;
-    auto genotypeLength = 100;
+    auto genotypeLength = 10;
     auto adultSelection = "f";
     auto parentSelection = "t";
-    auto tournamentEpsilon = 0.15;
+    auto tournamentEpsilon = 0.15f;
     auto tournamentGroupSize = 20;
-    auto boltzmannTemperature = 1.;
-    auto boltzmannDeltaT = 0.01;
-    auto crossoverRate = 0.01;
+    auto boltzmannTemperature = 1.0f;
+    auto boltzmannDeltaT = 0.01f;
+    auto crossoverRate = 0.01f;
     auto childrenPerPair = 2;
     auto mutationType = "g";
     auto mutationRate = 1;

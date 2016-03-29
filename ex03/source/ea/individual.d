@@ -22,12 +22,12 @@ class Individual {
     int devouredFood;
     int devouredPoison;
 
-    this(Config config) {
-        genotypeLength = config.getGenotypeLength;
-        genotype = new float[](config.getGenotypeLength);
-        phenotype = new float[](config.getGenotypeLength);
-        fitness = 0.;
-        fitnessRange = 0.;
+    this(int genotypeLength) {
+        this.genotypeLength = genotypeLength;
+        genotype = new float[](genotypeLength);
+        phenotype = new float[](genotypeLength);
+        fitness = 0.0f;
+        fitnessRange = 0.0f;
     }
     
     @property float[] getPhenotype(){ return phenotype; }
@@ -36,7 +36,7 @@ class Individual {
 
     void generateGenotype() {
         for (int i = 0; i < genotypeLength; i++) {
-            genotype[i] = uniform01();
+            genotype[i] = uniform(0.0f, 1.0f);
         }
     }
 
@@ -46,8 +46,8 @@ class Individual {
 
     void evaluateFitness() {
         // This calculates onemax fitness:
-        // fitness = to!double(genotype.sum) / to!double(genotype.length);
+        fitness = to!double(genotype.sum) / to!double(genotype.length);
 
-        fitness = devouredFood + (-devouredPoison * 2);
+        //fitness = devouredFood + (-devouredPoison * 2);
     }
 }

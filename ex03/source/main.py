@@ -44,7 +44,7 @@ for poison in range(POISONITEMS):
 # Setup EA
 config = Config()
 population = Population(config)
-gen = 0
+generation = 0
 
 # Run EA
 while True:
@@ -57,9 +57,9 @@ while True:
     highest_fitness = 0
     fittest_phenotype = ""
 
-    print("Generation:", gen+1)
-    gen += 1
-    for adult in population.getAdults():
+    print("Generation:", generation + 1)
+    generation += 1
+    for adult in population.getAdults:
         if adult.getFitness > highest_fitness:
             highest_fitness = adult.getFitness
             fittest_phenotype = adult.getPhenotype
