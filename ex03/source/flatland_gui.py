@@ -1,14 +1,24 @@
 import pygame
-from sys import exit
+from sys import exit, path, version_info
+import distutils.util
 from pygame.locals import *
-from os.path import join
+from os.path import join, abspath
 import numpy as np
+
+# Append the directory in which the binaries were placed to Python's sys.path,
+# then import the D DLL.
+libDir = join('build', 'lib.%s-%s' % (
+    distutils.util.get_platform(),
+    '.'.join(str(v) for v in version_info[:2])
+))
+path.append(abspath(libDir))
+from bindings import Agent
 
 
 class FlatlandGUI:
 
     # Delay between screen updates (ms)
-    DELAY = 1500
+    DELAY = 250
 
     # Set resources and map to cell integers
     TILESIZE = 80
@@ -26,24 +36,17 @@ class FlatlandGUI:
     # Keep track of our orientation and angle
     agent_angle = 0
 
-    movemap = {
-        1: (1, 0),
-        2: (0, -1),
-        3: (-1, 0),
-        0: (0, 1)
-    }
-
     """
     Initialize GUI
     Cells is a 2D array containing integers [0, 3)
     denoting the content of a tile: 0 = blank, 1 = food, 2 = posion.
     Moves is an array of moves where 0 = forward, 1 = right, 2 = left.
-    Start is a tuple of the starting cordinates for the agent.
+    Start is a tuple of the starting coordinates for the agent.
     """
     def __init__(self, cells, start, moves):
         self.moves = moves
-        self.cells = cells
-        self.agent_pos = start
+        self.cells = cells.tolist()
+        self.agent = Agent(start[0], start[1])
 
         self.mapsize = len(cells)
         self.move = 0
@@ -82,7 +85,6 @@ class FlatlandGUI:
                     print("Delay set to:", self.DELAY)
 
     def update(self):
-
         # No more moves? Wait until user quits
         if self.move == len(self.moves):
             return
@@ -96,64 +98,28 @@ class FlatlandGUI:
                     pygame.rect.Rect(column*self.TILESIZE, row*self.TILESIZE, self.TILESIZE, self.TILESIZE)
                 )
 
-        # Make angles wrap around 360 degrees
+        # Update angle of agent
         def update_angle(angle):
-            if self.agent_angle + angle > 360:
-                self.agent_angle = self.agent_angle + angle - 360
-            elif self.agent_angle + angle < 0:
-                self.agent_angle = self.agent_angle + angle + 360
-            else: self.agent_angle = self.agent_angle + angle
+            self.agent_angle += angle
+            self.agent_tile = pygame.transform.rotate(self.agent_tile, angle)
 
-        def move_forward():
-            direction = int((self.agent_angle / 360) * 4)
-            if direction == 4: direction = 0
-            self.agent_pos = tuple(
-                np.subtract(self.agent_pos, self.movemap[direction])
-            )
-
-            # Wrap-around world
-            if self.agent_pos[0] < 0: self.agent_pos = (self.mapsize - 1, self.agent_pos[1])
-            elif self.agent_pos[0] > self.mapsize - 1: self.agent_pos = (0, self.agent_pos[1])
-            elif self.agent_pos[1] < 0: self.agent_pos = (self.agent_pos[0], self.mapsize - 1)
-            elif self.agent_pos[1] > self.mapsize - 1: self.agent_pos = (self.agent_pos[0], 0)
-
-        # Find next position for agent and rotate
-        # Forward
-        if self.moves[self.move] == 0:
-            move_forward()
-
-        # Right
-        elif self.moves[self.move] == 1:
+        if self.moves[self.move] == 1:
             update_angle(-90)
-            self.agent_tile = pygame.transform.rotate(self.agent_tile, -90)
-            move_forward()
+            self.agent.turnRight()
 
-        # Left
         elif self.moves[self.move] == 2:
             update_angle(+90)
-            self.agent_tile = pygame.transform.rotate(self.agent_tile, +90)
-            move_forward()
+            self.agent.turnLeft()
+
+        # Move forward and update cells
+        self.cells = self.agent.moveForward(self.cells)
 
         # Draw the agent
         self.display.blit(
             self.agent_tile,
-            pygame.rect.Rect(self.agent_pos[0] * self.TILESIZE, self.agent_pos[1] * self.TILESIZE, self.TILESIZE, self.TILESIZE)
+            pygame.rect.Rect(self.agent.getX() * self.TILESIZE, self.agent.getY() * self.TILESIZE, self.TILESIZE, self.TILESIZE)
         )
 
         pygame.display.flip()
 
-        # Check if agent ate something
-        self.remove_item(self.agent_pos)
-
         self.move += 1
-
-    def remove_item(self, position):
-        item = self.cells[position[1]][position[0]]
-        if item == 0: return
-        if item == 1:
-            self.food_eaten += 1
-            print(self.food_eaten, "foods eaten")
-        if item == 2:
-            self.poison_eaten += 1
-            print(self.poison_eaten, "poisons eaten")
-        self.cells[position[1]][position[0]] = 0

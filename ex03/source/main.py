@@ -11,7 +11,7 @@ libDir = os.path.join('build', 'lib.%s-%s' % (
     '.'.join(str(v) for v in sys.version_info[:2])
 ))
 sys.path.append(os.path.abspath(libDir))
-from population import Population, Individual
+from bindings import Population, Individual
 
 # Generate random map
 seed(1) # not random when testing
