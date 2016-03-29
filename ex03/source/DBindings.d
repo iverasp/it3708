@@ -4,6 +4,7 @@ import pyd.pyd;
 
 import ea.population;
 import ea.individual;
+import ea.config;
 import flatland.agent;
 import flatland.simulator;
 
@@ -15,21 +16,23 @@ extern(C) void PydMain() {
     module_init();
     wrap_class!(
         Population,
-        Init!(int, int),
-        Def!(Population.generateInformation),
-        Def!(Population.reproduce),
-        Def!(Population.parentSelection),
-        Def!(Population.adultSelection),
-        Def!(Population.evaluate),
-        Def!(Population.develop),
+        Init!(Config),
         Repr!(Population.toString),
-        Def!(Population.getAdults)
+        Property!(Population.getAdults),
+        Def!(Population.develop),
+        Def!(Population.evaluate),
+        Def!(Population.adultSelection),
+        Def!(Population.parentSelection),
+        Def!(Population.reproduce),
+        Def!(Population.generateInformation)
     )();
     wrap_class!(
         Individual,
         Init!(int),
-        Def!(Individual.getFitness),
-        Def!(Individual.getPhenotype)
+        Property!(Individual.getPhenotype),
+        Property!(Individual.getFitness),
+        Property!(Individual.setFitnessRange),
+        Property!(Individual.getFitnessRange)
     )();
     wrap_class!(
         Agent,
@@ -53,5 +56,22 @@ extern(C) void PydMain() {
         Def!(Simulator.printStats),
         Def!(Simulator.getFitness),
         Def!(Simulator.getMoves)
+    )();
+    wrap_class!(
+        Config,
+        Init!(),
+        Property!(Config.getPopulationSize),
+        Property!(Config.getNumberOfChildren),
+        Property!(Config.getGenotypeLength),
+        Property!(Config.getAdultSelection),
+        Property!(Config.getParentSelection),
+        Property!(Config.getTournamentEpsilon),
+        Property!(Config.getTournamentGroupSize),
+        Property!(Config.getBoltzmannTemperature),
+        Property!(Config.getBoltzmannDeltaT),
+        Property!(Config.getCrossoverRate),
+        Property!(Config.getChildrenPerPair),
+        Property!(Config.getMutationType),
+        Property!(Config.getMutationRate)
     )();
 }
