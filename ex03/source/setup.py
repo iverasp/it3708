@@ -1,12 +1,13 @@
-from pyd.support import setup, Extension
+from pyd.support import Extension
+from pyd.support import setup 
 
 projName = 'population'
 
 setup(
     name=projName,
-    version='0.1',
+    version='0.2',
     ext_modules=[
-        Extension(projName, ['ea/Population.d', 'ea/Individual.d'],
+        Extension(projName, ['ea/population.d', 'ea/individual.d', 'ea/config.d'],
             build_deimos=True,
             d_lump=True)
     ],

@@ -1,8 +1,10 @@
-import os.path, sys
 import distutils.util
 from flatland_gui import FlatlandGUI
 import numpy as np
-from random import choice, seed
+import os.path
+from random import choice
+from random import seed
+import sys
 
 # Append the directory in which the binaries were placed to Python's sys.path,
 # then import the D DLL.
@@ -11,7 +13,9 @@ libDir = os.path.join('build', 'lib.%s-%s' % (
     '.'.join(str(v) for v in sys.version_info[:2])
 ))
 sys.path.append(os.path.abspath(libDir))
-from population import Population, Individual
+from population import Config
+from population import Individual
+from population import Population
 
 # Generate random map
 seed(1) # not random when testing
@@ -38,7 +42,8 @@ for poison in range(POISONITEMS):
     places.remove(pos)
 
 # Setup EA
-population = Population(100, 21)
+config = Config()
+population = Population(config)
 gen = 0
 
 # Run EA
@@ -55,9 +60,9 @@ while True:
     print("Generation:", gen+1)
     gen += 1
     for adult in population.getAdults():
-        if adult.getFitness() > highest_fitness:
-            highest_fitness = adult.getFitness()
-            fittest_phenotype = adult.getPhenotype()
+        if adult.getFitness > highest_fitness:
+            highest_fitness = adult.getFitness
+            fittest_phenotype = adult.getPhenotype
     print("Highest fitness:", highest_fitness)
     print("Fittest phenotype:", fittest_phenotype)
     if (highest_fitness == 1.0): break
