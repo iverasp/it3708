@@ -1,9 +1,11 @@
-import os.path, sys
 import distutils.util
 from flatland.flatland_gui import FlatlandGUI
 from ann.ANN import ANN
 import numpy as np
-from random import choice, seed
+import os.path
+from random import choice
+from random import seed
+import sys
 
 # Append the directory in which the binaries were placed to Python's sys.path,
 # then import the D DLL.
@@ -12,6 +14,7 @@ libDir = os.path.join('build', 'lib.%s-%s' % (
     '.'.join(str(v) for v in sys.version_info[:2])
 ))
 sys.path.append(os.path.abspath(libDir))
+
 from dbindings import *
 
 """
@@ -47,8 +50,9 @@ for poison in range(POISONITEMS):
     places.remove(pos)
 
 # Setup EA
-population = Population(100, 21)
-gen = 0
+config = Config()
+population = Population(config)
+generation = 0
 
 #ann = ANN()
 #ann.learn(60000)
@@ -67,6 +71,7 @@ print("Highest fitness:", fittest_sim.getFitness())
 
 """
 # Run EA
+#for i in range(5):
 while True:
     population.develop()
     population.evaluate()
@@ -77,12 +82,12 @@ while True:
     highest_fitness = 0
     fittest_phenotype = ""
 
-    print("Generation:", gen+1)
-    gen += 1
-    for adult in population.getAdults():
-        if adult.getFitness() > highest_fitness:
-            highest_fitness = adult.getFitness()
-            fittest_phenotype = adult.getPhenotype()
+    print("Generation:", generation + 1)
+    generation += 1
+    for adult in population.getAdults:
+        if adult.getFitness > highest_fitness:
+            highest_fitness = adult.getFitness
+            fittest_phenotype = adult.getPhenotype
     print("Highest fitness:", highest_fitness)
     print("Fittest phenotype:", fittest_phenotype)
     if (highest_fitness == 1.0): break
