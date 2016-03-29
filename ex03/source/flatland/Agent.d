@@ -10,11 +10,16 @@ public class Agent {
 
   int x, y;
   Direction direction = Direction.north;
+  int poisonsEaten, foodsEaten;
 
   this(int x, int y) {
     this.x = x;
     this.y = y;
   }
+
+  int getPoisonsEaten() { return poisonsEaten; }
+
+  int getFoodsEaten() { return foodsEaten; }
 
   void setX(int x) { this.x = x; }
 
@@ -70,6 +75,8 @@ public class Agent {
         break;
       default: assert(0);
     }
+    if (cells[y][x] == 1) foodsEaten++;
+    if (cells[y][x] == 2) poisonsEaten++;
     cells[y][x] = 0;
     return cells;
   }

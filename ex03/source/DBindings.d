@@ -1,12 +1,13 @@
-module bindings;
+module dbindings;
 
 import pyd.pyd;
 
 import ea.population;
 import ea.individual;
 import flatland.agent;
+import flatland.simulator;
 
-public class Bindings { }
+public class DBindings { }
 
 // PyD API
 
@@ -40,6 +41,17 @@ extern(C) void PydMain() {
         Def!(Agent.turnLeft),
         Def!(Agent.getX),
         Def!(Agent.getY),
-        Def!(Agent.sense)
+        Def!(Agent.sense),
+        Def!(Agent.getFoodsEaten),
+        Def!(Agent.getPoisonsEaten)
+    )();
+    wrap_class!(
+        Simulator,
+        Init!(int, int, int[][], int),
+        Def!(Simulator.completed),
+        Def!(Simulator.move),
+        Def!(Simulator.printStats),
+        Def!(Simulator.getFitness),
+        Def!(Simulator.getMoves)
     )();
 }

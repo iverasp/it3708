@@ -13,13 +13,13 @@ libDir = join('build', 'lib.%s-%s' % (
     '.'.join(str(v) for v in version_info[:2])
 ))
 path.append(abspath(libDir))
-from bindings import Agent
+from dbindings import Agent
 
 
 class FlatlandGUI:
 
     # Delay between screen updates (ms)
-    DELAY = 200
+    DELAY = 0
 
     # Set resources and map to cell integers
     TILESIZE = 80
@@ -55,7 +55,7 @@ class FlatlandGUI:
         self.food_eaten = 0
         self.poison_eaten = 0
 
-        self.ann = FlatlandANN()
+        #self.ann = FlatlandANN()
         #self.ann.learn()
 
         pygame.init()
@@ -98,7 +98,7 @@ class FlatlandGUI:
 
     def update(self):
         # No more moves? Wait until user quits
-        self.moves.append(self.get_ann_move())
+        #self.moves.append(self.get_ann_move())
         if self.move == len(self.moves):
             return
 
@@ -111,7 +111,7 @@ class FlatlandGUI:
                     pygame.rect.Rect(column*self.TILESIZE, row*self.TILESIZE, self.TILESIZE, self.TILESIZE)
                 )
 
-        self.print_move()
+        #self.print_move()
 
         # Update angle of agent
         def update_angle(angle):
