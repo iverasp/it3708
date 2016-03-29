@@ -1,4 +1,5 @@
-__pycache__/*
+source/flatland/__pycache__
+source/ann/__pycache__
 .DS_Store
 .dub
 docs.json

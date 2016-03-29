@@ -3,6 +3,12 @@ from ann.ANN import ANN
 class FlatlandANN:
     def __init__(self):
         self.ann = ANN()
+        # 2ez4me
+        self.ann.syn0 = [[-1.68908207, -1.67388583,  4.00059522],
+                        [ 2.40624477,  3.42700534, -5.52693725]]
+        self.ann.syn1 = [[-10.6303791 ],
+                        [-12.34892854],
+                        [ 11.61118677]]
 
     def learn(self):
         print(self.ann.syn0)

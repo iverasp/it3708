@@ -1,0 +1,12 @@
+inputs  outputs
+F  F      F
+L  L      L
+R  R      R
+
+food poison direction
+
+possible combinations: 3^3 = 27
+
+1 0   1
+0 0   0
+0 0   0
