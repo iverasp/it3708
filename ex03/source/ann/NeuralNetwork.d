@@ -37,9 +37,11 @@ public class NeuralNetwork {
       (neuronsToHiddenLayer*(numberOfHiddenLayers+1));
     double[] weights = new double[](numberOfNeurons);
 
+    /*
     foreach(i; 0 .. neuronsToHiddenLayer) {
-      weights[i] = inputLayer.neurons[i]
+      weights[i] = inputLayer.neurons[i];
     }
+    */
 
     return weights;
   }

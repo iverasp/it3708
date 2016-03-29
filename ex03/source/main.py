@@ -1,5 +1,6 @@
 import distutils.util
-from flatland_gui import FlatlandGUI
+from flatland.flatland_gui import FlatlandGUI
+from ann.ANN import ANN
 import numpy as np
 import os.path
 from random import choice
@@ -13,10 +14,17 @@ libDir = os.path.join('build', 'lib.%s-%s' % (
     '.'.join(str(v) for v in sys.version_info[:2])
 ))
 sys.path.append(os.path.abspath(libDir))
-from population import Config
-from population import Individual
-from population import Population
 
+from dbindings import *
+
+"""
+Program flow:
+1. Generate weights (phenotype) with EA
+2. Load weights into ANN
+3. Simulate a run in Flatland
+4. Evaluate fitness
+5. Visualize the fittest weights
+"""
 # Generate random map
 seed(1) # not random when testing
 N = 10
@@ -46,6 +54,22 @@ config = Config()
 population = Population(config)
 generation = 0
 
+#ann = ANN()
+#ann.learn(60000)
+highest_fitness = -99
+fittest_sim = None
+for i in range(10000):
+    sim = Simulator(6, 6, cells.tolist(), 60)
+    while not sim.completed():
+        move = choice([0,1,2]) # TODO: get move from ANN
+        sim.move(move)
+    print("Run", i + 1, "Fitness", sim.getFitness())
+    if sim.getFitness() > highest_fitness:
+        highest_fitness = sim.getFitness()
+        fittest_sim = sim
+print("Highest fitness:", fittest_sim.getFitness())
+
+"""
 # Run EA
 #for i in range(5):
 while True:
@@ -67,11 +91,14 @@ while True:
     print("Highest fitness:", highest_fitness)
     print("Fittest phenotype:", fittest_phenotype)
     if (highest_fitness == 1.0): break
+"""
 
-## Get moves and visualize run
-#print("\nFinished intelligencing the artificial agent")
-#print("Visualizing run")
-#print("Press escape to exit")
+
+# Get moves and visualize run
+print("\nFinished intelligencing the artificial agent")
+print("Visualizing run")
+print("Press + or - to increase or decrease the speed")
+print("Press escape to exit")
 #moves = np.random.randint(3, size=1000)
-##moves = [1,1,0,0,0,0,0,0,0,1,0,0,0]
-#GUI = FlatlandGUI(cells=cells, start=START, moves=moves)
+#moves = [1,1,0,0,0,0,0,0,0,1,0,0,0]
+GUI = FlatlandGUI(cells=cells, start=START, moves=fittest_sim.getMoves())
