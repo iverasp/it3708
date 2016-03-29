@@ -26,7 +26,7 @@ class Population {
     }
 
     override string toString() {
-        return "Children: " ~ to!string(config.getNumberOfChildren) ~ " Genotype length: " ~ to!string(config.getGenotypeLength);
+        return "Population: " ~ to!string(config.getPopulationSize) ~ " Genotype length: " ~ to!string(config.getGenotypeLength);
     }
 
     @property Individual[] getAdults() { return adults; }
@@ -47,7 +47,7 @@ class Population {
         }
     }
 
-    public void evaluate() {
+    void evaluate() {
         childrenFitness = new Individual[config.getPopulationSize];
         foreach(i; 0 .. children.length) {
             children[i].evaluateFitness();
@@ -55,10 +55,14 @@ class Population {
         }
 
         bool myComp(Individual x, Individual y) @safe pure nothrow {
-            return x.fitness < y.fitness;
+            return x.fitness > y.fitness;
         }
 
         sort!(myComp)(childrenFitness);
+
+        //foreach(i; 0 .. childrenFitness.length) {
+        //    writeln(childrenFitness[i].getFitness);
+        //}
 
         /*
         // TODO: optimize this section
@@ -76,7 +80,9 @@ class Population {
             case("f"):
                 fullReplacement();
             case("o"):
+                overProduction();
             case("g"):
+                generationMixing();
             default:
                 break;
         }
@@ -89,17 +95,42 @@ class Population {
         }
         children = new Individual[config.getPopulationSize];
     }
+    
+    void overProduction() {
+        adults = new Individual[config.getPopulationSize];
+        foreach(i; 0 .. config.getPopulationSize) {
+            adults[i] = childrenFitness[i];
+        }
+        children = new Individual[config.getNumberOfChildren];
+
+        //writeln("#################################");
+        //foreach(i; 0 .. adults.length) {
+        //    writeln(adults[i].getFitness);
+        //}
+    }
+
+    void generationMixing() {
+    }
 
     void parentSelection() {
         switch(config.getParentSelection) {
             case("f"):
+                fitnessProportionate();
             case("s"):
+                sigmaScaling();
             case("t"):
                 tournamentSelection();
             case("b"):
+                boltzmannScaling();
             default:
                 break;
         }
+    }
+    
+    void fitnessProportionate() {
+    }
+
+    void sigmaScaling() {
     }
 
     void tournamentSelection() {
@@ -153,7 +184,10 @@ class Population {
             writeln(parents[i][j].phenotype);
         }
         */
-
+    
+    }
+    
+    void boltzmannScaling() {
     }
 
     void reproduce() {

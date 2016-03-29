@@ -46,8 +46,10 @@ config = Config()
 population = Population(config)
 generation = 0
 
+flag = True
 # Run EA
-while True:
+while flag:
+    flag = False
     population.develop()
     population.evaluate()
     population.adultSelection()
