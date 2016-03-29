@@ -1,6 +1,6 @@
 import os.path, sys
 import distutils.util
-from flatland_gui import FlatlandGUI
+from flatland.flatland_gui import FlatlandGUI
 import numpy as np
 from random import choice, seed
 
