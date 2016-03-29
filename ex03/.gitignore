@@ -1,5 +1,3 @@
-source/flatland/__pycache__
-source/ann/__pycache__
 .DS_Store
 .dub
 docs.json
@@ -10,7 +8,7 @@ __dummy.html
 !/**/
 !*.*
 *.o
-source/__pycache__
+__pycache__/
 
 # Created by https://www.gitignore.io/api/intellij
 
