@@ -1,6 +1,7 @@
 import os.path, sys
 import distutils.util
 from flatland.flatland_gui import FlatlandGUI
+from ann.ANN import ANN
 import numpy as np
 from random import choice, seed
 
@@ -14,7 +15,7 @@ sys.path.append(os.path.abspath(libDir))
 from bindings import Population, Individual
 
 # Generate random map
-seed(1) # not random when testing
+#seed(1) # not random when testing
 N = 10
 # Make array of zeros
 cells = np.zeros((N,N), dtype=np.int)
@@ -41,6 +42,10 @@ for poison in range(POISONITEMS):
 population = Population(100, 21)
 gen = 0
 
+#ann = ANN()
+#ann.learn(60000)
+
+"""
 # Run EA
 while True:
     population.develop()
@@ -61,11 +66,11 @@ while True:
     print("Highest fitness:", highest_fitness)
     print("Fittest phenotype:", fittest_phenotype)
     if (highest_fitness == 1.0): break
-
+"""
 # Get moves and visualize run
 print("\nFinished intelligencing the artificial agent")
 print("Visualizing run")
 print("Press escape to exit")
-moves = np.random.randint(3, size=1000)
+#moves = np.random.randint(3, size=1000)
 #moves = [1,1,0,0,0,0,0,0,0,1,0,0,0]
-GUI = FlatlandGUI(cells=cells, start=START, moves=moves)
+GUI = FlatlandGUI(cells=cells, start=START, moves=[])

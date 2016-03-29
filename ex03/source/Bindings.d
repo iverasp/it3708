@@ -39,6 +39,7 @@ extern(C) void PydMain() {
         Def!(Agent.turnRight),
         Def!(Agent.turnLeft),
         Def!(Agent.getX),
-        Def!(Agent.getY)
+        Def!(Agent.getY),
+        Def!(Agent.sense)
     )();
 }
