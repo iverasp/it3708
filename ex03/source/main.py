@@ -46,10 +46,9 @@ config = Config()
 population = Population(config)
 generation = 0
 
-flag = True
 # Run EA
-while flag:
-    flag = False
+#for i in range(5):
+while True:
     population.develop()
     population.evaluate()
     population.adultSelection()
@@ -69,10 +68,10 @@ while flag:
     print("Fittest phenotype:", fittest_phenotype)
     if (highest_fitness == 1.0): break
 
-# Get moves and visualize run
-print("\nFinished intelligencing the artificial agent")
-print("Visualizing run")
-print("Press escape to exit")
-moves = np.random.randint(3, size=1000)
-#moves = [1,1,0,0,0,0,0,0,0,1,0,0,0]
-GUI = FlatlandGUI(cells=cells, start=START, moves=moves)
+## Get moves and visualize run
+#print("\nFinished intelligencing the artificial agent")
+#print("Visualizing run")
+#print("Press escape to exit")
+#moves = np.random.randint(3, size=1000)
+##moves = [1,1,0,0,0,0,0,0,0,1,0,0,0]
+#GUI = FlatlandGUI(cells=cells, start=START, moves=moves)

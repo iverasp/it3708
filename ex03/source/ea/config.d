@@ -7,16 +7,16 @@ class Config {
     auto populationSize = 100;
     auto numberOfChildren = 100;
     auto genotypeLength = 10;
-    auto adultSelection = "f";
+    auto adultSelection = "g";
     auto parentSelection = "t";
     auto tournamentEpsilon = 0.15f;
     auto tournamentGroupSize = 20;
     auto boltzmannTemperature = 1.0f;
     auto boltzmannDeltaT = 0.01f;
-    auto crossoverRate = 0.01f;
+    auto crossoverRate = 0.0f;
     auto childrenPerPair = 2;
     auto mutationType = "g";
-    auto mutationRate = 1;
+    auto mutationRate = 1.0f;
 
     @property auto getPopulationSize(){ return populationSize; }
     @property auto getNumberOfChildren(){ return numberOfChildren; }

@@ -15,8 +15,8 @@ class Individual {
     int genotypeLength;
     float[] genotype;
     float[] phenotype;
-    double fitness;
-    double fitnessRange;
+    float fitness;
+    float[] fitnessRange;
 
     // These are problem specific variables
     int devouredFood;
@@ -27,12 +27,18 @@ class Individual {
         genotype = new float[](genotypeLength);
         phenotype = new float[](genotypeLength);
         fitness = 0.0f;
-        fitnessRange = 0.0f;
+        fitnessRange = [0.0f, 1.0f];
     }
     
-    @property float[] getPhenotype(){ return phenotype; }
+    @property float[] getPhenotype() { return phenotype; }
 
-    @property float getFitness(){ return fitness; }
+    @property float getFitness() { return fitness; }
+
+    @property void setFitnessRange(float[] fitnessRange){ 
+        this.fitnessRange = fitnessRange; 
+    }
+
+    @property float[] getFitnessRange(){ return fitnessRange; }
 
     void generateGenotype() {
         for (int i = 0; i < genotypeLength; i++) {
