@@ -7,7 +7,7 @@ import std.stdio;
 import std.range, std.array, std.numeric, std.algorithm;
 import std.math;
 
-public class Matrix {
+class Matrix {
 
     double[][] matrix;
 
@@ -19,17 +19,17 @@ public class Matrix {
         matrix = mat;
     }
 
-    public double[][] toArray() { return this.matrix; }
+    double[][] toArray() { return this.matrix; }
 
     override string toString() {
         return to!string(matrix);
     }
 
-    public Matrix dup() {
+    Matrix dup() {
         return new Matrix(matrix.dup);
     }
 
-    public void randomize() {
+    void randomize() {
         foreach(i; 0 .. matrix.length) {
             foreach(j; 0 .. matrix[0].length) {
                 //matrix[i][j] = uniform(-1.0f, 1.0f);
