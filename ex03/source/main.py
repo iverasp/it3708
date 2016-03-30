@@ -19,10 +19,13 @@ from dbindings import *
 """
 Program flow:
 1. Generate weights (phenotype) with EA
+loop;
 2. Load weights into ANN
 3. Simulate a run in Flatland
 4. Evaluate fitness
-5. Visualize the fittest weights
+5. Produce offspring
+finnaly;
+6. Visualize the fittest weights
 """
 # Generate random map
 seed(1) # not random when testing
@@ -70,10 +73,9 @@ generation = 0
 # Run EA
 while True:
     population.develop()
-    population.evaluate()
-    population.adultSelection()
-    population.parentSelection()
-    population.reproduce()
+
+    #get population phenos here
+    phenotypes = population.getChildren
 
     #highest_fitness = -99
     #fittest_sim = None
@@ -88,9 +90,16 @@ while True:
     #        fittest_sim = sim
     #print("Highest fitness:", fittest_sim.getFitness())
 
+    #fetch individual success,
+    #insert into evaluation
+    population.evaluate()
+    population.adultSelection()
+    population.parentSelection()
+    population.reproduce()
+
+    # Terminal output
     highest_fitness = 0
     fittest_phenotype = ""
-
     print("Generation:", generation + 1)
     generation += 1
     for adult in population.getAdults:

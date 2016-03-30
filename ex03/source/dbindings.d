@@ -19,6 +19,7 @@ extern(C) void PydMain() {
         Population,
         Init!(Config),
         Repr!(Population.toString),
+        Property!(Population.getChildren),
         Property!(Population.getAdults),
         Def!(Population.develop),
         Def!(Population.evaluate),

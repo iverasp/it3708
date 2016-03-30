@@ -31,6 +31,8 @@ class Population {
                 ~ " Genotype length: " ~ to!string(config.getGenotypeLength));
     }
 
+    @property Individual[] getChildren() { return children; }
+
     @property Individual[] getAdults() { return adults; }
 
     Individual[] generateChildren() {
@@ -60,7 +62,6 @@ class Population {
             return x.fitness > y.fitness;
         }
         sort!(myComp)(childrenFitness);
-
     }
 
     void adultSelection() {
