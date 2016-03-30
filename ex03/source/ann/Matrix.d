@@ -19,6 +19,8 @@ public class Matrix {
     matrix = mat;
   }
 
+  public double[][] toArray() { return this.matrix; }
+
   override string toString() {
     return to!string(matrix);
   }

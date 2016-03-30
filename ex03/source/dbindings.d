@@ -7,6 +7,7 @@ import ea.individual;
 import ea.config;
 import flatland.agent;
 import flatland.simulator;
+import ann.ann;
 
 public class DBindings { }
 
@@ -73,5 +74,12 @@ extern(C) void PydMain() {
         Property!(Config.getChildrenPerPair),
         Property!(Config.getMutationType),
         Property!(Config.getMutationRate)
+    )();
+    wrap_class!(
+        ANN,
+        Init!(),
+        Def!(ANN.setWeightsSynapsis0),
+        Def!(ANN.setWeightsSynapsis1),
+        Def!(ANN.predict)
     )();
 }

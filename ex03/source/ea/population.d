@@ -11,8 +11,8 @@ import std.random;
 import std.stdio;
 
 class Population {
-    
-    Config config;    
+
+    Config config;
     Individual[] children;
     Individual[] adults;
     Individual[] childrenFitness;
@@ -27,7 +27,7 @@ class Population {
     }
 
     override string toString() {
-        return ("Population: " ~ to!string(config.getPopulationSize) 
+        return ("Population: " ~ to!string(config.getPopulationSize)
                 ~ " Genotype length: " ~ to!string(config.getGenotypeLength));
     }
 
@@ -61,15 +61,6 @@ class Population {
         }
         sort!(myComp)(childrenFitness);
 
-        /*
-        // TODO: optimize this section
-        auto h = heapify(children_fitness);
-        for (int i = 0; i < children.length; i++) {
-            children[i] = h.front;
-            h.removeFront;
-        }
-        */
-
     }
 
     void adultSelection() {
@@ -95,7 +86,7 @@ class Population {
         }
         children = new Individual[config.getNumberOfChildren];
     }
-    
+
     void overProduction() {
         adults = new Individual[config.getPopulationSize];
         foreach (i; 0 .. config.getPopulationSize) {
@@ -139,7 +130,7 @@ class Population {
                 break;
         }
     }
-    
+
     void fitnessProportionate() {
         auto numberOfParents = (config.getNumberOfChildren
                                 / config.getChildrenPerPair);
@@ -147,18 +138,18 @@ class Population {
         auto newParents = 0;
         auto tempFitness = 0;
         foreach (j; 0 .. adults.length) {
-            adults[j].setFitnessRange = [tempFitness, 
+            adults[j].setFitnessRange = [tempFitness,
                         tempFitness + (adults[j].getFitness / totalFitness)];
             tempFitness += adults[j].getFitness / totalFitness;
         }
         while (newParents < numberOfParents) {
             auto chanceA = uniform(0.0f, 1.0f);
             foreach (k; 0 .. adults.length) {
-                if (adults[k].getFitnessRange[0] < chanceA 
+                if (adults[k].getFitnessRange[0] < chanceA
                         && chanceA < adults[k].getFitnessRange[1]) {
                     auto chanceB = uniform(0.0f, 1.0f);
                     foreach (l; 0 .. adults.length) {
-                        if (k != l && adults[l].getFitnessRange[0] < chanceB 
+                        if (k != l && adults[l].getFitnessRange[0] < chanceB
                                 && chanceB < adults[l].getFitnessRange[1]) {
                             auto pair = new Individual[2];
                             pair[0] = adults[k];
@@ -176,7 +167,7 @@ class Population {
     }
 
     void sigmaScaling() {
-        //auto myParents = new Individual[][](config.getNumberOfChildren 
+        //auto myParents = new Individual[][](config.getNumberOfChildren
         //                                    / config.getChildrenPerPair);
         //auto newParents = 0;
         //auto total_fitness = 0;
@@ -186,7 +177,7 @@ class Population {
     }
 
     void tournamentSelection() {
-        auto numberOfParents = (config.getNumberOfChildren 
+        auto numberOfParents = (config.getNumberOfChildren
                                 / config.getChildrenPerPair);
         auto myParents = new Individual[][](numberOfParents);
         bool myComp(Individual x, Individual y) @safe pure nothrow {
@@ -196,7 +187,7 @@ class Population {
         while (newParents < numberOfParents) {
             auto adultPool = adults.dup;
             randomShuffle(adultPool);
-            auto groupSize = (config.getPopulationSize 
+            auto groupSize = (config.getPopulationSize
                                 / config.getTournamentGroupSize);
             auto tournamentGroups = new Individual[][](groupSize, groupSize);
             auto adultIndex = adultPool.length;
@@ -221,7 +212,7 @@ class Population {
         parents = myParents.dup;
         }
     }
-    
+
     void boltzmannScaling() {
     }
 
@@ -236,8 +227,8 @@ class Population {
                     auto crossoverPoint = uniform(1, phenotypeLength + 1);
                     auto newborn = new Individual(config.getGenotypeLength);
                     newborn.genotype = (
-                        parents[i][0].genotype[0..crossoverPoint].dup 
-                        ~ parents[i][1].genotype[crossoverPoint .. 
+                        parents[i][0].genotype[0..crossoverPoint].dup
+                        ~ parents[i][1].genotype[crossoverPoint ..
                         parents[i][1].genotype.length].dup);
                     children.length = children.length + 1;
                     children[children.length - 1] = newborn;
@@ -281,4 +272,3 @@ class Population {
         standardDeviation = variance^^(1/2);
     }
 }
-
