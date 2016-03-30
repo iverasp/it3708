@@ -1,16 +1,14 @@
 module ann.ann;
 
+import ann.matrix;
+import std.algorithm;
+import std.array;
+import std.conv;
 import std.math;
 import std.numeric;
 import std.range;
-import std.array;
-import std.algorithm;
-
-import std.string;
-import std.conv;
 import std.stdio;
-
-import ann.matrix;
+import std.string;
 
 class ANN {
 
