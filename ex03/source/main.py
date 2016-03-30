@@ -53,20 +53,20 @@ config = Config()
 population = Population(config)
 generation = 0
 
-ann = ANN()
-
-ann.setWeightsSynapsis0([[-1.68908207, -1.67388583,  4.00059522],
-                [ 2.40624477,  3.42700534, -5.52693725]]);
-
-ann.setWeightsSynapsis1([[-10.6303791 ],
-                [-12.34892854],
-                [ 11.61118677]])
-
-print(ann.predict([[1,0],[0,0],[0,0]]))
+#ann = ANN()
+#
+#ann.setWeightsSynapsis0([[-1.68908207, -1.67388583,  4.00059522],
+#                [ 2.40624477,  3.42700534, -5.52693725]]);
+#
+#ann.setWeightsSynapsis1([[-10.6303791 ],
+#                [-12.34892854],
+#                [ 11.61118677]])
+#
+#print(ann.predict([[1,0],[0,0],[0,0]]))
 
 #ann = ANN()
 #ann.learn(60000)
-"""
+
 # Run EA
 while True:
     population.develop()
@@ -75,18 +75,18 @@ while True:
     population.parentSelection()
     population.reproduce()
 
-    highest_fitness = -99
-    fittest_sim = None
-    for i in range(2000):
-        sim = Simulator(6, 6, cells, 60)
-        while not sim.completed():
-            move = choice([0,1,2]) # TODO: get move from ANN
-            sim.move(move)
-        print("Run", i + 1, "Fitness", sim.getFitness())
-        if sim.getFitness() > highest_fitness:
-            highest_fitness = sim.getFitness()
-            fittest_sim = sim
-    print("Highest fitness:", fittest_sim.getFitness())
+    #highest_fitness = -99
+    #fittest_sim = None
+    #for i in range(2000):
+    #    sim = Simulator(6, 6, cells, 60)
+    #    while not sim.completed():
+    #        move = choice([0,1,2]) # TODO: get move from ANN
+    #        sim.move(move)
+    #    print("Run", i + 1, "Fitness", sim.getFitness())
+    #    if sim.getFitness() > highest_fitness:
+    #        highest_fitness = sim.getFitness()
+    #        fittest_sim = sim
+    #print("Highest fitness:", fittest_sim.getFitness())
 
     highest_fitness = 0
     fittest_phenotype = ""
@@ -100,7 +100,6 @@ while True:
     print("Highest fitness:", highest_fitness)
     print("Fittest phenotype:", fittest_phenotype)
     if (highest_fitness == 1.0): break
-"""
 
 """
 # Get moves and visualize run

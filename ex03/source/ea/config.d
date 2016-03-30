@@ -3,10 +3,12 @@ module ea.config;
 class Config {
     this(){
     }
-
+    
+    // EA config
+    // Generic variables
     auto populationSize = 100;
     auto numberOfChildren = 100;
-    auto genotypeLength = 10;
+    auto genotypeLength = 100;
     auto adultSelection = "g";
     auto parentSelection = "t";
     auto tournamentEpsilon = 0.15f;
@@ -18,6 +20,12 @@ class Config {
     auto mutationType = "g";
     auto mutationRate = 1.0f;
 
+    // Problem specific variables
+    auto foodBonus = 1;
+    auto poisonPenalty = 2;
+    
+    // EA getters
+    // Generic getters
     @property auto getPopulationSize(){ return populationSize; }
     @property auto getNumberOfChildren(){ return numberOfChildren; }
     @property auto getGenotypeLength(){ return genotypeLength; }
@@ -31,4 +39,12 @@ class Config {
     @property auto getChildrenPerPair(){ return childrenPerPair; }
     @property auto getMutationType(){ return mutationType; }
     @property auto getMutationRate(){ return mutationRate; }
+
+    // Problem specific variable
+    @property auto getFoodBonus(){ return foodBonus; }
+    @property auto getPoisonPenalty(){ return poisonPenalty; }
 }
+
+
+
+
