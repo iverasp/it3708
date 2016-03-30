@@ -23,10 +23,10 @@ class FlatlandGUI:
 
     # Set resources and map to cell integers
     TILESIZE = 80
-    empty_tile = pygame.image.load(join('res', 'empty' + str(TILESIZE) + '.png'))
-    food_tile = pygame.image.load(join('res', 'food' + str(TILESIZE) + '.png'))
-    poison_tile = pygame.image.load(join('res', 'poison' + str(TILESIZE) + '.png'))
-    agent_tile = pygame.image.load(join('res', 'agent' + str(TILESIZE) + '.png'))
+    empty_tile = pygame.image.load(join('res', 'empty' + str(TILESIZE) + '.bmp'))
+    food_tile = pygame.image.load(join('res', 'food' + str(TILESIZE) + '.bmp'))
+    poison_tile = pygame.image.load(join('res', 'poison' + str(TILESIZE) + '.bmp'))
+    agent_tile = pygame.image.load(join('res', 'agent' + str(TILESIZE) + '.bmp'))
 
     tilemap = {
         0: empty_tile,

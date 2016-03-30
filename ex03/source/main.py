@@ -58,7 +58,7 @@ generation = 0
 #ann.learn(60000)
 highest_fitness = -99
 fittest_sim = None
-for i in range(10000):
+for i in range(2000):
     sim = Simulator(6, 6, cells.tolist(), 60)
     while not sim.completed():
         move = choice([0,1,2]) # TODO: get move from ANN
