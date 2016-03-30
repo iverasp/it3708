@@ -46,7 +46,7 @@ class FlatlandGUI:
     """
     def __init__(self, cells, start, moves):
         self.moves = moves
-        self.cells = cells.tolist()
+        self.cells = cells
         self.agent = Agent(start[0], start[1])
 
         self.mapsize = len(cells)

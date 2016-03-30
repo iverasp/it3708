@@ -29,7 +29,7 @@ Program flow:
 seed(1) # not random when testing
 N = 10
 # Make array of zeros
-cells = np.zeros((N,N), dtype=np.int)
+cells = np.zeros((N,N), dtype=np.int).tolist()
 # Generate a list of tuples of all array positions
 places = [(x, y) for x in range(N) for y in range(N)]
 START = (6, 6)
@@ -59,7 +59,7 @@ generation = 0
 highest_fitness = -99
 fittest_sim = None
 for i in range(2000):
-    sim = Simulator(6, 6, cells.tolist(), 60)
+    sim = Simulator(6, 6, cells, 60)
     while not sim.completed():
         move = choice([0,1,2]) # TODO: get move from ANN
         sim.move(move)
