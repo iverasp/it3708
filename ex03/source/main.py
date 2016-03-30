@@ -54,28 +54,29 @@ for poison in range(POISONITEMS):
 # Setup EA
 config = Config()
 population = Population(config)
+ann = ANN()
 generation = 0
 
 #ann = ANN()
 #
-#ann.setWeightsSynapsis0([[-1.68908207, -1.67388583,  4.00059522],
-#                [ 2.40624477,  3.42700534, -5.52693725]]);
-#
-#ann.setWeightsSynapsis1([[-10.6303791 ],
-#                [-12.34892854],
-#                [ 11.61118677]])
-#
-#print(ann.predict([[1,0],[0,0],[0,0]]))
+ann.setWeightsSynapsis0([[-1.68908207, -1.67388583, 4.00059522],
+                [2.40624477,  3.42700534, -5.52693725]]);
+
+ann.setWeightsSynapsis1([[-10.6303791],
+                [-12.34892854],
+                [11.61118677]])
+
+print(ann.predict([[1,0],[0,0],[0,0]]))
 
 #ann = ANN()
 #ann.learn(60000)
 
-# Run EA
-while True:
+# MAIN LOOP #TODO PUT ANN FUNCTIONALITY IN HERE
+while False:
     population.develop()
 
     #get population phenos here
-    phenotypes = population.getChildren
+    #phenotypes = population.getChildren
 
     #highest_fitness = -99
     #fittest_sim = None
@@ -107,7 +108,7 @@ while True:
             highest_fitness = adult.getFitness
             fittest_phenotype = adult.getPhenotype
     print("Highest fitness:", highest_fitness)
-    print("Fittest phenotype:", fittest_phenotype)
+    #print("Fittest phenotype:", fittest_phenotype)
     if (highest_fitness == 1.0): break
 
 """
