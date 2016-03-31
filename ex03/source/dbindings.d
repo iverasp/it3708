@@ -58,7 +58,6 @@ extern(C) void PydMain() {
         Def!(Simulator.completed),
         Def!(Simulator.move),
         Def!(Simulator.printStats),
-        Def!(Simulator.getFitness),
         Def!(Simulator.getMoves),
         Property!(Simulator.getCells),
         Property!(Simulator.getDevouredFood),
