@@ -61,7 +61,6 @@ for i in range(40):
         sim = Simulator(6,6, cells, 60)
 
         while not sim.completed():
-            c = sim.getCells
             move = ann.getMove(sim.getAgent.sense(sim.getCells))
             sim.move(move)
         child.setDevouredFood = sim.getDevouredFood

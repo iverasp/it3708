@@ -54,12 +54,6 @@ public class Simulator {
         return timestep >= timesteps;
     }
 
-    float getFitness() {
-        float foodPoints = cast(float)agent.getFoodsEaten() / cast(float)foods;
-        float poisonPoints = cast(float)agent.getPoisonsEaten() / cast(float)poisons;
-        return foodPoints - poisonPoints;
-    }
-
     int[] getMoves() { return moves; }
 
     @property int[][] getCells() { return this.cells; }
