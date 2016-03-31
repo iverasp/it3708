@@ -31,12 +31,14 @@ class Population {
                 ~ " Genotype length: " ~ to!string(config.getGenotypeLength));
     }
 
+    @property Individual[] getChildren() { return children; }
+
     @property Individual[] getAdults() { return adults; }
 
     Individual[] generateChildren() {
         Individual[] result = new Individual[config.getNumberOfChildren];
         foreach (i; 0 .. config.getNumberOfChildren) {
-            auto individual = new Individual(config.getGenotypeLength);
+            auto individual = new Individual(config);
             individual.generateGenotype();
             result[i] = individual;
         }
@@ -60,7 +62,6 @@ class Population {
             return x.fitness > y.fitness;
         }
         sort!(myComp)(childrenFitness);
-
     }
 
     void adultSelection() {
@@ -130,7 +131,8 @@ class Population {
                 break;
         }
     }
-
+    
+    // Denne er ubrukelig
     void fitnessProportionate() {
         auto numberOfParents = (config.getNumberOfChildren
                                 / config.getChildrenPerPair);
@@ -165,7 +167,8 @@ class Population {
         }
         parents = myParents.dup;
     }
-
+    
+    // todo?
     void sigmaScaling() {
         //auto myParents = new Individual[][](config.getNumberOfChildren
         //                                    / config.getChildrenPerPair);
@@ -212,7 +215,8 @@ class Population {
         parents = myParents.dup;
         }
     }
-
+    
+    // todo?
     void boltzmannScaling() {
     }
 
@@ -225,7 +229,7 @@ class Population {
                     auto phenotypeLength = to!int(
                                             parents[i][0].phenotype.length);
                     auto crossoverPoint = uniform(1, phenotypeLength + 1);
-                    auto newborn = new Individual(config.getGenotypeLength);
+                    auto newborn = new Individual(config);
                     newborn.genotype = (
                         parents[i][0].genotype[0..crossoverPoint].dup
                         ~ parents[i][1].genotype[crossoverPoint ..
@@ -237,7 +241,7 @@ class Population {
             } else {
                 foreach (j; 0 .. config.getChildrenPerPair) {
                     int parentIndex = j % config.getChildrenPerPair;
-                    auto newborn = new Individual(config.getGenotypeLength);
+                    auto newborn = new Individual(config);
                     if (chance < config.getMutationRate) {
                         auto genotype = parents[i][parentIndex].phenotype.dup;
                         auto index = uniform(0, genotype.length);

@@ -19,6 +19,7 @@ extern(C) void PydMain() {
         Population,
         Init!(Config),
         Repr!(Population.toString),
+        Property!(Population.getChildren),
         Property!(Population.getAdults),
         Def!(Population.develop),
         Def!(Population.evaluate),
@@ -29,7 +30,7 @@ extern(C) void PydMain() {
     )();
     wrap_class!(
         Individual,
-        Init!(int),
+        Init!(Config),
         Property!(Individual.getPhenotype),
         Property!(Individual.getFitness),
         Property!(Individual.setFitnessRange),
@@ -73,7 +74,9 @@ extern(C) void PydMain() {
         Property!(Config.getCrossoverRate),
         Property!(Config.getChildrenPerPair),
         Property!(Config.getMutationType),
-        Property!(Config.getMutationRate)
+        Property!(Config.getMutationRate),
+        Property!(Config.getFoodBonus),
+        Property!(Config.getPoisonPenalty)
     )();
     wrap_class!(
         ANN,
