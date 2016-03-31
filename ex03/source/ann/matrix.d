@@ -40,6 +40,7 @@ class Matrix {
         }
     }
 
+    // activation function
     Matrix nonLinear(bool derivative = false) {
         auto result = new double[][](matrix.length, matrix[0].length);
         foreach(i; 0 .. matrix.length) {
@@ -83,7 +84,7 @@ class Matrix {
         if (matrix.length == other.matrix[0].length)
             return new Matrix(matrixMultiplication(other.matrix, matrix));
         //if (matrix.length == other.matrix.length)
-            return new Matrix(matrixMultiplication2(other.matrix, matrix));
+        return new Matrix(matrixMultiplication2(other.matrix, matrix));
     }
 
     Matrix opBinaryRight(string op)(double n)if(op=="*") {

@@ -20,22 +20,22 @@ class ANN {
         this.synapsis1 = new Matrix();
     }
 
-    public void setWeightsSynapsis0(double[][] weights) {
+    void setWeightsSynapsis0(double[][] weights) {
         this.synapsis0.matrix = weights;
     }
 
-    public void setWeightsSynapsis1(double[][] weights) {
+    void setWeightsSynapsis1(double[][] weights) {
         this.synapsis1.matrix = weights;
     }
 
-    public double[][] predict(double[][] input) {
+    double[][] predict(double[][] input) {
         auto layer0 = new Matrix(input);
         auto layer1 = (layer0 * synapsis0).nonLinear();
         auto layer2 = layer1 * synapsis1;
         return layer2.nonLinear().toArray();
     }
 
-    public int getMove(double[][] input) {
+    int getMove(double[][] input) {
         auto moves = predict(input);
         double max = 0;
         int move = 0;

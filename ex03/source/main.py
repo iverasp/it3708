@@ -56,6 +56,7 @@ for i in range(1):
         ann.setWeightsSynapsis1(synapsis1)
         sim = Simulator(6,6, cells, 60)
         ann.setWeightsSynapsis0([[-1.68908207, -1.67388583, 4.00059522],
+        ann.setWeightsSynapsis0([[-1.68908207, -1.67388583, 4.00059522],
                 [2.40624477,  3.42700534, -5.52693725]]);
 
         ann.setWeightsSynapsis1([[-10.6303791],
