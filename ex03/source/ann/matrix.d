@@ -11,6 +11,8 @@ public class Matrix {
 
   double[][] matrix;
 
+  this() {}
+
   this(int height, int width) {
     matrix = new double[][](height, width);
   }
