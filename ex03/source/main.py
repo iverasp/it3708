@@ -2,7 +2,7 @@ import distutils.util
 from flatland.flatland_gui import FlatlandGUI
 import numpy as np
 import os.path
-from random import choice
+from random import choice, random
 from random import seed
 import sys
 
@@ -27,18 +27,18 @@ START = (6, 6)
 places.remove(START)
 
 # FPD of (1/3, 1/3)
-FOODITEMS = int(N*N*0.33)
-POISONITEMS = int((N*N - FOODITEMS) * 0.33)
+#FOODITEMS = int(N*N*0.33)
+#POISONITEMS = int((N*N - FOODITEMS) * 0.33)
 
 # Place food and the poison items in array. Remove places that has been used.
-for food in range(FOODITEMS):
-    pos = choice(places)
-    cells[pos[0]][pos[1]] = 1
-    places.remove(pos)
-for poison in range(POISONITEMS):
-    pos = choice(places)
-    cells[pos[0]][pos[1]] = 2
-    places.remove(pos)
+for place in places:
+    if (random() > 0.33):
+        cells[place[0]][place[1]] = 1
+        places.remove(place)
+for place in places:
+    if (random() > 0.33):
+        cells[place[0]][place[1]] = 2
+        places.remove(place)
 
 config = Config()
 population = Population(config)
@@ -46,7 +46,11 @@ population = Population(config)
 ann = ANN()
 generation = 0
 
-for i in range(1):
+sim = None
+bestsim = None
+bestsimscore = -999999
+
+for i in range(40):
     population.develop()
 
     for child in population.getChildren:
@@ -55,22 +59,16 @@ for i in range(1):
         synapsis1 = [child.getPhenotype[x:x+1] for x in range(6,9)]
         ann.setWeightsSynapsis1(synapsis1)
         sim = Simulator(6,6, cells, 60)
-        ann.setWeightsSynapsis0([[-1.68908207, -1.67388583, 4.00059522],
-        ann.setWeightsSynapsis0([[-1.68908207, -1.67388583, 4.00059522],
-                [2.40624477,  3.42700534, -5.52693725]]);
 
-        ann.setWeightsSynapsis1([[-10.6303791],
-                [-12.34892854],
-                [11.61118677]])
         while not sim.completed():
             c = sim.getCells
             move = ann.getMove(sim.getAgent.sense(sim.getCells))
             sim.move(move)
-        GUI = FlatlandGUI(cells=cells, start=START, moves=sim.getMoves())
         child.setDevouredFood = sim.getDevouredFood
-        print("f:",sim.getDevouredFood)
         child.setDevouredPoison = sim.getDevouredPoison
-        print("p:", sim.getDevouredPoison)
+        if sim.getDevouredFood * config.getFoodBonus - sim.getDevouredPoison * config.getPoisonPenalty > bestsimscore:
+            bestsimscore = sim.getDevouredFood * config.getFoodBonus - sim.getDevouredPoison * config.getPoisonPenalty
+            bestsim = sim
 
     population.evaluate()
     population.adultSelection()
@@ -78,7 +76,7 @@ for i in range(1):
     population.reproduce()
 
     # Terminal output
-    highest_fitness = 0
+    highest_fitness = -9999999.0
     fittest_phenotype = ""
     print("Generation:", generation + 1)
     generation += 1
@@ -90,13 +88,13 @@ for i in range(1):
     #print("Fittest phenotype:", fittest_phenotype)
     #if (highest_fitness == 1.0): break
 
-"""
 # Get moves and visualize run
 print("\nFinished intelligencing the artificial agent")
 print("Visualizing run")
 print("Press + or - to increase or decrease the speed")
 print("Press escape to exit")
-#moves = np.random.randint(3, size=1000)
-#moves = [1,1,0,0,0,0,0,0,0,1,0,0,0]
-GUI = FlatlandGUI(cells=cells, start=START, moves=fittest_sim.getMoves())
-"""
+
+print("Foods eaten:", bestsim.getDevouredFood, " / ", bestsim.getTotalFoods)
+print("Poisons eaten:", bestsim.getDevouredPoison, "/", bestsim.getTotalPoisons)
+
+GUI = FlatlandGUI(cells=cells, start=START, moves=bestsim.getMoves())

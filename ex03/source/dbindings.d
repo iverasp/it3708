@@ -63,7 +63,9 @@ extern(C) void PydMain() {
         Property!(Simulator.getCells),
         Property!(Simulator.getDevouredFood),
         Property!(Simulator.getDevouredPoison),
-        Property!(Simulator.getAgent)
+        Property!(Simulator.getAgent),
+        Property!(Simulator.getTotalFoods),
+        Property!(Simulator.getTotalPoisons)
     )();
     wrap_class!(
         Config,

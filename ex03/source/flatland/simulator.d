@@ -68,5 +68,9 @@ public class Simulator {
 
     @property int getDevouredPoison() { return agent.poisonsEaten; }
 
+    @property int getTotalFoods() { return this.foods; }
+
+    @property int getTotalPoisons() { return this.poisons; }
+
     @property Agent getAgent() { return this.agent; }
 }

@@ -32,15 +32,19 @@ class ANN {
         auto layer0 = new Matrix(input);
         auto layer1 = (layer0 * synapsis0).nonLinear();
         auto layer2 = layer1 * synapsis1;
-        return layer2.nonLinear().toArray();
+        double[][] result = layer2.nonLinear().toArray();
+        return result;
     }
 
     int getMove(double[][] input) {
         auto moves = predict(input);
         double max = 0;
         int move = 0;
-        foreach(i; 0 .. moves[0].length) {
-            if (moves[0][i] > max) move = cast(int)i;
+        foreach(i; 0 .. moves.length) {
+            if (moves[i][0] > max) {
+                move = cast(int)i;
+                max = moves[i][0];
+            }
         }
         return move;
     }
