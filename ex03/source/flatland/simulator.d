@@ -61,4 +61,12 @@ public class Simulator {
     }
 
     int[] getMoves() { return moves; }
+
+    @property int[][] getCells() { return this.cells; }
+
+    @property int getDevouredFood() { return agent.foodsEaten; }
+
+    @property int getDevouredPoison() { return agent.poisonsEaten; }
+
+    @property Agent getAgent() { return this.agent; }
 }

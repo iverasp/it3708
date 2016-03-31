@@ -1,5 +1,5 @@
 import distutils.util
-#from flatland.flatland_gui import FlatlandGUI
+from flatland.flatland_gui import FlatlandGUI
 import numpy as np
 import os.path
 from random import choice
@@ -16,19 +16,8 @@ sys.path.append(os.path.abspath(libDir))
 
 from dbindings import *
 
-"""
-Program flow:
-1. Generate weights (phenotype) with EA
-loop;
-2. Load weights into ANN
-3. Simulate a run in Flatland
-4. Evaluate fitness
-5. Produce offspring
-finnaly;
-6. Visualize the fittest weights
-"""
 # Generate random map
-seed(1) # not random when testing
+#seed(1) # not random when testing
 N = 10
 # Make array of zeros
 cells = np.zeros((N,N), dtype=np.int).tolist()
@@ -51,48 +40,37 @@ for poison in range(POISONITEMS):
     cells[pos[0]][pos[1]] = 2
     places.remove(pos)
 
-# Setup EA
 config = Config()
 population = Population(config)
+
 ann = ANN()
 generation = 0
 
-#ann = ANN()
-#
-ann.setWeightsSynapsis0([[-1.68908207, -1.67388583, 4.00059522],
-                [2.40624477,  3.42700534, -5.52693725]]);
-
-ann.setWeightsSynapsis1([[-10.6303791],
-                [-12.34892854],
-                [11.61118677]])
-
-print(ann.predict([[1,0],[0,0],[0,0]]))
-
-#ann = ANN()
-#ann.learn(60000)
-
-# MAIN LOOP #TODO PUT ANN FUNCTIONALITY IN HERE
-while False:
+for i in range(1):
     population.develop()
 
-    #get population phenos here
-    #phenotypes = population.getChildren
+    for child in population.getChildren:
+        synapsis0 = [child.getPhenotype[:3], child.getPhenotype[3:6]]
+        ann.setWeightsSynapsis0(synapsis0)
+        synapsis1 = [child.getPhenotype[x:x+1] for x in range(6,9)]
+        ann.setWeightsSynapsis1(synapsis1)
+        sim = Simulator(6,6, cells, 60)
+        ann.setWeightsSynapsis0([[-1.68908207, -1.67388583, 4.00059522],
+                [2.40624477,  3.42700534, -5.52693725]]);
 
-    #highest_fitness = -99
-    #fittest_sim = None
-    #for i in range(2000):
-    #    sim = Simulator(6, 6, cells, 60)
-    #    while not sim.completed():
-    #        move = choice([0,1,2]) # TODO: get move from ANN
-    #        sim.move(move)
-    #    print("Run", i + 1, "Fitness", sim.getFitness())
-    #    if sim.getFitness() > highest_fitness:
-    #        highest_fitness = sim.getFitness()
-    #        fittest_sim = sim
-    #print("Highest fitness:", fittest_sim.getFitness())
+        ann.setWeightsSynapsis1([[-10.6303791],
+                [-12.34892854],
+                [11.61118677]])
+        while not sim.completed():
+            c = sim.getCells
+            move = ann.getMove(sim.getAgent.sense(sim.getCells))
+            sim.move(move)
+        GUI = FlatlandGUI(cells=cells, start=START, moves=sim.getMoves())
+        child.setDevouredFood = sim.getDevouredFood
+        print("f:",sim.getDevouredFood)
+        child.setDevouredPoison = sim.getDevouredPoison
+        print("p:", sim.getDevouredPoison)
 
-    #fetch individual success,
-    #insert into evaluation
     population.evaluate()
     population.adultSelection()
     population.parentSelection()
@@ -109,7 +87,7 @@ while False:
             fittest_phenotype = adult.getPhenotype
     print("Highest fitness:", highest_fitness)
     #print("Fittest phenotype:", fittest_phenotype)
-    if (highest_fitness == 1.0): break
+    #if (highest_fitness == 1.0): break
 
 """
 # Get moves and visualize run

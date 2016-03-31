@@ -1,4 +1,3 @@
-from ann.ANN import ANN
 
 class FlatlandANN:
     def __init__(self):

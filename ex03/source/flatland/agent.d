@@ -29,34 +29,46 @@ public class Agent {
 
     int getY() { return y; }
 
-    int[] sense(int[][] cells) {
+    int[][] sense(int[][] cells) {
+        int[] result = new int[](3);
         switch (direction) {
             case Direction.north:
-            return [
+            result = [
             cells[(y - 1) % cells.length][x], // north
             cells[y][(x - 1) % cells.length], // west
             cells[y][(x + 1) % cells.length] // east
             ];
+            break;
             case Direction.east:
-            return [
+            result = [
             cells[y][(x + 1) % cells.length], // east
             cells[(y - 1) % cells.length][x], // north
             cells[(y + 1) % cells.length][x] // south
             ];
+            break;
             case Direction.south:
-            return [
+            result = [
             cells[(y + 1) % cells.length][x], // south
             cells[y][(x + 1) % cells.length], // east
             cells[y][(x - 1) % cells.length] // west
             ];
+            break;
             case Direction.west:
-            return [
+            result = [
             cells[y][(x - 1) % cells.length], // west
             cells[(y + 1) % cells.length][x], // south
             cells[(y - 1) % cells.length][x] // north
             ];
-            default: assert(0);
+            break;
+            default: assert(0); break;
+            }
+        int[][] input = new int[][](3,2);
+        foreach(i; 0 .. 3) {
+            if (result[i] == 1) input[i][0] = 1;
+            if (result[i] == 2) input[i][1] = 1;
         }
+        return input;
+
     }
 
     int[][] moveForward(int[][] cells) {

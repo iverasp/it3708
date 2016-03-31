@@ -22,6 +22,9 @@ class Individual {
     int devouredFood;
     int devouredPoison;
 
+    int possibleFoodsToDevour;
+    int possiblePoisonsToDevour;
+
     this(Config config) {
         this.config = config;
         this.genotypeLength = config.getGenotypeLength; //genotypeLength;
@@ -30,19 +33,29 @@ class Individual {
         fitness = 0.0f;
         fitnessRange = [0.0f, 1.0f];
     }
-    
+
     @property float[] getPhenotype() { return phenotype; }
 
     @property float getFitness() { return fitness; }
 
-    @property void setFitnessRange(float[] fitnessRange){ 
-        this.fitnessRange = fitnessRange; 
+    @property void setFitnessRange(float[] fitnessRange){
+        this.fitnessRange = fitnessRange;
     }
 
     @property float[] getFitnessRange(){ return fitnessRange; }
 
+    @property void setDevouredFood(int f) { this.devouredFood = f; }
+
+    @property void setDevouredPoison(int p) { this.devouredPoison = p; }
+
+    // DEPRECATED
+    @property void setPossibleFoodsToDevour(int f) { this.possibleFoodsToDevour = f; }
+
+    // DEPRECATED
+    @property void setPossiblePoisonsToDevour(int p) { this.possiblePoisonsToDevour = p; }
+
     void generateGenotype() {
-        for (int i = 0; i < genotypeLength; i++) {
+        foreach(i; 0 .. genotypeLength) {
             genotype[i] = uniform(0.0f, 1.0f);
         }
     }
@@ -52,11 +65,13 @@ class Individual {
     }
 
     void evaluateFitness() {
-        // This calculates onemax fitness:
-        fitness = to!double(genotype.sum) / to!double(genotype.length);
-        
-        // use this with ann
-        //fitness = (devouredFood * config.getFoodBonus) 
-        //            + (-devouredPoison * config.getPoisonPenalty);
+        /*
+        float foodPoints = cast(float)devouredFood / cast(float)possibleFoodsToDevour;
+        float poisonPoints = cast(float)devouredPoison / cast(float)possiblePoisonsToDevour;
+        this.fitness = foodPoints - poisonPoints;
+        */
+
+        fitness = (devouredFood * config.getFoodBonus)
+                    + (-devouredPoison * config.getPoisonPenalty);
     }
 }

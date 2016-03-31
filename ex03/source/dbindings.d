@@ -34,7 +34,9 @@ extern(C) void PydMain() {
         Property!(Individual.getPhenotype),
         Property!(Individual.getFitness),
         Property!(Individual.setFitnessRange),
-        Property!(Individual.getFitnessRange)
+        Property!(Individual.getFitnessRange),
+        Property!(Individual.setDevouredFood),
+        Property!(Individual.setDevouredPoison)
     )();
     wrap_class!(
         Agent,
@@ -57,7 +59,11 @@ extern(C) void PydMain() {
         Def!(Simulator.move),
         Def!(Simulator.printStats),
         Def!(Simulator.getFitness),
-        Def!(Simulator.getMoves)
+        Def!(Simulator.getMoves),
+        Property!(Simulator.getCells),
+        Property!(Simulator.getDevouredFood),
+        Property!(Simulator.getDevouredPoison),
+        Property!(Simulator.getAgent)
     )();
     wrap_class!(
         Config,
@@ -83,6 +89,7 @@ extern(C) void PydMain() {
         Init!(),
         Def!(ANN.setWeightsSynapsis0),
         Def!(ANN.setWeightsSynapsis1),
-        Def!(ANN.predict)
+        Def!(ANN.predict),
+        Def!(ANN.getMove)
     )();
 }
