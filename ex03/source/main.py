@@ -57,8 +57,6 @@ population = Population(config)
 ann = ANN()
 generation = 0
 
-#ann = ANN()
-#
 ann.setWeightsSynapsis0([[-1.68908207, -1.67388583, 4.00059522],
                 [2.40624477,  3.42700534, -5.52693725]]);
 
@@ -77,7 +75,7 @@ while False:
 
     #get population phenos here
     #phenotypes = population.getChildren
-
+    
     #highest_fitness = -99
     #fittest_sim = None
     #for i in range(2000):
