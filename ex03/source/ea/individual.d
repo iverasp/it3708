@@ -55,9 +55,6 @@ class Individual {
     }
 
     void generatePhenotype() {
-        foreach(i; 0 .. config.getGenotypeLength) {
-            genotype[i] = true;
-        }
         int phenotypeIndex = 0;
         for (int i = 0; i < config.getGenotypeLength; i++) {
             ushort myInt;

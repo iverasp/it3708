@@ -247,9 +247,10 @@ class Population {
                     int parentIndex = j % config.getChildrenPerPair;
                     auto newborn = new Individual(config);
                     if (chance < config.getMutationRate) {
-                        auto genotype = new bool[](config.getGenotypeLength);
-                        foreach(v; 0 .. parents[i][parentIndex].genotype.length) {
-                            genotype[v] = !parents[i][parentIndex].genotype[v];
+                        auto genotype = parents[i][parentIndex].genotype.dup;
+                        auto index = uniform(0, genotype.length - 16);
+                        foreach(v; 0 .. index + 16) {
+                            genotype[v] = !genotype[v];
                         }
                         newborn.genotype = genotype;
                     } else {
