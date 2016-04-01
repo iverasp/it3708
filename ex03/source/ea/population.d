@@ -131,7 +131,7 @@ class Population {
                 break;
         }
     }
-    
+
     // Denne er ubrukelig
     void fitnessProportionate() {
         auto numberOfParents = (config.getNumberOfChildren
@@ -167,7 +167,7 @@ class Population {
         }
         parents = myParents.dup;
     }
-    
+
     // todo?
     void sigmaScaling() {
         //auto myParents = new Individual[][](config.getNumberOfChildren
@@ -215,7 +215,7 @@ class Population {
         parents = myParents.dup;
         }
     }
-    
+
     // todo?
     void boltzmannScaling() {
     }
@@ -226,9 +226,9 @@ class Population {
             auto chance = uniform(0.0f, 1.0f);
             if (chance < config.getCrossoverRate) {
                 foreach (j; 0 .. config.getChildrenPerPair) {
-                    auto phenotypeLength = to!int(
-                                            parents[i][0].phenotype.length);
-                    auto crossoverPoint = uniform(1, phenotypeLength + 1);
+                    auto genotypeLength = to!int(
+                                            parents[i][0].genotype.length);
+                    auto crossoverPoint = uniform(1, genotypeLength + 1);
                     auto newborn = new Individual(config);
                     newborn.genotype = (
                         parents[i][0].genotype[0..crossoverPoint].dup
@@ -243,14 +243,14 @@ class Population {
                     int parentIndex = j % config.getChildrenPerPair;
                     auto newborn = new Individual(config);
                     if (chance < config.getMutationRate) {
-                        auto genotype = parents[i][parentIndex].phenotype.dup;
-                        auto index = uniform(0, genotype.length);
-                        if (genotype[index] == 0) genotype[index] = 1;
-                        else genotype[index] = 0;
+                        auto genotype = new bool[](config.getGenotypeLength);
+                        foreach(v; 0 .. parents[i][parentIndex].genotype.length) {
+                            genotype[v] = !parents[i][parentIndex].genotype[v];
+                        }
                         newborn.genotype = genotype;
                     } else {
                         newborn.genotype = (
-                                        parents[i][parentIndex].phenotype.dup);
+                                        parents[i][parentIndex].genotype.dup);
                     }
                     children.length = children.length + 1;
                     children[children.length - 1] = newborn;
