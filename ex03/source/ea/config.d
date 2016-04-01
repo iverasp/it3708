@@ -8,7 +8,8 @@ class Config {
     // Generic variables
     auto populationSize = 100;
     auto numberOfChildren = 100;
-    auto genotypeLength = 18; // 6 * 3
+    auto genotypeLength = 18 * 16; // 6 * 3
+=
     auto adultSelection = "g";
     auto parentSelection = "t";
     auto tournamentEpsilon = 0.1f;

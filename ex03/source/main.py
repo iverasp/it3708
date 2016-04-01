@@ -59,6 +59,7 @@ for i in range(50):
         while not sim.completed():
             move = ann.getMove(sim.getAgent.sense(sim.getCells))
             sim.move(move)
+        #print(child.getPhenotype)
         child.setDevouredFood = sim.getDevouredFood
         child.setDevouredPoison = sim.getDevouredPoison
 

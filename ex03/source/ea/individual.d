@@ -13,7 +13,7 @@ class Individual {
     // These are generic variables
     Config config;
     int genotypeLength;
-    float[] genotype;
+    bool[] genotype;
     float[] phenotype;
     float fitness;
     float[] fitnessRange;
@@ -28,8 +28,8 @@ class Individual {
     this(Config config) {
         this.config = config;
         this.genotypeLength = config.getGenotypeLength; //genotypeLength;
-        genotype = new float[](config.getGenotypeLength); //genotypeLength);
-        phenotype = new float[](config.getGenotypeLength); //genotypeLength);
+        genotype = new bool[](config.getGenotypeLength); //genotypeLength);
+        phenotype = new float[](config.getGenotypeLength / 16L); //genotypeLength);
         fitness = 0.0f;
         fitnessRange = [0.0f, 1.0f];
     }
@@ -50,12 +50,25 @@ class Individual {
 
     void generateGenotype() {
         foreach(i; 0 .. genotypeLength) {
-            genotype[i] = uniform(0.0f, 1.0f);
+            genotype[i] = cast(bool)uniform(0, 2);
         }
     }
 
     void generatePhenotype() {
-        phenotype = genotype.dup;
+        foreach(i; 0 .. config.getGenotypeLength) {
+            genotype[i] = true;
+        }
+        int phenotypeIndex = 0;
+        for (int i = 0; i < config.getGenotypeLength; i++) {
+            ushort myInt;
+            foreach(j; 0 .. i + 16L) {
+                if (genotype[i]) myInt += cast(ushort)(1 << i);
+            }
+            phenotype[phenotypeIndex] = cast(float)myInt / cast(float)ushort.max;
+            phenotypeIndex++;
+            i += 16L;
+        }
+
     }
 
     void evaluateFitness() {
