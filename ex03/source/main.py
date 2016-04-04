@@ -50,7 +50,7 @@ sim = None
 bestsim = None
 bestsimscore = -999999
 
-for i in range(40):
+for i in range(100):
     population.develop()
 
     for child in population.getChildren:
