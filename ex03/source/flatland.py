@@ -33,7 +33,7 @@ class Flatland(App):
     generations  = 50
     fittest_phenotype = ""
     run_dynamic = True
-    timesteps = 150
+    timesteps = 60
     cells = None
 
     def build(self):
