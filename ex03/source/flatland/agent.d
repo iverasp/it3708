@@ -62,10 +62,10 @@ public class Agent {
             break;
             default: assert(0); break;
             }
-        int[][] input = new int[][](3,2);
+        int[][] input = new int[][](1,6);
         foreach(i; 0 .. 3) {
-            if (result[i] == 1) input[i][0] = 1;
-            if (result[i] == 2) input[i][1] = 1;
+            if (result[i] == 1) input[0][i] = 1;
+            else if (result[i] == 2) input[0][i+3] = 1;
         }
         return input;
 

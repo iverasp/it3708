@@ -21,6 +21,8 @@ extern(C) void PydMain() {
         Repr!(Population.toString),
         Property!(Population.getChildren),
         Property!(Population.getAdults),
+        Property!(Population.getAverageFitness),
+        Property!(Population.getStandardDeviation),
         Def!(Population.develop),
         Def!(Population.evaluate),
         Def!(Population.adultSelection),
