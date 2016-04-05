@@ -93,8 +93,6 @@ class FlatlandGUI:
                     self.moves.append(1)
                 if event.key == K_d:
                     self.moves.append(2)
-                if event.key == K_s:
-                    self.moves.append(self.get_ann_move())
 
     def update(self):
         # No more moves? Wait until user quits
@@ -139,16 +137,6 @@ class FlatlandGUI:
 
         self.move += 1
 
-    def sense(self):
-        sense = self.agent.sense(self.cells)
-        inp = [[0,0],[0,0],[0,0]]
-        for i in range(len(sense)):
-            if sense[i] == 1: inp[i][0] = 1
-            if sense[i] == 2: inp[i][1] = 1
-        return inp
-
-    def get_ann_move(self):
-        return self.ann.predict_move(self.sense())
 
     def print_move(self):
         output = [[0],[0],[0]]
