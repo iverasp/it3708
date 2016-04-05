@@ -1,3 +1,5 @@
 pyd
 hg+http://bitbucket.org/pygame/pygame
-matplotlib
+cython
+kivy
+kivy-garden
