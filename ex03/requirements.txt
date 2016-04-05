@@ -1,2 +1,5 @@
 pyd
 hg+http://bitbucket.org/pygame/pygame
+cython
+kivy
+kivy-garden
