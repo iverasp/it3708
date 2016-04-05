@@ -6,7 +6,7 @@ import std.stdio;
 
 import flatland.direction;
 
-public class Agent {
+public class FlatlandAgent {
 
     int x, y;
     Direction direction = Direction.north;

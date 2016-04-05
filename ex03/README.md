@@ -7,7 +7,7 @@
 ## Install Python dependencies
 
     sudo pip3 install -r requirements.txt
-    kivy install graph
+    garden install graph
 
 ## Build dependencies for D
 

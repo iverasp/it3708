@@ -41,32 +41,32 @@ extern(C) void PydMain() {
         Property!(Individual.setDevouredPoison)
     )();
     wrap_class!(
-        Agent,
+        FlatlandAgent,
         Init!(int, int),
-        Def!(Agent.setX),
-        Def!(Agent.setY),
-        Def!(Agent.moveForward),
-        Def!(Agent.turnRight),
-        Def!(Agent.turnLeft),
-        Def!(Agent.getX),
-        Def!(Agent.getY),
-        Def!(Agent.sense),
-        Def!(Agent.getFoodsEaten),
-        Def!(Agent.getPoisonsEaten)
+        Def!(FlatlandAgent.setX),
+        Def!(FlatlandAgent.setY),
+        Def!(FlatlandAgent.moveForward),
+        Def!(FlatlandAgent.turnRight),
+        Def!(FlatlandAgent.turnLeft),
+        Def!(FlatlandAgent.getX),
+        Def!(FlatlandAgent.getY),
+        Def!(FlatlandAgent.sense),
+        Def!(FlatlandAgent.getFoodsEaten),
+        Def!(FlatlandAgent.getPoisonsEaten)
     )();
     wrap_class!(
-        Simulator,
+        FlatlandSimulator,
         Init!(int, int, int[][], int),
-        Def!(Simulator.completed),
-        Def!(Simulator.move),
-        Def!(Simulator.printStats),
-        Def!(Simulator.getMoves),
-        Property!(Simulator.getCells),
-        Property!(Simulator.getDevouredFood),
-        Property!(Simulator.getDevouredPoison),
-        Property!(Simulator.getAgent),
-        Property!(Simulator.getTotalFoods),
-        Property!(Simulator.getTotalPoisons)
+        Def!(FlatlandSimulator.completed),
+        Def!(FlatlandSimulator.move),
+        Def!(FlatlandSimulator.printStats),
+        Def!(FlatlandSimulator.getMoves),
+        Property!(FlatlandSimulator.getCells),
+        Property!(FlatlandSimulator.getDevouredFood),
+        Property!(FlatlandSimulator.getDevouredPoison),
+        Property!(FlatlandSimulator.getAgent),
+        Property!(FlatlandSimulator.getTotalFoods),
+        Property!(FlatlandSimulator.getTotalPoisons)
     )();
     wrap_class!(
         Config,

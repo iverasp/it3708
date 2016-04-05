@@ -4,7 +4,6 @@ import distutils.util
 from pygame.locals import *
 from os.path import join, abspath
 import numpy as np
-from flatland.flatland_ann import FlatlandANN
 
 # Append the directory in which the binaries were placed to Python's sys.path,
 # then import the D DLL.
@@ -13,7 +12,7 @@ libDir = join('build', 'lib.%s-%s' % (
     '.'.join(str(v) for v in version_info[:2])
 ))
 path.append(abspath(libDir))
-from dbindings import Agent
+from dbindings import FlatlandAgent
 
 
 class FlatlandGUI:
@@ -47,7 +46,7 @@ class FlatlandGUI:
     def __init__(self, cells, start, moves):
         self.moves = moves
         self.cells = cells
-        self.agent = Agent(start[0], start[1])
+        self.agent = FlatlandAgent(start[0], start[1])
 
         self.mapsize = len(cells)
         self.move = 0

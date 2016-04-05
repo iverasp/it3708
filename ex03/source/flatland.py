@@ -20,7 +20,7 @@ sys.path.append(os.path.abspath(libDir))
 
 from dbindings import *
 
-class MyApp(App):
+class Flatland(App):
 
     # EA
     ea_config = EaConfig()
@@ -72,7 +72,7 @@ class MyApp(App):
         return cells
 
     def on_start(self):
-        if not self.run_dynamic: cells = self.generate_map()
+        if not self.run_dynamic: self.cells = self.generate_map()
         Clock.schedule_once(self.evolve, 0)
 
     def evolve(self, *args):
@@ -84,7 +84,7 @@ class MyApp(App):
                         for i in range(0, len(child.getPhenotype), 3)]
             #print("synapsis0: ", synapsis0)
             self.ann.setWeightsSynapsis0(synapsis0)
-            sim = Simulator(6, 6, self.cells, self.timesteps)
+            sim = FlatlandSimulator(6, 6, self.cells, self.timesteps)
 
             while not sim.completed():
                 move = self.ann.getMove(sim.getAgent.sense(sim.getCells))
@@ -127,7 +127,7 @@ class MyApp(App):
         synapsis0 = [self.fittest_phenotype[i:i+3]
                     for i in range(0, len(self.fittest_phenotype), 3)]
         self.ann.setWeightsSynapsis0(synapsis0)
-        sim = Simulator(6, 6, self.cells, self.timesteps)
+        sim = FlatlandSimulator(6, 6, self.cells, self.timesteps)
         while not sim.completed():
             move = self.ann.getMove(sim.getAgent.sense(sim.getCells))
             sim.move(move)
@@ -141,5 +141,4 @@ class MyApp(App):
         print("Poisons eaten:", sim.getDevouredPoison, "/", sim.getTotalPoisons)
         GUI = FlatlandGUI(cells=self.cells, start=self.START, moves=sim.getMoves())
 
-if __name__ == '__main__':
-    MyApp().run()
+Flatland().run()

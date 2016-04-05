@@ -6,9 +6,9 @@ import std.stdio;
 
 import flatland.agent;
 
-public class Simulator {
+public class FlatlandSimulator {
 
-    Agent agent;
+    FlatlandAgent agent;
     int[][] cells;
     int foods;
     int poisons;
@@ -17,7 +17,7 @@ public class Simulator {
     int[] moves;
 
     this(int x, int y, int[][] cells, int timesteps) {
-        agent = new Agent(x, y);
+        agent = new FlatlandAgent(x, y);
         this.timesteps = timesteps;
         moves = new int[](timesteps);
         this.cells = cells;
@@ -66,5 +66,5 @@ public class Simulator {
 
     @property int getTotalPoisons() { return this.poisons; }
 
-    @property Agent getAgent() { return this.agent; }
+    @property FlatlandAgent getAgent() { return this.agent; }
 }

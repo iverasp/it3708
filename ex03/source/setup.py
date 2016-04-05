@@ -3,17 +3,18 @@ from pyd.support import setup
 from pyd import patch_distutils
 from sys import argv
 
-#argv.append("-c")
-#argv.append("ldc2")
-#argv.append("-O")
+argv.append("build")
+argv.append("-c")
+argv.append("ldc2")
+argv.append("-O")
 
 projName = 'dbindings'
 sources = ['dbindings.d',
 'ea/config.d',
 'ea/population.d',
 'ea/individual.d',
-'flatland/agent.d',
-'flatland/simulator.d',
+'flatland/flatland_agent.d',
+'flatland/flatland_simulator.d',
 'ann/ann.d',
 'ann/matrix.d']
 
