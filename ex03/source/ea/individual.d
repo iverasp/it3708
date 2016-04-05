@@ -78,7 +78,7 @@ class Individual {
         this.fitness = ((foodPoints - poisonPoints) + 1) / 2;
         */
 
-
+        
         fitness = (cast(float)devouredFood * config.getFoodBonus)
                     - (cast(float)devouredPoison * config.getPoisonPenalty);
 

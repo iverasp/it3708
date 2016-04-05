@@ -34,7 +34,7 @@ class Flatland(App):
     graph = EAGraph()
 
     # Simulator
-    run_dynamic = True
+    run_dynamic = False
     N = 10
     START = (6, 6)
     timesteps = 60
@@ -69,7 +69,7 @@ class Flatland(App):
         return cells
 
     def on_start(self):
-        if not self.run_dynamic: cells = self.generate_map()
+        if not self.run_dynamic: self.cells = self.generate_map()
         Clock.schedule_once(self.evolve, 0)
 
     def evolve(self, *args):
@@ -107,7 +107,7 @@ class Flatland(App):
         print("Average fitness: ", average_fitness)
         standard_deviation = self.population.getStandardDeviation
         print("Standard deviation: ", standard_deviation)
-        #print("Fittest phenotype:", fittest_phenotype)
+        #print("Fittest phenotype:", self.fittest_phenotype)
 
         # Add datas to plot
         self.graph.add_datas(
