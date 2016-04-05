@@ -9,19 +9,19 @@ import std.math;
 
 class Matrix {
 
-    double[][] matrix;
+    float[][] matrix;
 
     this() {}
 
     this(int height, int width) {
-        matrix = new double[][](height, width);
+        matrix = new float[][](height, width);
     }
 
-    this(double[][] mat) {
+    this(float[][] mat) {
         matrix = mat;
     }
 
-    double[][] toArray() { return this.matrix; }
+    float[][] toArray() { return this.matrix; }
 
     override string toString() {
         return to!string(matrix);
@@ -42,7 +42,7 @@ class Matrix {
 
     // activation function
     Matrix nonLinear(bool derivative = false) {
-        auto result = new double[][](matrix.length, matrix[0].length);
+        auto result = new float[][](matrix.length, matrix[0].length);
         foreach(i; 0 .. matrix.length) {
             foreach(j; 0 .. matrix[0].length) {
                 if (derivative) result[i][j] = matrix[i][j] * (1-matrix[i][j]);
@@ -87,8 +87,8 @@ class Matrix {
         return new Matrix(matrixMultiplication2(other.matrix, matrix));
     }
 
-    Matrix opBinaryRight(string op)(double n)if(op=="*") {
-        auto result = new double[][](matrix.length, matrix[0].length);
+    Matrix opBinaryRight(string op)(float n)if(op=="*") {
+        auto result = new float[][](matrix.length, matrix[0].length);
         foreach(i; 0 .. matrix.length) {
             foreach(j; 0 .. matrix[0].length) {
                 result[i][j] = matrix[i][j] * n;
@@ -103,7 +103,7 @@ class Matrix {
     }
 
     T[][] matrixMultiplication2(T)(in T[][] A, in T[][] B) pure nothrow {
-        auto result = new double[][](A.length, A[0].length);
+        auto result = new float[][](A.length, A[0].length);
         foreach (i; 0 .. A.length) {
             foreach (j; 0 .. A[0].length) {
                 result[i][j] = A[i][j] * B[i][j];

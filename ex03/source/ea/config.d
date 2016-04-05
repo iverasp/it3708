@@ -8,7 +8,7 @@ class Config {
     // Generic variables
     auto populationSize = 100;
     auto numberOfChildren = 100;
-    auto genotypeLength = 9;
+    auto genotypeLength = 18; // 6 * 3
     auto adultSelection = "g";
     auto parentSelection = "t";
     auto tournamentEpsilon = 0.1f;
@@ -22,7 +22,7 @@ class Config {
 
     // Problem specific variables
     auto foodBonus = 1.0f;
-    auto poisonPenalty = 4.5f;
+    auto poisonPenalty = 10.0f;
 
     // EA getters
     // Generic getters
