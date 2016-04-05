@@ -8,6 +8,9 @@ import ea.config;
 import flatland.agent;
 import flatland.simulator;
 import ann.ann;
+import beertracker.agent;
+import beertracker.object;
+import beertracker.simulator;
 
 public class DBindings { }
 
@@ -94,5 +97,22 @@ extern(C) void PydMain() {
         Def!(ANN.setWeightsSynapsis1),
         Def!(ANN.predict),
         Def!(ANN.getMove)
+    )();
+    wrap_class!(
+        BeerTrackerObject,
+        Init!(int, int),
+        Property!(BeerTrackerObject.getX),
+        Property!(BeerTrackerObject.getY),
+        Property!(BeerTrackerObject.getSize)
+    )();
+    wrap_class!(
+        BeerTrackerAgent,
+        Init!()
+    )();
+    wrap_class!(
+        BeerTrackerSimulator,
+        Init!(int),
+        Def!(BeerTrackerSimulator.descendObjects),
+        Property!(BeerTrackerSimulator.getObjects)
     )();
 }

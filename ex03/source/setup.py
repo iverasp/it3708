@@ -4,9 +4,9 @@ from pyd import patch_distutils
 from sys import argv
 
 argv.append("build")
-argv.append("-c")
-argv.append("ldc2")
-argv.append("-O")
+#argv.append("-c")
+#argv.append("ldc2")
+#argv.append("-O")
 
 projName = 'dbindings'
 sources = ['dbindings.d',
@@ -16,7 +16,10 @@ sources = ['dbindings.d',
 'flatland/flatland_agent.d',
 'flatland/flatland_simulator.d',
 'ann/ann.d',
-'ann/matrix.d']
+'ann/matrix.d',
+'beer_tracker/beer_tracker_agent.d',
+'beer_tracker/beer_tracker_object.d',
+'beer_tracker/beer_tracker_simulator.d']
 
 setup(
     name=projName,
