@@ -38,9 +38,7 @@ extern(C) void PydMain() {
         Property!(Individual.setFitnessRange),
         Property!(Individual.getFitnessRange),
         Property!(Individual.setDevouredFood),
-        Property!(Individual.setDevouredPoison),
-        Property!(Individual.setPossibleFoodsToDevour),
-        Property!(Individual.setPossiblePoisonsToDevour)
+        Property!(Individual.setDevouredPoison)
     )();
     wrap_class!(
         Agent,

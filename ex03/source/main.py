@@ -17,7 +17,7 @@ sys.path.append(os.path.abspath(libDir))
 from dbindings import *
 
 # Generate random map
-seed(1) # not random when testing
+#seed(1) # not random when testing
 N = 10
 
 # Make array of zeros
@@ -46,7 +46,7 @@ generation = 0
 fittest_phenotype = ""
 
 # Main loop
-for i in range(50):
+for i in range(30):
     population.develop()
 
     for child in population.getChildren:
