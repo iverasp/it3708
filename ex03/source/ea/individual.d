@@ -75,13 +75,15 @@ class Individual {
     }
 
     void evaluateFitness() {
-        /*
+
         float foodPoints = cast(float)devouredFood / cast(float)possibleFoodsToDevour;
         float poisonPoints = cast(float)devouredPoison / cast(float)possiblePoisonsToDevour;
-        this.fitness = foodPoints - poisonPoints;
-        */
+        this.fitness = ((foodPoints - poisonPoints) + 1) / 2;
 
+
+        /*
         fitness = (cast(float)devouredFood * config.getFoodBonus)
                     - (cast(float)devouredPoison * config.getPoisonPenalty);
+        */
     }
 }

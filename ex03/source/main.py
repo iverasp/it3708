@@ -48,17 +48,17 @@ generation = 0
 
 sim = None
 bestsim = None
-bestsimscore = -999999
+bestsimscore = -2**16
 
-for i in range(40):
+for i in range(1):
     population.develop()
 
     for child in population.getChildren:
         synapsis0 = [child.getPhenotype[:3], child.getPhenotype[3:6]]
-        ann.setWeightsSynapsis0(synapsis0)
+        ann.setWeightsSynapsis0(weights=synapsis0)
         synapsis1 = [child.getPhenotype[x:x+1] for x in range(6,9)]
-        ann.setWeightsSynapsis1(synapsis1)
-        sim = Simulator(6,6, cells, 60)
+        ann.setWeightsSynapsis1(weights=synapsis1)
+        sim = Simulator(x=6, y=6, cells=cells, timesteps=60)
 
         while not sim.completed():
             move = ann.getMove(sim.getAgent.sense(sim.getCells))
@@ -66,6 +66,8 @@ for i in range(40):
         #print(child.getPhenotype)
         child.setDevouredFood = sim.getDevouredFood
         child.setDevouredPoison = sim.getDevouredPoison
+        child.setPossibleFoodsToDevour = sim.getTotalFoods
+        child.setPossiblePoisonsToDevour = sim.getTotalPoisons
         if sim.getDevouredFood * config.getFoodBonus - sim.getDevouredPoison * config.getPoisonPenalty > bestsimscore:
             bestsimscore = sim.getDevouredFood * config.getFoodBonus - sim.getDevouredPoison * config.getPoisonPenalty
             bestsim = sim
@@ -76,7 +78,7 @@ for i in range(40):
     population.reproduce()
 
     # Terminal output
-    highest_fitness = -9999999.0
+    highest_fitness = -2**16
     fittest_phenotype = ""
     print("Generation:", generation + 1)
     generation += 1

@@ -11,18 +11,18 @@ class Config {
     auto genotypeLength = 9 * 16;
     auto adultSelection = "g";
     auto parentSelection = "t";
-    auto tournamentEpsilon = 0.1f;
+    auto tournamentEpsilon = 0.3f;
     auto tournamentGroupSize = 100;
     auto boltzmannTemperature = 1.0f;
     auto boltzmannDeltaT = 0.01f;
-    auto crossoverRate = 0.0f;
+    auto crossoverRate = 0.4f;
     auto childrenPerPair = 2;
     auto mutationType = "g";
     auto mutationRate = 1.0f;
 
     // Problem specific variables
     auto foodBonus = 1.0f;
-    auto poisonPenalty = 4.0f;
+    auto poisonPenalty = 3.0f;
 
     // EA getters
     // Generic getters

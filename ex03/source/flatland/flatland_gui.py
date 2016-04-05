@@ -19,7 +19,7 @@ from dbindings import Agent
 class FlatlandGUI:
 
     # Delay between screen updates (ms)
-    DELAY = 0
+    DELAY = 500
 
     # Set resources and map to cell integers
     TILESIZE = 80
