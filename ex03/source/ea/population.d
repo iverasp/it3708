@@ -35,6 +35,10 @@ class Population {
 
     @property Individual[] getAdults() { return adults; }
 
+    @property float getAverageFitness() { return averageFitness; }
+
+    @property float getStandardDeviation() { return standardDeviation; }
+
     Individual[] generateChildren() {
         Individual[] result = new Individual[config.getNumberOfChildren];
         foreach (i; 0 .. config.getNumberOfChildren) {
@@ -260,10 +264,10 @@ class Population {
     }
 
     void generateInformation() {
-        totalFitness = 0;
-        int numberOfAdults = 0;
-        float varianceNumerator = 0;
-        float variance = 0;
+        auto totalFitness = 0.0f;
+        auto numberOfAdults = 0.0f;
+        auto varianceNumerator = 0.0f;
+        auto variance = 0.0f;
         foreach (i; 0 .. adults.length) {
             totalFitness += adults[i].getFitness;
             ++numberOfAdults;
@@ -273,6 +277,6 @@ class Population {
             varianceNumerator += (adults[j].getFitness - averageFitness)^^2;
         }
         variance = varianceNumerator / numberOfAdults;
-        standardDeviation = variance^^(1/2);
+        standardDeviation = variance^^(1.0f/2.0f);
     }
 }

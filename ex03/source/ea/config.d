@@ -6,13 +6,13 @@ class Config {
 
     // EA config
     // Generic variables
-    auto populationSize = 200;
-    auto numberOfChildren = 200;
-    auto genotypeLength = 9;
+    auto populationSize = 100;
+    auto numberOfChildren = 100;
+    auto genotypeLength = 18; // 6 * 3
     auto adultSelection = "g";
     auto parentSelection = "t";
     auto tournamentEpsilon = 0.1f;
-    auto tournamentGroupSize = 40;
+    auto tournamentGroupSize = 20;
     auto boltzmannTemperature = 1.0f;
     auto boltzmannDeltaT = 0.01f;
     auto crossoverRate = 0.1f;
@@ -22,7 +22,7 @@ class Config {
 
     // Problem specific variables
     auto foodBonus = 1.0f;
-    auto poisonPenalty = 4.5f;
+    auto poisonPenalty = 10.0f;
 
     // EA getters
     // Generic getters

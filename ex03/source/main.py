@@ -11,16 +11,17 @@ import sys
 libDir = os.path.join('build', 'lib.%s-%s' % (
     distutils.util.get_platform(),
     '.'.join(str(v) for v in sys.version_info[:2])
-))
+    ))
 sys.path.append(os.path.abspath(libDir))
 
 from dbindings import *
 
 # Generate random map
-#seed(1) # not random when testing
+seed(1) # not random when testing
 N = 10
 # Make array of zeros
 cells = np.zeros((N,N), dtype=np.int).tolist()
+
 # Generate a list of tuples of all array positions
 places = [(x, y) for x in range(N) for y in range(N)]
 START = (6, 6)
@@ -40,31 +41,32 @@ for place in places:
         cells[place[0]][place[1]] = 2
         places.remove(place)
 
+# Initate objects
 config = Config()
 population = Population(config)
-
 ann = ANN()
-generation = 0
 
+generation = 0
 sim = None
 bestsim = None
-bestsimscore = -999999
+bestsimscore = -sys.maxsize - 1
 
-for i in range(100):
+for i in range(50):
     population.develop()
 
     for child in population.getChildren:
-        synapsis0 = [child.getPhenotype[:3], child.getPhenotype[3:6]]
+        synapsis0 = [child.getPhenotype[i:i+3] 
+                    for i in range(0, len(child.getPhenotype), 3)]
+        #print("synapsis0: ", synapsis0)
         ann.setWeightsSynapsis0(synapsis0)
-        synapsis1 = [child.getPhenotype[x:x+1] for x in range(6,9)]
-        ann.setWeightsSynapsis1(synapsis1)
-        sim = Simulator(6,6, cells, 60)
+        sim = Simulator(6, 6, cells, 60)
 
         while not sim.completed():
             move = ann.getMove(sim.getAgent.sense(sim.getCells))
             sim.move(move)
         child.setDevouredFood = sim.getDevouredFood
         child.setDevouredPoison = sim.getDevouredPoison
+
         if sim.getDevouredFood * config.getFoodBonus - sim.getDevouredPoison * config.getPoisonPenalty > bestsimscore:
             bestsimscore = sim.getDevouredFood * config.getFoodBonus - sim.getDevouredPoison * config.getPoisonPenalty
             bestsim = sim
@@ -75,20 +77,23 @@ for i in range(100):
     population.reproduce()
 
     # Terminal output
-    highest_fitness = -9999999.0
-    fittest_phenotype = ""
-    print("Generation:", generation + 1)
     generation += 1
+    print("Generation: ", generation)
+    highest_fitness = -sys.maxsize - 1
+    fittest_phenotype = ""
     for adult in population.getAdults:
         if adult.getFitness > highest_fitness:
             highest_fitness = adult.getFitness
             fittest_phenotype = adult.getPhenotype
-    print("Highest fitness:", highest_fitness)
+    print("Highest fitness: ", highest_fitness)
+    average_fitness = population.getAverageFitness
+    print("Average fitness: ", average_fitness)
+    standard_deviation = population.getStandardDeviation
+    print("Standard deviation: ", standard_deviation)
     #print("Fittest phenotype:", fittest_phenotype)
-    #if (highest_fitness == 1.0): break
 
 # Get moves and visualize run
-print("\nFinished intelligencing the artificial agent")
+print("\nFinished evolving the artificial agent")
 print("Visualizing run")
 print("Press + or - to increase or decrease the speed")
 print("Press escape to exit")

@@ -48,12 +48,6 @@ class Individual {
 
     @property void setDevouredPoison(int p) { this.devouredPoison = p; }
 
-    // DEPRECATED
-    @property void setPossibleFoodsToDevour(int f) { this.possibleFoodsToDevour = f; }
-
-    // DEPRECATED
-    @property void setPossiblePoisonsToDevour(int p) { this.possiblePoisonsToDevour = p; }
-
     void generateGenotype() {
         foreach(i; 0 .. genotypeLength) {
             genotype[i] = uniform(0.0f, 1.0f);
