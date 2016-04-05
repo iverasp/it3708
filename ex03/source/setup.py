@@ -13,8 +13,8 @@ sources = ['dbindings.d',
 'ea/config.d',
 'ea/population.d',
 'ea/individual.d',
-'flatland/agent.d',
-'flatland/simulator.d',
+'flatland/flatland_agent.d',
+'flatland/flatland_simulator.d',
 'ann/ann.d',
 'ann/matrix.d']
 

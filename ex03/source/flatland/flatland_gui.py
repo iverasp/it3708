@@ -12,7 +12,7 @@ libDir = join('build', 'lib.%s-%s' % (
     '.'.join(str(v) for v in version_info[:2])
 ))
 path.append(abspath(libDir))
-from dbindings import Agent
+from dbindings import FlatlandAgent
 
 
 class FlatlandGUI:
@@ -46,7 +46,7 @@ class FlatlandGUI:
     def __init__(self, cells, start, moves):
         self.moves = moves
         self.cells = cells
-        self.agent = Agent(start[0], start[1])
+        self.agent = FlatlandAgent(start[0], start[1])
 
         self.mapsize = len(cells)
         self.move = 0

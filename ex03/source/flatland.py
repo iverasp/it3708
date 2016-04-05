@@ -75,7 +75,7 @@ class Flatland(App):
                         for i in range(0, len(child.getPhenotype), 3)]
             #print("synapsis0: ", synapsis0)
             self.ann.setWeightsSynapsis0(synapsis0)
-            sim = Simulator(6, 6, self.cells, self.timesteps)
+            sim = FlatlandSimulator(6, 6, self.cells, self.timesteps)
 
             while not sim.completed():
                 move = self.ann.getMove(sim.getAgent.sense(sim.getCells))
@@ -118,7 +118,7 @@ class Flatland(App):
         synapsis0 = [self.fittest_phenotype[i:i+3]
                     for i in range(0, len(self.fittest_phenotype), 3)]
         self.ann.setWeightsSynapsis0(synapsis0)
-        sim = Simulator(6, 6, self.cells, self.timesteps)
+        sim = FlatlandSimulator(6, 6, self.cells, self.timesteps)
         while not sim.completed():
             move = self.ann.getMove(sim.getAgent.sense(sim.getCells))
             sim.move(move)
