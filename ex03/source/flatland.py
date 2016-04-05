@@ -34,6 +34,7 @@ class Flatland(App):
     graph = EAGraph()
 
     # Simulator
+    run_dynamic = True
     N = 10
     START = (6, 6)
     timesteps = 60
@@ -42,9 +43,6 @@ class Flatland(App):
     cells = None
     fittest_phenotype = ""
 
-
-    run_dynamic = True
-    generations  = 50
     def build(self):
         return self.graph
 
@@ -52,12 +50,11 @@ class Flatland(App):
         # Generate random map
         #seed(1) # not random when testing
 
-
         # Make array of zeros
-        cells = np.zeros((N,N), dtype=np.int).tolist()
+        cells = np.zeros((self.N, self.N), dtype=np.int).tolist()
 
         # Generate a list of tuples of all array positions
-        places = [(x, y) for x in range(N) for y in range(N)]
+        places = [(x, y) for x in range(self.N) for y in range(self.N)]
         places.remove(self.START)
 
         # Place food and the poison items in array. Remove places that has been used.
@@ -72,7 +69,7 @@ class Flatland(App):
         return cells
 
     def on_start(self):
-        if not self.run_dynamic: self.cells = self.generate_map()
+        if not self.run_dynamic: cells = self.generate_map()
         Clock.schedule_once(self.evolve, 0)
 
     def evolve(self, *args):
@@ -118,7 +115,7 @@ class Flatland(App):
             self.generation
         )
 
-        if not self.generation == self.generations:
+        if not self.generation == self.ea_config.getGenerations:
             Clock.schedule_once(self.evolve, 0)
         else: self.run_flatland()
 
@@ -141,4 +138,5 @@ class Flatland(App):
         print("Poisons eaten:", sim.getDevouredPoison, "/", sim.getTotalPoisons)
         GUI = FlatlandGUI(cells=self.cells, start=self.START, moves=sim.getMoves())
 
-Flatland().run()
+if __name__ == '__main__':
+    Flatland().run()
