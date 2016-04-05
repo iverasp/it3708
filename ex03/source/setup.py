@@ -10,13 +10,14 @@ argv.append("-O")
 
 projName = 'dbindings'
 sources = ['dbindings.d',
-'ea/config.d',
+'ea/ea_config.d',
 'ea/population.d',
 'ea/individual.d',
 'flatland/flatland_agent.d',
 'flatland/flatland_simulator.d',
 'ann/ann.d',
-'ann/matrix.d']
+'ann/matrix.d',
+'ann/ann_config.d']
 
 setup(
     name=projName,

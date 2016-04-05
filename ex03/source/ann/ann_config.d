@@ -5,11 +5,10 @@ class AnnConfig {
     }
 
     // ANN config
-	auto dynamicRun = true;
-	auto layer0Function = "s";
 	auto layer1Function = "s";
+	auto layer2Function = "s";
 
     // ANN getters
-    @property auto getDynamicRun(){ return dynamicRun; }
-    @property auto getLayer0Function(){ return layer0Function; }
     @property auto getLayer1Function(){ return layer1Function; }
+    @property auto getLayer2Function(){ return layer2Function; }
+}

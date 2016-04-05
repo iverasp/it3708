@@ -1,6 +1,6 @@
 module ea.population;
 
-import ea.config;
+import ea.ea_config;
 import ea.individual;
 import pyd.pyd;
 import std.algorithm.sorting;
@@ -12,7 +12,7 @@ import std.stdio;
 
 class Population {
 
-    Config config;
+    EaConfig config;
     Individual[] children;
     Individual[] adults;
     Individual[] childrenFitness;
@@ -21,7 +21,7 @@ class Population {
     float averageFitness;
     float standardDeviation;
 
-    this(Config config) {
+    this(EaConfig config) {
         this.config = config;
         children = generateChildren();
     }

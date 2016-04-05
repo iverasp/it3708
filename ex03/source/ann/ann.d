@@ -1,5 +1,6 @@
 module ann.ann;
 
+import ann.ann_config;
 import ann.matrix;
 import std.algorithm;
 import std.array;
@@ -11,11 +12,13 @@ import std.stdio;
 import std.string;
 
 class ANN {
-
+    
+    AnnConfig config;
     Matrix synapsis0;
     Matrix synapsis1;
 
-    this() {
+    this(AnnConfig config) {
+        this.config = config;
         this.synapsis0 = new Matrix();
         this.synapsis1 = new Matrix();
     }
@@ -31,7 +34,17 @@ class ANN {
     float[][] predict(float[][] input) {
         auto layer0 = new Matrix(input);
         //writeln("\nlayer0 or input: ", layer0);
-        auto layer1 = (layer0 * synapsis0).nonLinear();
+        auto layer1 = (layer0 * synapsis0);  
+
+        switch(config.getLayer1Function) {
+            case("s"):    
+                layer1 = layer1.nonLinear();
+                break;
+            default:
+                break;
+            // put activation functions here
+        }
+
         //writeln("layer1 or ouput: ", layer1);
         float[][] result = layer1.toArray();
         return result;

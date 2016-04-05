@@ -1,6 +1,6 @@
-module ea.config;
+module ea.ea_config;
 
-class Config {
+class EaConfig {
     this(){
     }
 
@@ -28,6 +28,7 @@ class Config {
 
     // EA getters
     // Generic getters
+    @property auto getGenerations(){ return generations; }
     @property auto getPopulationSize(){ return populationSize; }
     @property auto getNumberOfChildren(){ return numberOfChildren; }
     @property auto getGenotypeLength(){ return genotypeLength; }
