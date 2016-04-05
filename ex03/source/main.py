@@ -19,6 +19,7 @@ from dbindings import *
 # Generate random map
 seed(1) # not random when testing
 N = 10
+
 # Make array of zeros
 cells = np.zeros((N,N), dtype=np.int).tolist()
 
@@ -26,10 +27,6 @@ cells = np.zeros((N,N), dtype=np.int).tolist()
 places = [(x, y) for x in range(N) for y in range(N)]
 START = (6, 6)
 places.remove(START)
-
-# FPD of (1/3, 1/3)
-#FOODITEMS = int(N*N*0.33)
-#POISONITEMS = int((N*N - FOODITEMS) * 0.33)
 
 # Place food and the poison items in array. Remove places that has been used.
 for place in places:
@@ -41,16 +38,14 @@ for place in places:
         cells[place[0]][place[1]] = 2
         places.remove(place)
 
-# Initate objects
+# Initate objects for evolution
 config = Config()
 population = Population(config)
 ann = ANN()
-
 generation = 0
-sim = None
-bestsim = None
-bestsimscore = -sys.maxsize - 1
+fittest_phenotype = ""
 
+# Main loop
 for i in range(50):
     population.develop()
 
@@ -67,10 +62,6 @@ for i in range(50):
         child.setDevouredFood = sim.getDevouredFood
         child.setDevouredPoison = sim.getDevouredPoison
 
-        if sim.getDevouredFood * config.getFoodBonus - sim.getDevouredPoison * config.getPoisonPenalty > bestsimscore:
-            bestsimscore = sim.getDevouredFood * config.getFoodBonus - sim.getDevouredPoison * config.getPoisonPenalty
-            bestsim = sim
-
     population.evaluate()
     population.adultSelection()
     population.parentSelection()
@@ -80,7 +71,6 @@ for i in range(50):
     generation += 1
     print("Generation: ", generation)
     highest_fitness = -sys.maxsize - 1
-    fittest_phenotype = ""
     for adult in population.getAdults:
         if adult.getFitness > highest_fitness:
             highest_fitness = adult.getFitness
@@ -92,13 +82,22 @@ for i in range(50):
     print("Standard deviation: ", standard_deviation)
     #print("Fittest phenotype:", fittest_phenotype)
 
+# Rerun the best result
+synapsis0 = [fittest_phenotype[i:i+3]
+            for i in range(0, len(fittest_phenotype), 3)]
+ann.setWeightsSynapsis0(synapsis0)
+sim = Simulator(6, 6, cells, 60)
+while not sim.completed():
+    move = ann.getMove(sim.getAgent.sense(sim.getCells))
+    sim.move(move)
+
 # Get moves and visualize run
 print("\nFinished evolving the artificial agent")
 print("Visualizing run")
 print("Press + or - to increase or decrease the speed")
 print("Press escape to exit")
 
-print("Foods eaten:", bestsim.getDevouredFood, " / ", bestsim.getTotalFoods)
-print("Poisons eaten:", bestsim.getDevouredPoison, "/", bestsim.getTotalPoisons)
+print("Foods eaten:", sim.getDevouredFood, " / ", sim.getTotalFoods)
+print("Poisons eaten:", sim.getDevouredPoison, "/", sim.getTotalPoisons)
 
-GUI = FlatlandGUI(cells=cells, start=START, moves=bestsim.getMoves())
+GUI = FlatlandGUI(cells=cells, start=START, moves=sim.getMoves())
