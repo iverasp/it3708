@@ -96,8 +96,6 @@ print("\nFinished evolving the artificial agent")
 print("Visualizing run")
 print("Press + or - to increase or decrease the speed")
 print("Press escape to exit")
-
 print("Foods eaten:", sim.getDevouredFood, " / ", sim.getTotalFoods)
 print("Poisons eaten:", sim.getDevouredPoison, "/", sim.getTotalPoisons)
-
 GUI = FlatlandGUI(cells=cells, start=START, moves=sim.getMoves())
