@@ -4,7 +4,6 @@ import distutils.util
 from pygame.locals import *
 from os.path import join, abspath
 import numpy as np
-from flatland.flatland_ann import FlatlandANN
 
 # Append the directory in which the binaries were placed to Python's sys.path,
 # then import the D DLL.

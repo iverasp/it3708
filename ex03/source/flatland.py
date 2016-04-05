@@ -20,7 +20,7 @@ sys.path.append(os.path.abspath(libDir))
 
 from dbindings import *
 
-class MyApp(App):
+class Flatland(App):
 
     graph = EAGraph()
     START = (6, 6)
@@ -33,7 +33,7 @@ class MyApp(App):
     generations  = 50
     fittest_phenotype = ""
     run_dynamic = True
-    timesteps = 60
+    timesteps = 150
     cells = None
 
     def build(self):
@@ -63,7 +63,7 @@ class MyApp(App):
         return cells
 
     def on_start(self):
-        if not self.run_dynamic: cells = self.generate_map()
+        if not self.run_dynamic: self.cells = self.generate_map()
         Clock.schedule_once(self.evolve, 0)
 
     def evolve(self, *args):
@@ -132,5 +132,4 @@ class MyApp(App):
         print("Poisons eaten:", sim.getDevouredPoison, "/", sim.getTotalPoisons)
         GUI = FlatlandGUI(cells=self.cells, start=self.START, moves=sim.getMoves())
 
-if __name__ == '__main__':
-    MyApp().run()
+Flatland().run()

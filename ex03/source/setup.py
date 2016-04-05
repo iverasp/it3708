@@ -3,9 +3,10 @@ from pyd.support import setup
 from pyd import patch_distutils
 from sys import argv
 
-#argv.append("-c")
-#argv.append("ldc2")
-#argv.append("-O")
+argv.append("build")
+argv.append("-c")
+argv.append("ldc2")
+argv.append("-O")
 
 projName = 'dbindings'
 sources = ['dbindings.d',
