@@ -50,7 +50,7 @@ for i in range(50):
     population.develop()
 
     for child in population.getChildren:
-        synapsis0 = [child.getPhenotype[i:i+3] 
+        synapsis0 = [child.getPhenotype[i:i+3]
                     for i in range(0, len(child.getPhenotype), 3)]
         #print("synapsis0: ", synapsis0)
         ann.setWeightsSynapsis0(synapsis0)
@@ -59,7 +59,6 @@ for i in range(50):
         while not sim.completed():
             move = ann.getMove(sim.getAgent.sense(sim.getCells))
             sim.move(move)
-        #print(child.getPhenotype)
         child.setDevouredFood = sim.getDevouredFood
         child.setDevouredPoison = sim.getDevouredPoison
 

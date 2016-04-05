@@ -17,6 +17,7 @@ class Config {
     auto boltzmannTemperature = 1.0f;
     auto boltzmannDeltaT = 0.01f;
     auto crossoverRate = 0.1f;
+
     auto childrenPerPair = 2;
     auto mutationType = "g";
     auto mutationRate = 1.0f;
@@ -24,6 +25,7 @@ class Config {
     // Problem specific variables
     auto foodBonus = 1.0f;
     auto poisonPenalty = 10.0f;
+
 
     // EA getters
     // Generic getters

@@ -238,7 +238,7 @@ class Population {
                         parents[i][0].genotype[0..crossoverPoint].dup
                         ~ parents[i][1].genotype[crossoverPoint ..
                         parents[i][1].genotype.length].dup);
-                    children.length = children.length + 1;
+                    children.length++;
                     children[children.length - 1] = newborn;
                 }
 
@@ -247,17 +247,16 @@ class Population {
                     int parentIndex = j % config.getChildrenPerPair;
                     auto newborn = new Individual(config);
                     if (chance < config.getMutationRate) {
-                        auto genotype = parents[i][parentIndex].genotype.dup;
-                        auto index = uniform(0, genotype.length - 16);
-                        foreach(v; 0 .. index + 16) {
-                            genotype[v] = !genotype[v];
+                        auto genotype = new bool[](config.getGenotypeLength);
+                        foreach(v; 0 .. config.getGenotypeLength) {
+                            genotype[v] = cast(bool)uniform(1,2);
                         }
                         newborn.genotype = genotype;
                     } else {
                         newborn.genotype = (
                                         parents[i][parentIndex].genotype.dup);
                     }
-                    children.length = children.length + 1;
+                    children.length++;
                     children[children.length - 1] = newborn;
                 }
             }
