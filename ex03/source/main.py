@@ -103,6 +103,12 @@ class MyApp(App):
         print("Standard deviation: ", standard_deviation)
         #print("Fittest phenotype:", fittest_phenotype)
 
+        # Add datas to plot
+        self.graph.add_datas(
+            [standard_deviation, average_fitness, highest_fitness],
+            self.generation
+        )
+
         if not self.generation == self.generations:
             Clock.schedule_once(self.evolve, 0)
         else: self.run_flatland()

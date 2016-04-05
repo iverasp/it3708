@@ -22,13 +22,16 @@ class EAGraph(BoxLayout):
             ymin=0,
             ymax=40
         )
+        self.add_widget(self.graph)
 
         self.plot = []
         self.plot.append(MeshLinePlot(color=[1, 0, 0, 1])) #X - Red
-        #self.plot.append(MeshLinePlot(color=[0, 1, 0, 1])) #Y - Green
-        #self.plot.append(MeshLinePlot(color=[0, 0, 1, 1])) #Z - Blue
-
-        self.plot[0].points = [(x, sin(x / 10.)) for x in range(0, 101)]
+        self.plot.append(MeshLinePlot(color=[0, 1, 0, 1])) #Y - Green
+        self.plot.append(MeshLinePlot(color=[0, 0, 1, 1])) #Z - Blue
 
         for plot in self.plot:
             self.graph.add_plot(plot)
+
+    def add_datas(self, datas, generation):
+        for i in range(len(datas)):
+            self.plot[i].points.append((generation, datas[i]))
