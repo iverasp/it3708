@@ -232,7 +232,7 @@ class Population {
                 foreach (j; 0 .. config.getChildrenPerPair) {
                     auto genotypeLength = to!int(
                                             parents[i][0].genotype.length);
-                    auto crossoverPoint = uniform(1, genotypeLength + 1);
+                    auto crossoverPoint = uniform(0, 6) * 3 * 16;
                     auto newborn = new Individual(config);
                     newborn.genotype = (
                         parents[i][0].genotype[0..crossoverPoint].dup
@@ -247,8 +247,9 @@ class Population {
                     int parentIndex = j % config.getChildrenPerPair;
                     auto newborn = new Individual(config);
                     if (chance < config.getMutationRate) {
-                        auto genotype = new bool[](config.getGenotypeLength);
-                        foreach(v; 0 .. config.getGenotypeLength) {
+                        auto genotype = parents[i][0].genotype.dup;
+                        int index = uniform(0, 6);
+                        foreach(v; index * 3 * 16 .. index * 3 * 16 + 16 * 3) {
                             genotype[v] = cast(bool)uniform(1,2);
                         }
                         newborn.genotype = genotype;

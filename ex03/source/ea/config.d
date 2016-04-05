@@ -15,7 +15,7 @@ class Config {
     auto tournamentGroupSize = 20;
     auto boltzmannTemperature = 1.0f;
     auto boltzmannDeltaT = 0.01f;
-    auto crossoverRate = 0.1f;
+    auto crossoverRate = 0.5f;
 
     auto childrenPerPair = 2;
     auto mutationType = "g";
@@ -23,7 +23,7 @@ class Config {
 
     // Problem specific variables
     auto foodBonus = 1.0f;
-    auto poisonPenalty = 10.0f;
+    auto poisonPenalty = 5.0f;
 
 
     // EA getters

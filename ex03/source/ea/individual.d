@@ -50,20 +50,22 @@ class Individual {
 
     void generateGenotype() {
         foreach(i; 0 .. genotypeLength) {
-            genotype[i] = cast(bool)uniform(0, 2);
+            genotype[i] = uniform(0, 2) == 0;
         }
     }
 
     void generatePhenotype() {
         int phenotypeIndex = 0;
         for (int i = 0; i < config.getGenotypeLength; i++) {
-            ushort myInt;
-            foreach(j; 0 .. i + 16L) {
-                if (genotype[i]) myInt += cast(ushort)(1 << i);
+            ushort myInt = 0;
+            ushort index = 0;
+            foreach(j; i .. i + 16L) {
+                if (genotype[j]) myInt += cast(ushort)(1 << index);
+                index++;
             }
             phenotype[phenotypeIndex] = cast(float)myInt / cast(float)ushort.max;
             phenotypeIndex++;
-            i += 16L;
+            i += 16L - 1L;
         }
 
     }

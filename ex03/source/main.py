@@ -17,7 +17,7 @@ sys.path.append(os.path.abspath(libDir))
 from dbindings import *
 
 # Generate random map
-seed(1) # not random when testing
+#seed(1) # not random when testing
 N = 10
 
 # Make array of zeros
