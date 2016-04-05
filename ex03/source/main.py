@@ -16,37 +16,44 @@ sys.path.append(os.path.abspath(libDir))
 
 from dbindings import *
 
-# Generate random map
-#seed(1) # not random when testing
-N = 10
-
-# Make array of zeros
-cells = np.zeros((N,N), dtype=np.int).tolist()
-
-# Generate a list of tuples of all array positions
-places = [(x, y) for x in range(N) for y in range(N)]
-START = (6, 6)
-places.remove(START)
-
-# Place food and the poison items in array. Remove places that has been used.
-for place in places:
-    if (random() > 0.33):
-        cells[place[0]][place[1]] = 1
-        places.remove(place)
-for place in places:
-    if (random() > 0.33):
-        cells[place[0]][place[1]] = 2
-        places.remove(place)
-
 # Initate objects for evolution
 config = Config()
 population = Population(config)
 ann = ANN()
 generation = 0
 fittest_phenotype = ""
+START = (6, 6)
+run_dynamic = True
+timesteps = 60
+
+def generate_map():
+    # Generate random map
+    #seed(1) # not random when testing
+    N = 10
+
+    # Make array of zeros
+    cells = np.zeros((N,N), dtype=np.int).tolist()
+
+    # Generate a list of tuples of all array positions
+    places = [(x, y) for x in range(N) for y in range(N)]
+    places.remove(START)
+
+    # Place food and the poison items in array. Remove places that has been used.
+    for place in places:
+        if (random() > 0.33):
+            cells[place[0]][place[1]] = 1
+            places.remove(place)
+    for place in places:
+        if (random() > 0.33):
+            cells[place[0]][place[1]] = 2
+            places.remove(place)
+    return cells
+
+cells = generate_map()
 
 # Main loop
 for i in range(50):
+    if run_dynamic: cells = generate_map()
     population.develop()
 
     for child in population.getChildren:
@@ -54,7 +61,7 @@ for i in range(50):
                     for i in range(0, len(child.getPhenotype), 3)]
         #print("synapsis0: ", synapsis0)
         ann.setWeightsSynapsis0(synapsis0)
-        sim = Simulator(6, 6, cells, 60)
+        sim = Simulator(6, 6, cells, timesteps)
 
         while not sim.completed():
             move = ann.getMove(sim.getAgent.sense(sim.getCells))
@@ -86,7 +93,7 @@ for i in range(50):
 synapsis0 = [fittest_phenotype[i:i+3]
             for i in range(0, len(fittest_phenotype), 3)]
 ann.setWeightsSynapsis0(synapsis0)
-sim = Simulator(6, 6, cells, 60)
+sim = Simulator(6, 6, cells, timesteps)
 while not sim.completed():
     move = ann.getMove(sim.getAgent.sense(sim.getCells))
     sim.move(move)
