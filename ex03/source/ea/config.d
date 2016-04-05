@@ -6,6 +6,7 @@ class Config {
 
     // EA config
     // Generic variables
+    auto generations = 50;
     auto populationSize = 100;
     auto numberOfChildren = 100;
     auto genotypeLength = 18 * 16; // 6 * 3
@@ -16,7 +17,6 @@ class Config {
     auto boltzmannTemperature = 1.0f;
     auto boltzmannDeltaT = 0.01f;
     auto crossoverRate = 0.5f;
-
     auto childrenPerPair = 2;
     auto mutationType = "g";
     auto mutationRate = 1.0f;

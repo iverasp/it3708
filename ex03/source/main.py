@@ -22,27 +22,36 @@ from dbindings import *
 
 class MyApp(App):
 
+    # EA
+    ea_config = EaConfig()
+    population = Population(ea_config)
+
+    # ANN
+    ann_config = AnnConfig()
+    ann = ANN(ann_config)
+
+    # EAGraph
     graph = EAGraph()
+
+    # Simulator
+    N = 10
     START = (6, 6)
-
-    # Initate objects for evolution
-    config = Config()
-    population = Population(config)
-    ann = ANN()
-    generation = 0
-    generations  = 50
-    fittest_phenotype = ""
-    run_dynamic = True
     timesteps = 60
-    cells = None
 
+    generation = 0
+    cells = None
+    fittest_phenotype = ""
+
+
+    run_dynamic = True
+    generations  = 50
     def build(self):
         return self.graph
 
     def generate_map(self):
         # Generate random map
         #seed(1) # not random when testing
-        N = 10
+
 
         # Make array of zeros
         cells = np.zeros((N,N), dtype=np.int).tolist()
