@@ -6,13 +6,13 @@ class Config {
 
     // EA config
     // Generic variables
-    auto populationSize = 200;
-    auto numberOfChildren = 200;
+    auto populationSize = 100;
+    auto numberOfChildren = 100;
     auto genotypeLength = 9;
     auto adultSelection = "g";
     auto parentSelection = "t";
     auto tournamentEpsilon = 0.1f;
-    auto tournamentGroupSize = 40;
+    auto tournamentGroupSize = 20;
     auto boltzmannTemperature = 1.0f;
     auto boltzmannDeltaT = 0.01f;
     auto crossoverRate = 0.1f;
