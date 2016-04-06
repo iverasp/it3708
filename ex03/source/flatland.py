@@ -1,14 +1,13 @@
 import distutils.util
+import os.path
+import sys
 from flatland.flatland_gui import FlatlandGUI
 import numpy as np
-import os.path
 from random import choice, random
 from random import seed
-import sys
 from kivy.app import App
 from kivy.clock import Clock, mainthread
 from EAGraph import EAGraph
-from threading import Thread
 
 # Append the directory in which the binaries were placed to Python's sys.path,
 # then import the D DLL.

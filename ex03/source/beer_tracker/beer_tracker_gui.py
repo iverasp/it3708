@@ -24,11 +24,9 @@ class BeerTrackerGUI:
         self.agent = BeerTrackerAgent()
         self.agent_color = (255, 0, 0)
         self.object_color = (0, 0, 255)
-        self.move = 0
-        self.moves = [1,1,1,1]
         self.DELAY = 0
 
-        self.sim = BeerTrackerSimulator(4)
+        self.sim = BeerTrackerSimulator(4, 600)
 
         pygame.init()
         self.display = pygame.display.set_mode((self.WIDTH*self.TILESIZE, self.HEIGHT*self.TILESIZE))
@@ -67,62 +65,45 @@ class BeerTrackerGUI:
                     self.moves.append(2)
 
     def update(self):
-        # No more moves? Wait until user quits
-        #self.moves.append(self.get_ann_move())
-        #if self.move == len(self.moves):
-        #    return
 
         # Draw the map
         self.display.fill(Color('white'))
 
+        # Draw the objects
         for obj in self.sim.getObjects:
+            for x in range(obj.getX, obj.getX + obj.getSize):
+                surface = Rect(
+                    x * self.TILESIZE,
+                    obj.getY * self.TILESIZE,
+                    self.TILESIZE,
+                    self.TILESIZE
+                )
+                pygame.draw.rect(
+                    self.display,
+                    self.object_color,
+                    surface,
+                    5
+                )
+
+        # Draw the agent with wrap-around
+        for x in range(
+            self.sim.getAgent.getX,
+            self.sim.getAgent.getX + self.sim.getAgent.getSize
+            ):
+
             surface = Rect(
-                obj.getX * self.TILESIZE,
-                obj.getY * self.TILESIZE,
-                self.TILESIZE * obj.getSize,
+                (x % 30) * self.TILESIZE,
+                self.sim.getAgent.getY * self.TILESIZE,
+                self.TILESIZE,
                 self.TILESIZE
             )
             pygame.draw.rect(
                 self.display,
-                self.object_color,
+                self.agent_color,
                 surface,
                 5
             )
-
-        """
-        for row in range(self.mapsize):
-            for column in range(self.mapsize):
-                self.display.blit(
-                    self.tilemap[self.cells[row][column]],
-                    pygame.rect.Rect(column*self.TILESIZE, row*self.TILESIZE, self.TILESIZE, self.TILESIZE)
-                )
-
-        #self.print_move()
-
-        # Update angle of agent
-        def update_angle(angle):
-            self.agent_angle += angle
-            self.agent_tile = pygame.transform.rotate(self.agent_tile, angle)
-
-        if self.moves[self.move] == 1:
-            update_angle(90)
-            self.agent.turnLeft()
-
-        elif self.moves[self.move] == 2:
-            update_angle(-90)
-            self.agent.turnRight()
-
-        # Move forward and update cells
-        self.cells = self.agent.moveForward(self.cells)
-
-        # Draw the agent
-        self.display.blit(
-            self.agent_tile,
-            pygame.rect.Rect(self.agent.getX() * self.TILESIZE, self.agent.getY() * self.TILESIZE, self.TILESIZE, self.TILESIZE)
-        )
-
-        """
         pygame.display.flip()
 
+        self.sim.moveAgent(randint(0, 1), randint(1, 4))
         self.sim.descendObjects()
-        self.move += 1

@@ -11,54 +11,101 @@ class BeerTrackerSimulator {
 
     BeerTrackerObject[] objects;
     BeerTrackerAgent agent;
-    int[] spawnPositions;
     int width = 30;
     int height = 15;
+    bool[30] spawnPositions;
     int objectToDescend = 0;
     int amountOfObjects;
+    int avoidedObjects;
+    int capturedSmallObjects;
+    int capturedBigObjects;
+    int timesteps;
+    int timestep;
 
-    this(int n) {
+    this(int n, int timesteps) {
         this.amountOfObjects = n;
+        this.timesteps = timesteps;
         objects = new BeerTrackerObject[](amountOfObjects);
         agent = new BeerTrackerAgent();
-        //spawnPositions = new int[](width);
-        foreach(i; 0 .. width) spawnPositions ~= i;
+        spawnPositions = true;
         foreach(i; 0 .. n) {
             generateObject(i);
         }
     }
 
     void generateObject(ulong i) {
-        int size = uniform(1, 6);
-        int start = spawnPositions[uniform(0, spawnPositions.length)];
-        objects[i] = new BeerTrackerObject(size, start);
-        writeln("length: " ~ to!string(spawnPositions.length));
-        writeln("start: " ~ to!string(start));
-        writeln("size: " ~ to!string(size));
-        int startIndex, endIndex;
-        foreach(int j; 0 .. cast(int)spawnPositions.length) {
-            if (spawnPositions[j] == start) startIndex = j;
+        int size = uniform(1, 7);
+        int start;
+        writeln(to!string(spawnPositions));
+        while (true) {
+            start = cast(int)uniform(0, spawnPositions.length - size);
+            bool found = true;
+            foreach(j; start .. start + size) {
+                if (!spawnPositions[j]) found = false;
+            }
+            //writeln("loop");
+            if (found) break;
         }
-        spawnPositions =
-            spawnPositions[0 .. startIndex + 1] ~ spawnPositions[startIndex + size + 1.. $];
+        objects[i] = new BeerTrackerObject(size, start);
+        spawnPositions[start .. start + size] = false;
     }
 
     void replaceObject(ulong i) {
-        foreach(j; objects[i].getX .. objects[i].getX + objects[i].getSize) {
-            spawnPositions ~= j;
-        }
-        sort!("a < b")(spawnPositions);
+        spawnPositions[objects[i].getX .. objects[i].getX + objects[i].getSize] = true;
         generateObject(i);
     }
 
     void descendObjects() {
-        if (objects[objectToDescend].getY == height)
+        if (objects[objectToDescend].getY == height - 1) {
             replaceObject(objectToDescend);
+            avoidedObjects++;
+            //writeln("Avoided objects: " ~ to!string(avoidedObjects));
+        }
         else objects[objectToDescend].descend();
+        if (objectIntersectsAgent(objectToDescend)) {
+            checkWhatAgentCaptured(objectToDescend);
+            replaceObject(objectToDescend);
+            //writeln("Small objects captured: " ~ to!string(capturedSmallObjects));
+            //writeln("Big objects captured: " ~ to!string(capturedBigObjects));
+        }
         objectToDescend++;
         if (objectToDescend > amountOfObjects - 1) objectToDescend = 0;
     }
 
+    void moveAgent(int direction, int steps) {
+        this.agent.move(direction, steps); // use CTRNN in future
+        timestep++;
+    }
+
+    bool completed() {
+        return timestep == timesteps;
+    }
+
+    bool objectIntersectsAgent(int i) {
+        if (objects[i].getY != height - 2) return false;
+        int objX1 = objects[i].getX;
+        int objX2 = objX1 + objects[i].getSize;
+        int agentX1 = agent.getX;
+        int agentX2 = agentX1 + agent.getSize;
+        return objX1 < agentX2 && objX2 > agentX1;
+    }
+
+    void checkWhatAgentCaptured(int i) {
+        if (objects[i].getSize >= 5) {
+            capturedBigObjects++;
+            return;
+        }
+        int objX1 = objects[i].getX;
+        int objX2 = objX1+ objects[i].getSize;
+        int agentX1 = agent.getX;
+        int agentX2 = agentX1 + agent.getSize;
+
+        if (objX1 >= agentX1 && objX2 <= agentX2) capturedSmallObjects++;
+    }
+
     @property BeerTrackerObject[] getObjects() { return this.objects; }
     @property BeerTrackerAgent getAgent() { return this.agent; }
+    @property int getCapturedSmallObjects() { return this.capturedSmallObjects; }
+    @property int getCapturedBigObjects() { return this.capturedBigObjects; }
+    @property int getAvoidedObjects() { return this.avoidedObjects; }
 }
