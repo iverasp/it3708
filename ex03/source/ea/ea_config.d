@@ -7,23 +7,23 @@ class EaConfig {
     // EA config
     // Generic variables
     auto generations = 50;
-    auto populationSize = 100;
-    auto numberOfChildren = 100;
+    auto populationSize = 200;
+    auto numberOfChildren = 200;
     auto genotypeLength = 18 * 16;
     auto adultSelection = "g";
     auto parentSelection = "t";
-    auto tournamentEpsilon = 0.1f;
+    auto tournamentEpsilon = 0.9f;
     auto tournamentGroupSize = 20;
     auto boltzmannTemperature = 1.0f;
     auto boltzmannDeltaT = 0.01f;
-    auto crossoverRate = 0.0f;
+    auto crossoverRate = 0.1f;
     auto childrenPerPair = 2;
     auto mutationType = "g";
     auto mutationRate = 1.0f;
 
     // Problem specific variables
     auto foodBonus = 1.0f;
-    auto poisonPenalty = 5.0f;
+    auto poisonPenalty = 2.0f;
 
 
     // EA getters
