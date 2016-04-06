@@ -44,9 +44,9 @@ class Individual {
 
     @property float[] getFitnessRange(){ return fitnessRange; }
 
-    @property void setDevouredFood(int f) { this.devouredFood = f; }
+    @property void addDevouredFood(int f) { this.devouredFood += f; }
 
-    @property void setDevouredPoison(int p) { this.devouredPoison = p; }
+    @property void addDevouredPoison(int p) { this.devouredPoison += p; }
 
     void generateGenotype() {
         foreach(i; 0 .. genotypeLength) {
@@ -67,7 +67,6 @@ class Individual {
             phenotypeIndex++;
             i += 16L - 1L;
         }
-
     }
 
     void evaluateFitness() {
@@ -77,10 +76,9 @@ class Individual {
         float poisonPoints = cast(float)devouredPoison / cast(float)possiblePoisonsToDevour;
         this.fitness = ((foodPoints - poisonPoints) + 1) / 2;
         */
-
         
         fitness = (cast(float)devouredFood * config.getFoodBonus)
                     - (cast(float)devouredPoison * config.getPoisonPenalty);
-
+        
     }
 }

@@ -41,8 +41,8 @@ extern(C) void PydMain() {
         Property!(Individual.getFitness),
         Property!(Individual.setFitnessRange),
         Property!(Individual.getFitnessRange),
-        Property!(Individual.setDevouredFood),
-        Property!(Individual.setDevouredPoison)
+        Property!(Individual.addDevouredFood),
+        Property!(Individual.addDevouredPoison)
     )();
     wrap_class!(
         FlatlandAgent,

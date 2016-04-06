@@ -25,7 +25,6 @@ class EaConfig {
     auto foodBonus = 1.0f;
     auto poisonPenalty = 2.0f;
 
-
     // EA getters
     // Generic getters
     @property auto getGenerations(){ return generations; }

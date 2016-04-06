@@ -59,6 +59,8 @@ class Population {
         childrenFitness = new Individual[config.getNumberOfChildren];
         foreach (i; 0 .. children.length) {
             children[i].evaluateFitness();
+            children[i].devouredFood = 0;
+            children[i].devouredPoison = 0;
         }
         childrenFitness = children.dup;
 
