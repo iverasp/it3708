@@ -16,7 +16,7 @@ from dbindings import *
 
 #beer = BeerTrackerGUI(4)
 
-for i in range(100):
+for i in range(1000):
     sim = BeerTrackerSimulator(4, 600);
     while not sim.completed():
         sim.moveAgent(randint(0,1), randint(1,4))

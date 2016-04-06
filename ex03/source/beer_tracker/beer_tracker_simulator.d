@@ -13,9 +13,9 @@ class BeerTrackerSimulator {
     BeerTrackerAgent agent;
     int width = 30;
     int height = 15;
-    bool[30] spawnPositions;
     int objectToDescend = 0;
     int amountOfObjects;
+    int instantiatedObjects;
     int avoidedObjects;
     int capturedSmallObjects;
     int capturedBigObjects;
@@ -27,35 +27,27 @@ class BeerTrackerSimulator {
         this.timesteps = timesteps;
         objects = new BeerTrackerObject[](amountOfObjects);
         agent = new BeerTrackerAgent();
-        spawnPositions = true;
-        foreach(i; 0 .. n) {
-            generateObject(i);
-        }
+        generateObject(0);
+        instantiatedObjects++;
     }
 
     void generateObject(ulong i) {
         int size = uniform(1, 7);
-        int start;
-        writeln(to!string(spawnPositions));
-        while (true) {
-            start = cast(int)uniform(0, spawnPositions.length - size);
-            bool found = true;
-            foreach(j; start .. start + size) {
-                if (!spawnPositions[j]) found = false;
-            }
-            //writeln("loop");
-            if (found) break;
+        int start = uniform(0, width);
+        if (objects[i] is null) objects[i] = new BeerTrackerObject(size, start);
+        else {
+            objects[i].size = size;
+            objects[i].x = start;
+            objects[i].y = 0;
         }
-        objects[i] = new BeerTrackerObject(size, start);
-        spawnPositions[start .. start + size] = false;
     }
 
     void replaceObject(ulong i) {
-        spawnPositions[objects[i].getX .. objects[i].getX + objects[i].getSize] = true;
         generateObject(i);
     }
 
     void descendObjects() {
+        if (instantiatedObjects < amountOfObjects) generateObject(instantiatedObjects++);
         if (objects[objectToDescend].getY == height - 1) {
             replaceObject(objectToDescend);
             avoidedObjects++;
@@ -69,7 +61,7 @@ class BeerTrackerSimulator {
             //writeln("Big objects captured: " ~ to!string(capturedBigObjects));
         }
         objectToDescend++;
-        if (objectToDescend > amountOfObjects - 1) objectToDescend = 0;
+        if (objectToDescend > instantiatedObjects - 1) objectToDescend = 0;
     }
 
     void moveAgent(int direction, int steps) {
@@ -103,7 +95,9 @@ class BeerTrackerSimulator {
         if (objX1 >= agentX1 && objX2 <= agentX2) capturedSmallObjects++;
     }
 
-    @property BeerTrackerObject[] getObjects() { return this.objects; }
+    @property BeerTrackerObject[] getObjects() {
+        return this.objects[0 .. instantiatedObjects];
+    }
     @property BeerTrackerAgent getAgent() { return this.agent; }
     @property int getCapturedSmallObjects() { return this.capturedSmallObjects; }
     @property int getCapturedBigObjects() { return this.capturedBigObjects; }

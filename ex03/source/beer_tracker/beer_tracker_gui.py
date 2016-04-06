@@ -24,7 +24,7 @@ class BeerTrackerGUI:
         self.agent = BeerTrackerAgent()
         self.agent_color = (255, 0, 0)
         self.object_color = (0, 0, 255)
-        self.DELAY = 0
+        self.DELAY = 500
 
         self.sim = BeerTrackerSimulator(4, 600)
 
