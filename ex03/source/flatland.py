@@ -117,6 +117,7 @@ class Flatland(App):
         # Rerun the best result
         synapsis0 = [self.fittest_phenotype[i:i+3]
                     for i in range(0, len(self.fittest_phenotype), 3)]
+        self.cells = self.generate_map()
         self.ann.setWeightsSynapsis0(synapsis0)
         sim = FlatlandSimulator(6, 6, self.cells, self.timesteps)
         while not sim.completed():
