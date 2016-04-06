@@ -22,19 +22,26 @@ from dbindings import *
 
 class Flatland(App):
 
-    graph = EAGraph()
-    START = (6, 6)
+    # EA
+    ea_config = EaConfig()
+    population = Population(ea_config)
 
-    # Initate objects for evolution
-    config = Config()
-    population = Population(config)
-    ann = ANN()
-    generation = 0
-    generations  = 50
-    fittest_phenotype = ""
-    run_dynamic = True
+    # ANN
+    ann_config = AnnConfig()
+    ann = ANN(ann_config)
+
+    # EAGraph
+    graph = EAGraph()
+
+    # Simulator
+    run_dynamic = False
+    N = 10
+    START = (6, 6)
     timesteps = 60
+
+    generation = 0
     cells = None
+    fittest_phenotype = ""
 
     def build(self):
         return self.graph
@@ -42,13 +49,12 @@ class Flatland(App):
     def generate_map(self):
         # Generate random map
         #seed(1) # not random when testing
-        N = 10
 
         # Make array of zeros
-        cells = np.zeros((N,N), dtype=np.int).tolist()
+        cells = np.zeros((self.N, self.N), dtype=np.int).tolist()
 
         # Generate a list of tuples of all array positions
-        places = [(x, y) for x in range(N) for y in range(N)]
+        places = [(x, y) for x in range(self.N) for y in range(self.N)]
         places.remove(self.START)
 
         # Place food and the poison items in array. Remove places that has been used.
@@ -101,7 +107,7 @@ class Flatland(App):
         print("Average fitness: ", average_fitness)
         standard_deviation = self.population.getStandardDeviation
         print("Standard deviation: ", standard_deviation)
-        #print("Fittest phenotype:", fittest_phenotype)
+        #print("Fittest phenotype:", self.fittest_phenotype)
 
         # Add datas to plot
         self.graph.add_datas(
@@ -109,7 +115,7 @@ class Flatland(App):
             self.generation
         )
 
-        if not self.generation == self.generations:
+        if not self.generation == self.ea_config.getGenerations:
             Clock.schedule_once(self.evolve, 0)
         else: self.run_flatland()
 
@@ -133,4 +139,5 @@ class Flatland(App):
         print("Poisons eaten:", sim.getDevouredPoison, "/", sim.getTotalPoisons)
         GUI = FlatlandGUI(cells=self.cells, start=self.START, moves=sim.getMoves())
 
-Flatland().run()
+if __name__ == '__main__':
+    Flatland().run()

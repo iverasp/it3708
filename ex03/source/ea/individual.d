@@ -1,6 +1,6 @@
 module ea.individual;
 
-import ea.config;
+import ea.ea_config;
 import std.algorithm;
 import std.conv;
 import std.random;
@@ -11,7 +11,7 @@ import pyd.pyd;
 class Individual {
 
     // These are generic variables
-    Config config;
+    EaConfig config;
     int genotypeLength;
     bool[] genotype;
     float[] phenotype;
@@ -25,7 +25,7 @@ class Individual {
     int possibleFoodsToDevour;
     int possiblePoisonsToDevour;
 
-    this(Config config) {
+    this(EaConfig config) {
         this.config = config;
         this.genotypeLength = config.getGenotypeLength; //genotypeLength;
         genotype = new bool[](config.getGenotypeLength); //genotypeLength);
@@ -78,7 +78,7 @@ class Individual {
         this.fitness = ((foodPoints - poisonPoints) + 1) / 2;
         */
 
-
+        
         fitness = (cast(float)devouredFood * config.getFoodBonus)
                     - (cast(float)devouredPoison * config.getPoisonPenalty);
 

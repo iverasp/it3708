@@ -10,7 +10,7 @@ argv.append("build")
 
 projName = 'dbindings'
 sources = ['dbindings.d',
-'ea/config.d',
+'ea/ea_config.d',
 'ea/population.d',
 'ea/individual.d',
 'flatland/flatland_agent.d',
@@ -19,7 +19,8 @@ sources = ['dbindings.d',
 'ann/matrix.d',
 'beer_tracker/beer_tracker_agent.d',
 'beer_tracker/beer_tracker_object.d',
-'beer_tracker/beer_tracker_simulator.d']
+'beer_tracker/beer_tracker_simulator.d',
+'ann/ann_config.d']
 
 setup(
     name=projName,

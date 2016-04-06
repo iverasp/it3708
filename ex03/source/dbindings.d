@@ -4,13 +4,14 @@ import pyd.pyd;
 
 import ea.population;
 import ea.individual;
-import ea.config;
+import ea.ea_config;
 import flatland.agent;
 import flatland.simulator;
 import ann.ann;
 import beertracker.agent;
 import beertracker.object;
 import beertracker.simulator;
+import ann.ann_config;
 
 public class DBindings { }
 
@@ -20,7 +21,7 @@ extern(C) void PydMain() {
     module_init();
     wrap_class!(
         Population,
-        Init!(Config),
+        Init!(EaConfig),
         Repr!(Population.toString),
         Property!(Population.getChildren),
         Property!(Population.getAdults),
@@ -35,7 +36,7 @@ extern(C) void PydMain() {
     )();
     wrap_class!(
         Individual,
-        Init!(Config),
+        Init!(EaConfig),
         Property!(Individual.getPhenotype),
         Property!(Individual.getFitness),
         Property!(Individual.setFitnessRange),
@@ -72,31 +73,30 @@ extern(C) void PydMain() {
         Property!(FlatlandSimulator.getTotalPoisons)
     )();
     wrap_class!(
-        Config,
+        EaConfig,
         Init!(),
-        Property!(Config.getPopulationSize),
-        Property!(Config.getNumberOfChildren),
-        Property!(Config.getGenotypeLength),
-        Property!(Config.getAdultSelection),
-        Property!(Config.getParentSelection),
-        Property!(Config.getTournamentEpsilon),
-        Property!(Config.getTournamentGroupSize),
-        Property!(Config.getBoltzmannTemperature),
-        Property!(Config.getBoltzmannDeltaT),
-        Property!(Config.getCrossoverRate),
-        Property!(Config.getChildrenPerPair),
-        Property!(Config.getMutationType),
-        Property!(Config.getMutationRate),
-        Property!(Config.getFoodBonus),
-        Property!(Config.getPoisonPenalty)
+        Property!(EaConfig.getGenerations),
+        Property!(EaConfig.getPopulationSize),
+        Property!(EaConfig.getNumberOfChildren),
+        Property!(EaConfig.getGenotypeLength),
+        Property!(EaConfig.getAdultSelection),
+        Property!(EaConfig.getParentSelection),
+        Property!(EaConfig.getTournamentEpsilon),
+        Property!(EaConfig.getTournamentGroupSize),
+        Property!(EaConfig.getBoltzmannTemperature),
+        Property!(EaConfig.getBoltzmannDeltaT),
+        Property!(EaConfig.getCrossoverRate),
+        Property!(EaConfig.getChildrenPerPair),
+        Property!(EaConfig.getMutationType),
+        Property!(EaConfig.getMutationRate),
+        Property!(EaConfig.getFoodBonus),
+        Property!(EaConfig.getPoisonPenalty)
     )();
     wrap_class!(
-        ANN,
+        AnnConfig,
         Init!(),
-        Def!(ANN.setWeightsSynapsis0),
-        Def!(ANN.setWeightsSynapsis1),
-        Def!(ANN.predict),
-        Def!(ANN.getMove)
+        Property!(AnnConfig.getLayer1Function),
+        Property!(AnnConfig.getLayer2Function)
     )();
     wrap_class!(
         BeerTrackerObject,
@@ -115,4 +115,12 @@ extern(C) void PydMain() {
         Def!(BeerTrackerSimulator.descendObjects),
         Property!(BeerTrackerSimulator.getObjects)
     )();
+    wrap_class!(
+        ANN,
+        Init!(AnnConfig),
+        Def!(ANN.setWeightsSynapsis0),
+        Def!(ANN.setWeightsSynapsis1),
+        Def!(ANN.predict),
+        Def!(ANN.getMove)
+        )();
 }

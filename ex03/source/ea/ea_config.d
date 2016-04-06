@@ -1,22 +1,22 @@
-module ea.config;
+module ea.ea_config;
 
-class Config {
+class EaConfig {
     this(){
     }
 
     // EA config
     // Generic variables
-    auto populationSize = 200;
-    auto numberOfChildren = 200;
-    auto genotypeLength = 18 * 16; // 6 * 3
+    auto generations = 50;
+    auto populationSize = 100;
+    auto numberOfChildren = 100;
+    auto genotypeLength = 18 * 16;
     auto adultSelection = "g";
     auto parentSelection = "t";
     auto tournamentEpsilon = 0.1f;
     auto tournamentGroupSize = 20;
     auto boltzmannTemperature = 1.0f;
     auto boltzmannDeltaT = 0.01f;
-    auto crossoverRate = 0.5f;
-
+    auto crossoverRate = 0.0f;
     auto childrenPerPair = 2;
     auto mutationType = "g";
     auto mutationRate = 1.0f;
@@ -28,6 +28,7 @@ class Config {
 
     // EA getters
     // Generic getters
+    @property auto getGenerations(){ return generations; }
     @property auto getPopulationSize(){ return populationSize; }
     @property auto getNumberOfChildren(){ return numberOfChildren; }
     @property auto getGenotypeLength(){ return genotypeLength; }
