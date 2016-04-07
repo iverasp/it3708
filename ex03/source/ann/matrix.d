@@ -21,6 +21,14 @@ class Matrix {
         matrix = mat;
     }
 
+    this(int[][] mat) {
+        matrix = new float[][](1,6);
+        foreach(i; 0 .. 6) {
+            if (mat[0][i] > 0.5f) matrix[0][i] = 1.0f;
+            else matrix[0][i] = 0.0f;
+        }
+    }
+
     float[][] toArray() { return this.matrix; }
 
     override string toString() {

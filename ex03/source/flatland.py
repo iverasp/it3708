@@ -8,6 +8,7 @@ from random import seed
 from kivy.app import App
 from kivy.clock import Clock, mainthread
 from EAGraph import EAGraph
+from quick_conf import QuickConf
 
 # Append the directory in which the binaries were placed to Python's sys.path,
 # then import the D DLL.
@@ -22,7 +23,25 @@ from dbindings import *
 class Flatland(App):
 
     # EA
-    ea_config = EaConfig()
+    qc = QuickConf()
+    ea_config = EaConfig(
+        qc.generations,
+        qc.population_size,
+        qc.number_of_children,
+        qc.genotype_length,
+        qc.adult_selection,
+        qc.parent_selection,
+        qc.tournament_epsilon,
+        qc.tournament_group_size,
+        qc.boltzmann_temperature,
+        qc.boltzmann_delta_t,
+        qc.crossover_rate,
+        qc.children_per_pair,
+        qc.mutation_type,
+        qc.mutation_rate,
+        qc.food_bonus,
+        qc.poison_penalty
+    )
     population = Population(ea_config)
 
     # ANN
@@ -72,9 +91,43 @@ class Flatland(App):
     def on_start(self):
         for scenario in range(self.scenarios):
             self.cells_list.append(self.generate_map())
-        Clock.schedule_once(self.evolve, 0)
+        self.evolver = FlatlandEvolve(
+            self.population,
+            self.ann,
+            self.ea_config.getGenerations,
+            self.scenarios,
+            self.cells_list,
+            self.timesteps,
+            self.run_dynamic
+        )
+        Clock.schedule_once(self.run_evolver, 0)
+        #Clock.schedule_once(self.evolve, 0)
+
+    def run_evolver(self, *args):
+        self.evolver.evolve()
+        self.generation += 1
+        self.fittest_phenotype = self.evolver.getFittestPhenotype
+        print("Generation: ", self.generation)
+        highest_fitness = self.evolver.getHighestFitness
+        print("Highest fitness: ", highest_fitness)
+        average_fitness = self.population.getAverageFitness
+        print("Average fitness: ", average_fitness)
+        standard_deviation = self.population.getStandardDeviation
+        print("Standard deviation: ", standard_deviation)
+        #print("Fittest phenotype:", self.fittest_phenotype)
+
+        # Add datas to plot
+        self.graph.add_datas(
+            [standard_deviation, average_fitness, highest_fitness],
+            self.generation
+        )
+
+        if not self.generation == self.ea_config.getGenerations:
+            Clock.schedule_once(self.run_evolver, 0)
+        else: self.run_flatland()
 
     def evolve(self, *args):
+
         self.population.develop()
 
         for child in self.population.getChildren:
@@ -117,7 +170,7 @@ class Flatland(App):
             [standard_deviation, average_fitness, highest_fitness],
             self.generation
         )
-        
+
         if not self.generation == self.ea_config.getGenerations:
             Clock.schedule_once(self.evolve, 0)
         else: self.run_flatland()
@@ -132,7 +185,7 @@ class Flatland(App):
             if not self.run_dynamic:
                 sim_scenario = np.copy(self.cells_list[scenario]).tolist()
                 gui_scenario = np.copy(sim_scenario).tolist()
-            else: 
+            else:
                 sim_scenario =  self.generate_map()
                 gui_scenario = np.copy(sim_scenario).tolist()
             sim = FlatlandSimulator(6, 6, sim_scenario, self.timesteps)
@@ -147,9 +200,9 @@ class Flatland(App):
             print("Press escape to exit")
             print("Foods eaten:", sim.getDevouredFood, " / ", sim.getTotalFoods)
             print("Poisons eaten:", sim.getDevouredPoison, "/", sim.getTotalPoisons)
-            GUI = FlatlandGUI(cells=gui_scenario, 
+            GUI = FlatlandGUI(cells=gui_scenario,
                                 start=self.START, moves=sim.getMoves())
-        
+
         while self.random_runs:
             synapsis0 = [self.fittest_phenotype[i:i+3]
                         for i in range(0, len(self.fittest_phenotype), 3)]
@@ -169,7 +222,7 @@ class Flatland(App):
             print("Press escape to exit")
             print("Foods eaten:", sim.getDevouredFood, " / ", sim.getTotalFoods)
             print("Poisons eaten:", sim.getDevouredPoison, "/", sim.getTotalPoisons)
-            GUI = FlatlandGUI(cells=gui_scenario, 
+            GUI = FlatlandGUI(cells=gui_scenario,
                                 start=self.START, moves=sim.getMoves())
 
 if __name__ == '__main__':

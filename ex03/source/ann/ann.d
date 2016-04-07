@@ -12,7 +12,7 @@ import std.stdio;
 import std.string;
 
 class ANN {
-    
+
     AnnConfig config;
     Matrix synapsis0;
     Matrix synapsis1;
@@ -31,13 +31,13 @@ class ANN {
         this.synapsis1.matrix = weights;
     }
 
-    float[][] predict(float[][] input) {
+    float[][] predict(int[][] input) {
         auto layer0 = new Matrix(input);
         //writeln("\nlayer0 or input: ", layer0);
-        auto layer1 = (layer0 * synapsis0);  
+        auto layer1 = (layer0 * synapsis0);
 
         switch(config.getLayer1Function) {
-            case("s"):    
+            case("s"):
                 layer1 = layer1.nonLinear();
                 break;
             default:
@@ -48,7 +48,7 @@ class ANN {
         //writeln("layer1 or ouput: ", layer1);
         float[][] result = layer1.toArray();
         return result;
-        
+
         /**
         auto layer1 = (layer0 * synapsis0).nonLinear();
         writeln("layer1 or hidden: ", layer1);
@@ -60,7 +60,7 @@ class ANN {
         */
     }
 
-    int getMove(float[][] input) {
+    int getMove(int[][] input) {
         auto moves = predict(input);
         float max = 0;
         int move = 0;
