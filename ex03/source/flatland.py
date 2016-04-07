@@ -81,8 +81,8 @@ class Flatland(App):
             self.timesteps,
             self.run_dynamic
         )
-        #Clock.schedule_once(self.run_evolver, 0)
-        Clock.schedule_once(self.evolve, 0)
+        Clock.schedule_once(self.run_evolver, 0)
+        #Clock.schedule_once(self.evolve, 0)
 
     def run_evolver(self, *args):
         self.evolver.evolve()
