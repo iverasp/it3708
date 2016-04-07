@@ -22,7 +22,7 @@ class EAGraph(BoxLayout):
             xmin=0,
             xmax=60,
             ymin=0,
-            ymax=40,
+            ymax=200,
             size=(800, 600)
         )
 

@@ -34,13 +34,14 @@ class Flatland(App):
 
     # Simulator
     run_dynamic = False
-    dynamic_scenarios = 1
+    random_runs = True
+    scenarios = 1
     N = 10
     START = (6, 6)
     timesteps = 60
 
     generation = 0
-    cells = None
+    cells_list = []
     fittest_phenotype = ""
 
     def build(self):
@@ -69,11 +70,11 @@ class Flatland(App):
         return cells
 
     def on_start(self):
-        if not self.run_dynamic: self.cells = self.generate_map()
+        for scenario in range(self.scenarios):
+            self.cells_list.append(self.generate_map())
         Clock.schedule_once(self.evolve, 0)
 
     def evolve(self, *args):
-        if self.run_dynamic: self.cells = self.generate_map()
         self.population.develop()
 
         for child in self.population.getChildren:
@@ -81,15 +82,15 @@ class Flatland(App):
                         for i in range(0, len(child.getPhenotype), 3)]
             #print("synapsis0: ", synapsis0)
             self.ann.setWeightsSynapsis0(synapsis0)
-            sim = FlatlandSimulator(6, 6, self.cells, self.timesteps)
-
-            for scenario in range(self.dynamic_scenarios):
+            for scenario in range(self.scenarios):
+                current_scenario = np.copy(self.cells_list[scenario]).tolist()
+                sim = FlatlandSimulator(6, 6, current_scenario, self.timesteps)
                 while not sim.completed():
                     move = self.ann.getMove(sim.getAgent.sense(sim.getCells))
                     sim.move(move)
                 child.addDevouredFood = sim.getDevouredFood
                 child.addDevouredPoison = sim.getDevouredPoison
-                if self.run_dynamic: self.cells = self.generate_map()
+                if self.run_dynamic: self.cells_list[scenario] = self.generate_map()
 
         self.population.evaluate()
         self.population.adultSelection()
@@ -116,30 +117,60 @@ class Flatland(App):
             [standard_deviation, average_fitness, highest_fitness],
             self.generation
         )
-
+        
         if not self.generation == self.ea_config.getGenerations:
             Clock.schedule_once(self.evolve, 0)
         else: self.run_flatland()
 
     def run_flatland(self):
         # Rerun the best result
-        synapsis0 = [self.fittest_phenotype[i:i+3]
-                    for i in range(0, len(self.fittest_phenotype), 3)]
-        #self.cells = self.generate_map()
-        self.ann.setWeightsSynapsis0(synapsis0)
-        sim = FlatlandSimulator(6, 6, self.cells, self.timesteps)
-        while not sim.completed():
-            move = self.ann.getMove(sim.getAgent.sense(sim.getCells))
-            sim.move(move)
+        for scenario in range(self.scenarios):
+            synapsis0 = [self.fittest_phenotype[i:i+3]
+                        for i in range(0, len(self.fittest_phenotype), 3)]
+            #self.cells = self.generate_map()
+            self.ann.setWeightsSynapsis0(synapsis0)
+            if not self.run_dynamic:
+                sim_scenario = np.copy(self.cells_list[scenario]).tolist()
+                gui_scenario = np.copy(sim_scenario).tolist()
+            else: 
+                sim_scenario =  self.generate_map()
+                gui_scenario = np.copy(sim_scenario).tolist()
+            sim = FlatlandSimulator(6, 6, sim_scenario, self.timesteps)
+            while not sim.completed():
+                move = self.ann.getMove(sim.getAgent.sense(sim.getCells))
+                sim.move(move)
 
-        # Get moves and visualize run
-        print("\nFinished intelligencing the artificial agent")
-        print("Visualizing run")
-        print("Press + or - to increase or decrease the speed")
-        print("Press escape to exit")
-        print("Foods eaten:", sim.getDevouredFood, " / ", sim.getTotalFoods)
-        print("Poisons eaten:", sim.getDevouredPoison, "/", sim.getTotalPoisons)
-        GUI = FlatlandGUI(cells=self.cells, start=self.START, moves=sim.getMoves())
+            # Get moves and visualize run
+            print("\nFinished intelligencing the artificial agent")
+            print("Visualizing run")
+            print("Press + or - to increase or decrease the speed")
+            print("Press escape to exit")
+            print("Foods eaten:", sim.getDevouredFood, " / ", sim.getTotalFoods)
+            print("Poisons eaten:", sim.getDevouredPoison, "/", sim.getTotalPoisons)
+            GUI = FlatlandGUI(cells=gui_scenario, 
+                                start=self.START, moves=sim.getMoves())
+        
+        while self.random_runs:
+            synapsis0 = [self.fittest_phenotype[i:i+3]
+                        for i in range(0, len(self.fittest_phenotype), 3)]
+            self.ann.setWeightsSynapsis0(synapsis0)
+            sim_scenario =  self.generate_map()
+            gui_scenario = np.copy(sim_scenario).tolist()
+            sim = FlatlandSimulator(6, 6, sim_scenario, self.timesteps)
+            while not sim.completed():
+                move = self.ann.getMove(sim.getAgent.sense(sim.getCells))
+                sim.move(move)
+
+            # Get moves and visualize run
+            print("\nRunning random scenarios")
+            print("Finished intelligencing the artificial agent")
+            print("Visualizing run")
+            print("Press + or - to increase or decrease the speed")
+            print("Press escape to exit")
+            print("Foods eaten:", sim.getDevouredFood, " / ", sim.getTotalFoods)
+            print("Poisons eaten:", sim.getDevouredPoison, "/", sim.getTotalPoisons)
+            GUI = FlatlandGUI(cells=gui_scenario, 
+                                start=self.START, moves=sim.getMoves())
 
 if __name__ == '__main__':
     Flatland().run()

@@ -47,6 +47,7 @@ class FlatlandGUI:
         self.moves = moves
         self.cells = cells
         self.agent = FlatlandAgent(start[0], start[1])
+        self.start = start
 
         self.mapsize = len(cells)
         self.move = 0
@@ -64,7 +65,7 @@ class FlatlandGUI:
     def run(self):
         clock = pygame.time.get_ticks()
         self.update()
-        while True:
+        while self.move is not len(self.moves):
             self.listen()
             pygame.time.wait(5) # do not hog the CPU
             if clock + self.DELAY <= pygame.time.get_ticks():

@@ -1,12 +1,14 @@
 module ea.ea_config;
 
+//CHANGES HAS BEEN MADE
+
 class EaConfig {
     this(){
     }
 
     // EA config
     // Generic variables
-    auto generations = 50;
+    auto generations = 30;
     auto populationSize = 200;
     auto numberOfChildren = 200;
     auto genotypeLength = 18 * 16;
