@@ -18,10 +18,11 @@ sources = ['dbindings.d',
 'flatland/flatland_evolve.d',
 'ann/ann.d',
 'ann/matrix.d',
+'ann/ann_config.d',
 'beer_tracker/beer_tracker_agent.d',
 'beer_tracker/beer_tracker_object.d',
 'beer_tracker/beer_tracker_simulator.d',
-'ann/ann_config.d']
+'beer_tracker/beer_tracker_evolve.d']
 
 setup(
     name=projName,

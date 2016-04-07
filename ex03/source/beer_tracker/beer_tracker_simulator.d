@@ -25,11 +25,15 @@ class BeerTrackerSimulator {
         int start = uniform(0, width);
         object = new BeerTrackerObject(size, start);
         agent = new BeerTrackerAgent();
+    }
 
-        foreach(i; 0 .. timesteps) {
-            moveAgent(uniform(0,2), uniform(1,5));
-            descendObject();
-        }
+    void reset() {
+        agent.reset();
+        generateObject();
+        capturedBigObjects = 0;
+        capturedSmallObjects = 0;
+        avoidedObjects = 0;
+        timestep = 0;
     }
 
     void generateObject() {
@@ -59,6 +63,7 @@ class BeerTrackerSimulator {
     void moveAgent(int direction, int steps) {
         this.agent.move(direction, steps); // use CTRNN in future
         timestep++;
+        descendObject();
     }
 
     bool completed() {

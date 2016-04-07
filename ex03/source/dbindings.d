@@ -12,6 +12,7 @@ import ann.ann;
 import beertracker.agent;
 import beertracker.object;
 import beertracker.simulator;
+import beertracker.evolve;
 import ann.ann_config;
 
 public class DBindings { }
@@ -138,5 +139,12 @@ extern(C) void PydMain() {
         Property!(FlatlandEvolve.getFittestPhenotype),
         Def!(FlatlandEvolve.evolve),
         Def!(FlatlandEvolve.generateMap)
+    )();
+    wrap_class!(
+        BeerTrackerEvolve,
+        Init!(int),
+        Property!(BeerTrackerEvolve.getHighestFitness),
+        Property!(BeerTrackerEvolve.getFittestPhenotype),
+        Def!(BeerTrackerEvolve.evolve)
     )();
 }

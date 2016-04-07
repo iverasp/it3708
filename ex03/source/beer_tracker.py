@@ -14,9 +14,12 @@ sys.path.append(os.path.abspath(libDir))
 
 from dbindings import *
 
-#beer = BeerTrackerGUI(600)
+evolver = BeerTrackerEvolve(600);
 
+for i in range(1500):
+    evolver.evolve()
 
+"""
 for i in range(1000):
     sim = BeerTrackerSimulator(600);
     #while not sim.completed():
@@ -26,3 +29,4 @@ for i in range(1000):
     print("Small objects captured:", sim.getCapturedSmallObjects)
     print("Big objects captured:", sim.getCapturedBigObjects)
     print("Avoided objects:", sim.getAvoidedObjects)
+"""

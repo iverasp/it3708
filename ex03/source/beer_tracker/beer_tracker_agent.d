@@ -9,6 +9,10 @@ class BeerTrackerAgent : BeerTrackerObject {
         this.y = 14;
     }
 
+    void reset() {
+        this.y = 14;
+    }
+
     /*
     Direction is 0 for left, 1 for right
     */

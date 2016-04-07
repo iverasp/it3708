@@ -24,8 +24,6 @@ class FlatlandEvolve {
     int timesteps;
     bool runDynamic;
     float[] fittestPhenotype;
-    float standardDeviation;
-    float averageFitness;
     float highestFitness;
 
     this(Population population, ANN ann, int generations, int scenarios, int[][][] maps, int timesteps, bool runDynamic) {
