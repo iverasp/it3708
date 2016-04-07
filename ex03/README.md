@@ -1,4 +1,4 @@
-# Subsymbolic methods in AI, exercise 03
+# Subsymbolic methods in AI, exercise 003
 
 ## Install D compilers and D package manager
 
