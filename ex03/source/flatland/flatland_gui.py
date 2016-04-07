@@ -93,6 +93,8 @@ class FlatlandGUI:
                     self.moves.append(1)
                 if event.key == K_d:
                     self.moves.append(2)
+                if event.key == K_n:
+                    self.move = len(self.moves)
 
     def update(self):
         # No more moves? Wait until user quits

@@ -52,9 +52,9 @@ class Flatland(App):
     graph = EAGraph()
 
     # Simulator
-    run_dynamic = False
+    run_dynamic = True
     random_runs = True
-    scenarios = 1
+    scenarios = 5
     N = 10
     START = (6, 6)
     timesteps = 60

@@ -1,8 +1,8 @@
 class QuickConf:
 
     generations = 50
-    population_size = 100
-    number_of_children = 100
+    population_size = 200
+    number_of_children = 200
     genotype_length = 18 * 16
     adult_selection = "g"
     parent_selection = "t"
