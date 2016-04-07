@@ -76,6 +76,7 @@ extern(C) void PydMain() {
     wrap_class!(
         EaConfig,
         Init!(),
+        Init!(int,int,int,int,string,string,float,int,float,float,float,int,string,float,float,float),
         Property!(EaConfig.getGenerations),
         Property!(EaConfig.getPopulationSize),
         Property!(EaConfig.getNumberOfChildren),
@@ -135,6 +136,7 @@ extern(C) void PydMain() {
         Init!(Population, ANN, int, int, int[][][], int, bool),
         Property!(FlatlandEvolve.getHighestFitness),
         Property!(FlatlandEvolve.getFittestPhenotype),
-        Def!(FlatlandEvolve.evolve)
+        Def!(FlatlandEvolve.evolve),
+        Def!(FlatlandEvolve.generateMap)
     )();
 }

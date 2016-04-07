@@ -8,6 +8,7 @@ from random import seed
 from kivy.app import App
 from kivy.clock import Clock, mainthread
 from EAGraph import EAGraph
+from quick_conf import QuickConf
 
 # Append the directory in which the binaries were placed to Python's sys.path,
 # then import the D DLL.
@@ -22,7 +23,25 @@ from dbindings import *
 class Flatland(App):
 
     # EA
-    ea_config = EaConfig()
+    qc = QuickConf()
+    ea_config = EaConfig(
+        qc.generations,
+        qc.population_size,
+        qc.number_of_children,
+        qc.genotype_length,
+        qc.adult_selection,
+        qc.parent_selection,
+        qc.tournament_epsilon,
+        qc.tournament_group_size,
+        qc.boltzmann_temperature,
+        qc.boltzmann_delta_t,
+        qc.crossover_rate,
+        qc.children_per_pair,
+        qc.mutation_type,
+        qc.mutation_rate,
+        qc.food_bonus,
+        qc.poison_penalty
+    )
     population = Population(ea_config)
 
     # ANN
@@ -35,7 +54,7 @@ class Flatland(App):
     # Simulator
     run_dynamic = False
     random_runs = True
-    scenarios = 5
+    scenarios = 1
     N = 10
     START = (6, 6)
     timesteps = 60

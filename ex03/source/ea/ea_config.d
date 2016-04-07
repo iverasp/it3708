@@ -6,11 +6,12 @@ class EaConfig {
     this(){
     }
 
+
     // EA config
     // Generic variables
-    auto generations = 100;
-    auto populationSize = 300;
-    auto numberOfChildren = 300;
+    auto generations = 50;
+    auto populationSize = 100;
+    auto numberOfChildren = 100;
     auto genotypeLength = 18 * 16;
     auto adultSelection = "g";
     auto parentSelection = "t";
@@ -26,6 +27,42 @@ class EaConfig {
     // Problem specific variables
     auto foodBonus = 1.0f;
     auto poisonPenalty = 2.0f;
+
+    this(
+        int generations,
+        int populationSize,
+        int numberOfChildren,
+        int genotypeLength,
+        string adultSelection,
+        string parentSelection,
+        float tournamentEpsilon,
+        int tournamentGroupSize,
+        float boltzmannTemperature,
+        float boltzmannDeltaT,
+        float crossoverRate,
+        int childrenPerPair,
+        string mutationType,
+        float mutationRate,
+        float foodBonus,
+        float poisonPenalty
+    ) {
+        this.generations = generations;
+        this.populationSize = populationSize;
+        this.numberOfChildren = numberOfChildren;
+        this.genotypeLength = genotypeLength;
+        this.adultSelection = adultSelection;
+        this.parentSelection = parentSelection;
+        this.tournamentEpsilon = tournamentEpsilon;
+        this.tournamentGroupSize = tournamentGroupSize;
+        this.boltzmannTemperature = boltzmannTemperature;
+        this.boltzmannDeltaT = boltzmannDeltaT;
+        this.crossoverRate = crossoverRate;
+        this.childrenPerPair = childrenPerPair;
+        this.mutationType = mutationType;
+        this.mutationRate = mutationRate;
+        this.foodBonus = foodBonus;
+        this.poisonPenalty = poisonPenalty;
+    }
 
     // EA getters
     // Generic getters
