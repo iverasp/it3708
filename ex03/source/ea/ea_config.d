@@ -8,9 +8,9 @@ class EaConfig {
 
     // EA config
     // Generic variables
-    auto generations = 30;
-    auto populationSize = 200;
-    auto numberOfChildren = 200;
+    auto generations = 100;
+    auto populationSize = 300;
+    auto numberOfChildren = 300;
     auto genotypeLength = 18 * 16;
     auto adultSelection = "g";
     auto parentSelection = "t";

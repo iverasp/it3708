@@ -7,6 +7,7 @@ import ea.individual;
 import ea.ea_config;
 import flatland.agent;
 import flatland.simulator;
+import flatland.evolve;
 import ann.ann;
 import beertracker.agent;
 import beertracker.object;
@@ -128,5 +129,12 @@ extern(C) void PydMain() {
         Def!(ANN.setWeightsSynapsis1),
         Def!(ANN.predict),
         Def!(ANN.getMove)
-        )();
+    )();
+    wrap_class!(
+        FlatlandEvolve,
+        Init!(Population, ANN, int, int, int[][][], int, bool),
+        Property!(FlatlandEvolve.getHighestFitness),
+        Property!(FlatlandEvolve.getFittestPhenotype),
+        Def!(FlatlandEvolve.evolve)
+    )();
 }
