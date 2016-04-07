@@ -144,7 +144,7 @@ class Population {
                                 / config.getChildrenPerPair);
         auto myParents = new Individual[][](numberOfParents);
         auto newParents = 0;
-        auto tempFitness = 0;
+        auto tempFitness = 0f;
         foreach (j; 0 .. adults.length) {
             adults[j].setFitnessRange = [tempFitness,
                         tempFitness + (adults[j].getFitness / totalFitness)];

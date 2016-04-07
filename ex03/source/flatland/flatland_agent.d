@@ -60,7 +60,7 @@ public class FlatlandAgent {
             cells[(y - 1) % cells.length][x] // north
             ];
             break;
-            default: assert(0); break;
+            default: assert(0);
             }
         int[][] input = new int[][](1,6);
         foreach(i; 0 .. 3) {
