@@ -17,7 +17,7 @@ from dbindings import BeerTrackerAgent, BeerTrackerObject, BeerTrackerSimulator
 
 class BeerTrackerGUI:
 
-    def __init__(self, number_of_objects):
+    def __init__(self, timesteps):
         self.WIDTH = 30
         self.HEIGHT = 15
         self.TILESIZE = 40
@@ -26,7 +26,7 @@ class BeerTrackerGUI:
         self.object_color = (0, 0, 255)
         self.DELAY = 500
 
-        self.sim = BeerTrackerSimulator(4, 600)
+        self.sim = BeerTrackerSimulator(timesteps)
 
         pygame.init()
         self.display = pygame.display.set_mode((self.WIDTH*self.TILESIZE, self.HEIGHT*self.TILESIZE))
@@ -70,20 +70,20 @@ class BeerTrackerGUI:
         self.display.fill(Color('white'))
 
         # Draw the objects
-        for obj in self.sim.getObjects:
-            for x in range(obj.getX, obj.getX + obj.getSize):
-                surface = Rect(
-                    x * self.TILESIZE,
-                    obj.getY * self.TILESIZE,
-                    self.TILESIZE,
-                    self.TILESIZE
-                )
-                pygame.draw.rect(
-                    self.display,
-                    self.object_color,
-                    surface,
-                    5
-                )
+        obj = self.sim.getObject
+        for x in range(obj.getX, obj.getX + obj.getSize):
+            surface = Rect(
+                x * self.TILESIZE,
+                obj.getY * self.TILESIZE,
+                self.TILESIZE,
+                self.TILESIZE
+            )
+            pygame.draw.rect(
+                self.display,
+                self.object_color,
+                surface,
+                5
+            )
 
         # Draw the agent with wrap-around
         for x in range(
@@ -106,4 +106,4 @@ class BeerTrackerGUI:
         pygame.display.flip()
 
         self.sim.moveAgent(randint(0, 1), randint(1, 4))
-        self.sim.descendObjects()
+        self.sim.descendObject()

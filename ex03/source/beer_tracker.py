@@ -14,13 +14,14 @@ sys.path.append(os.path.abspath(libDir))
 
 from dbindings import *
 
-#beer = BeerTrackerGUI(4)
+#beer = BeerTrackerGUI(600)
+
 
 for i in range(1000):
-    sim = BeerTrackerSimulator(4, 600);
-    while not sim.completed():
-        sim.moveAgent(randint(0,1), randint(1,4))
-        sim.descendObjects()
+    sim = BeerTrackerSimulator(600);
+    #while not sim.completed():
+    #    sim.moveAgent(randint(0,1), randint(1,4))
+    #    sim.descendObject()
     print("Simulation:", i+1)
     print("Small objects captured:", sim.getCapturedSmallObjects)
     print("Big objects captured:", sim.getCapturedBigObjects)
