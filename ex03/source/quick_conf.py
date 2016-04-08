@@ -16,3 +16,5 @@ class QuickConf:
     mutation_rate = 1.0
     food_bonus = 1.0
     poison_penalty = 2.0
+    small_object_bonus = 1.0
+    big_object_penalty = 2.0

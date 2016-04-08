@@ -18,6 +18,10 @@ class BeerTrackerIndividual {
     float fitness;
     float[] fitnessRange;
 
+    int capturedBigObjects;
+    int capturedSmallObjects;
+    int avoidedObjects;
+
 
     this(EaConfig config) {
         this.config = config;
@@ -37,6 +41,11 @@ class BeerTrackerIndividual {
     }
 
     @property float[] getFitnessRange(){ return fitnessRange; }
+
+    @property int getCapturedBigObjects() { return this.capturedBigObjects; }
+    void setCapturedBigObjects(int o) { this.capturedBigObjects = o; }
+    @property int getCapturedSmallObjects() { return this.capturedSmallObjects; }
+    void setCapturedSmallObjects(int o) { this.capturedSmallObjects = o; }
 
     void generateGenotype() {
         foreach(i; 0 .. genotypeLength) {
@@ -60,7 +69,8 @@ class BeerTrackerIndividual {
     }
 
     void evaluateFitness() {
-
+        fitness = capturedSmallObjects * config.smallObjectBonus
+            - capturedBigObjects * config.bigObjectPenalty;
 
     }
 }

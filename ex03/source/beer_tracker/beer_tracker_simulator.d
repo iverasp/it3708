@@ -92,13 +92,13 @@ class BeerTrackerSimulator {
         if (objX1 >= agentX1 && objX2 <= agentX2) capturedSmallObjects++;
     }
 
-    bool[] getSensors() {
-        bool[] sensors = new bool[](5);
+    int[] getSensors() {
+        int[] sensors = new int[](5);
         foreach(i; 0 .. 5) {
             int agentX = (width + agent.getX + i) % width;
             int objX1 = object.getX;
             int objX2 = objX1 + object.getSize;
-            sensors[i] = objX1 <= agentX && objX2 >= agentX;
+            sensors[i] = cast(int)(objX1 <= agentX && objX2 >= agentX);
         }
         return sensors;
     }

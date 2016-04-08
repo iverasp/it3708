@@ -32,7 +32,9 @@ ea_config = EaConfig(
     qc.mutation_type,
     qc.mutation_rate,
     qc.food_bonus,
-    qc.poison_penalty
+    qc.poison_penalty,
+    qc.small_object_bonus,
+    qc.big_object_penalty
 )
 population = BeerTrackerPopulation(ea_config)
 
@@ -41,7 +43,7 @@ ann_config = AnnConfig()
 ann = CTRNN(ann_config)
 generation = 0
 
-for _ in range(10):
+for _ in range(50):
     population.develop()
 
     for child in population.getChildren:
@@ -52,10 +54,12 @@ for _ in range(10):
         sim = BeerTrackerSimulator(600)
         while not sim.completed():
             inputs = sim.getSensors()
-            print(inputs)
+            #print(inputs)
             #move = ann.getMove(sim.getAgent.sense(sim.getCells))
             #sim.move(move)
-            sim.moveAgent(randint(0,1), randint(1,4))
+            sim.moveAgent(0,1)
+        child.setCapturedSmallObjects(sim.getCapturedSmallObjects)
+        child.setCapturedBigObjects(sim.getCapturedBigObjects)
 
     population.evaluate()
     population.adultSelection()

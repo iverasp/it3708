@@ -40,7 +40,9 @@ class Flatland(App):
         qc.mutation_type,
         qc.mutation_rate,
         qc.food_bonus,
-        qc.poison_penalty
+        qc.poison_penalty,
+        qc.small_object_bonus,
+        qc.big_object_penalty
     )
     population = Population(ea_config)
 

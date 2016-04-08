@@ -27,6 +27,8 @@ class EaConfig {
     // Problem specific variables
     auto foodBonus = 1.0f;
     auto poisonPenalty = 2.0f;
+    auto smallObjectBonus = 1.0f;
+    auto bigObjectPenalty = 2.0f;
 
     this(
         int generations,
@@ -44,7 +46,9 @@ class EaConfig {
         string mutationType,
         float mutationRate,
         float foodBonus,
-        float poisonPenalty
+        float poisonPenalty,
+        float smallObjectBonus,
+        float bigObjectPenalty
     ) {
         this.generations = generations;
         this.populationSize = populationSize;
@@ -62,6 +66,8 @@ class EaConfig {
         this.mutationRate = mutationRate;
         this.foodBonus = foodBonus;
         this.poisonPenalty = poisonPenalty;
+        this.smallObjectBonus = smallObjectBonus;
+        this.bigObjectPenalty = bigObjectPenalty;
     }
 
     // EA getters
@@ -84,4 +90,6 @@ class EaConfig {
     // Problem specific variable
     @property auto getFoodBonus(){ return foodBonus; }
     @property auto getPoisonPenalty(){ return poisonPenalty; }
+    @property auto getSmallObjectBonus() { return smallObjectBonus; }
+    @property auto getBigObjectPenalty() { return bigObjectPenalty; }
 }

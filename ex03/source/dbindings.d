@@ -80,7 +80,7 @@ extern(C) void PydMain() {
     wrap_class!(
         EaConfig,
         Init!(),
-        Init!(int,int,int,int,string,string,float,int,float,float,float,int,string,float,float,float),
+        Init!(int,int,int,int,string,string,float,int,float,float,float,int,string,float,float,float,float,float),
         Property!(EaConfig.getGenerations),
         Property!(EaConfig.getPopulationSize),
         Property!(EaConfig.getNumberOfChildren),
@@ -96,7 +96,9 @@ extern(C) void PydMain() {
         Property!(EaConfig.getMutationType),
         Property!(EaConfig.getMutationRate),
         Property!(EaConfig.getFoodBonus),
-        Property!(EaConfig.getPoisonPenalty)
+        Property!(EaConfig.getPoisonPenalty),
+        Property!(EaConfig.getSmallObjectBonus),
+        Property!(EaConfig.getBigObjectPenalty)
     )();
     wrap_class!(
         AnnConfig,
@@ -126,7 +128,9 @@ extern(C) void PydMain() {
         Property!(BeerTrackerSimulator.getCapturedSmallObjects),
         Property!(BeerTrackerSimulator.getAvoidedObjects),
         Def!(BeerTrackerSimulator.completed),
-        Def!(BeerTrackerSimulator.getSensors)
+        Def!(BeerTrackerSimulator.getSensors),
+        Property!(BeerTrackerSimulator.getCapturedBigObjects),
+        Property!(BeerTrackerSimulator.getCapturedSmallObjects)
     )();
     wrap_class!(
         ANN,
@@ -154,10 +158,14 @@ extern(C) void PydMain() {
     wrap_class!(
         BeerTrackerIndividual,
         Init!(EaConfig),
-        Property!(Individual.getPhenotype),
-        Property!(Individual.getFitness),
-        Property!(Individual.setFitnessRange),
-        Property!(Individual.getFitnessRange)
+        Property!(BeerTrackerIndividual.getPhenotype),
+        Property!(BeerTrackerIndividual.getFitness),
+        Property!(BeerTrackerIndividual.setFitnessRange),
+        Property!(BeerTrackerIndividual.getFitnessRange),
+        Property!(BeerTrackerIndividual.getCapturedBigObjects),
+        Def!(BeerTrackerIndividual.setCapturedBigObjects),
+        Property!(BeerTrackerIndividual.getCapturedSmallObjects),
+        Def!(BeerTrackerIndividual.setCapturedSmallObjects)
     )();
     wrap_class!(
         BeerTrackerPopulation,
