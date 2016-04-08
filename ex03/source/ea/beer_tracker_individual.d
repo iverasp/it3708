@@ -70,7 +70,7 @@ class BeerTrackerIndividual {
             phenotype[i] = genToPhen(genotype[i * 8 .. i * 8 + 8], -5, 5);
         }
         // BIAS of layer1
-        phenotype[8] = genToPhen(genotype[9 * 8 .. 9 * 8 + 8], -10, 0);
+        phenotype[8] = genToPhen(genotype[8 * 8 .. 8 * 8 + 8], -10, 0);
         // remaining weights of layer1
         foreach(i; 9 .. 13) {
             phenotype[i] = genToPhen(genotype[i * 8 .. i * 8 + 8], -5, 5);
