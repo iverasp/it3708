@@ -16,6 +16,7 @@ import beertracker.evolve;
 import ann.ann_config;
 import ea.beertrackerindividual;
 import ea.beertrackerpopulation;
+import ann.ctrnn;
 
 public class DBindings { }
 
@@ -151,10 +152,31 @@ extern(C) void PydMain() {
     )();
     wrap_class!(
         BeerTrackerIndividual,
-        Init!(EaConfig)
+        Init!(EaConfig),
+        Property!(Individual.getPhenotype),
+        Property!(Individual.getFitness),
+        Property!(Individual.setFitnessRange),
+        Property!(Individual.getFitnessRange)
     )();
     wrap_class!(
         BeerTrackerPopulation,
-        Init!(EaConfig)
+        Init!(EaConfig),
+        Repr!(BeerTrackerPopulation.toString),
+        Property!(BeerTrackerPopulation.getChildren),
+        Property!(BeerTrackerPopulation.getAdults),
+        Property!(BeerTrackerPopulation.getAverageFitness),
+        Property!(BeerTrackerPopulation.getStandardDeviation),
+        Def!(BeerTrackerPopulation.develop),
+        Def!(BeerTrackerPopulation.evaluate),
+        Def!(BeerTrackerPopulation.adultSelection),
+        Def!(BeerTrackerPopulation.parentSelection),
+        Def!(BeerTrackerPopulation.reproduce),
+        Def!(BeerTrackerPopulation.generateInformation)
+    )();
+    wrap_class!(
+        CTRNN,
+        Init!(AnnConfig),
+        Def!(CTRNN.setWeightsSynapsis0),
+        Def!(CTRNN.setWeightsSynapsis1)
     )();
 }

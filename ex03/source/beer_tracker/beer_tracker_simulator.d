@@ -61,7 +61,7 @@ class BeerTrackerSimulator {
     }
 
     void moveAgent(int direction, int steps) {
-        this.agent.move(direction, steps); // use CTRNN in future
+        this.agent.move(direction, steps);
         timestep++;
         descendObject();
     }
@@ -97,7 +97,7 @@ class BeerTrackerSimulator {
         foreach(i; 0 .. 5) {
             int agentX = (width + agent.getX + i) % width;
             int objX1 = object.getX;
-            int objX2 = objX1 + obj.getSize;
+            int objX2 = objX1 + object.getSize;
             sensors[i] = objX1 >= agentX && objX2 <= agentX;
         }
         return sensors;
