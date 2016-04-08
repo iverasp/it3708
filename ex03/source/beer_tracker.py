@@ -48,7 +48,10 @@ for _ in range(ea_config.getGenerations):
 
     for child in population.getChildren:
         synapsis0 = [child.getPhenotype[i:i+2]
-                    for i in range(0, len(child.getPhenotype), 2)]
+                    for i in range(0, 2*8, 2)]
+
+        synapsis1 = [child.getPhenotype[i:i+2]
+                    for i in range(2*8, 2*13, 2)]
 
         #print("synapsis0: ", synapsis0)
         ann.setWeightsSynapsis0(synapsis0)

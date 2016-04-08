@@ -63,17 +63,22 @@ class BeerTrackerIndividual {
     }
 
     void generatePhenotype() {
+        int bitsize = 8;
         // BIAS of layer0
-        phenotype[0] = genToPhen(genotype[0 .. 8], -10, 0);
+        phenotype[0] = genToPhen(genotype[0 .. bitsize], -10, 0);
+        phenotype[1] = genToPhen(genotype[bitsize .. 2*bitsize], -10 ,0);
         // remaining weights of layer0
-        foreach(i; 1 .. 1 + 7) {
-            phenotype[i] = genToPhen(genotype[i * 8 .. i * 8 + 8], -5, 5);
+        foreach(i; 2 .. 16) {
+            phenotype[i] = genToPhen(genotype[i * bitsize .. i * bitsize + bitsize], -5, 5);
         }
         // BIAS of layer1
-        phenotype[8] = genToPhen(genotype[8 * 8 .. 8 * 8 + 8], -10, 0);
+        int bias0 = 7*2*8;
+        int bias1 = bias0 + 1;
+        phenotype[16] = genToPhen(genotype[bias0 .. bias0 + bitsize], -10, 0);
+        phenotype[17] = genToPhen(genotype[bias1 .. bias1 + bitsize], -10, 0);
         // remaining weights of layer1
-        foreach(i; 9 .. 13) {
-            phenotype[i] = genToPhen(genotype[i * 8 .. i * 8 + 8], -5, 5);
+        foreach(i; 18 .. 26) {
+            phenotype[i] = genToPhen(genotype[i * bitsize .. i * bitsize + bitsize], -5, 5);
         }
     }
 
