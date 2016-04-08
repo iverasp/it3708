@@ -59,6 +59,8 @@ class BeerTrackerPopulation {
         childrenFitness = new BeerTrackerIndividual[config.getNumberOfChildren];
         foreach (i; 0 .. children.length) {
             children[i].evaluateFitness();
+            children[i].setCapturedBigObjects(0);
+            children[i].setCapturedSmallObjects(0);
         }
         childrenFitness = children.dup;
 
