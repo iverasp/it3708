@@ -51,6 +51,8 @@ for _ in range(10):
         ann.setWeightsSynapsis0(synapsis0)
         sim = BeerTrackerSimulator(600)
         while not sim.completed():
+            inputs = sim.getSensors()
+            print(inputs)
             #move = ann.getMove(sim.getAgent.sense(sim.getCells))
             #sim.move(move)
             sim.moveAgent(randint(0,1), randint(1,4))

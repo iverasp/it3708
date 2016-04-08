@@ -98,7 +98,7 @@ class BeerTrackerSimulator {
             int agentX = (width + agent.getX + i) % width;
             int objX1 = object.getX;
             int objX2 = objX1 + object.getSize;
-            sensors[i] = objX1 >= agentX && objX2 <= agentX;
+            sensors[i] = objX1 <= agentX && objX2 >= agentX;
         }
         return sensors;
     }

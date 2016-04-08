@@ -125,7 +125,8 @@ extern(C) void PydMain() {
         Property!(BeerTrackerSimulator.getCapturedBigObjects),
         Property!(BeerTrackerSimulator.getCapturedSmallObjects),
         Property!(BeerTrackerSimulator.getAvoidedObjects),
-        Def!(BeerTrackerSimulator.completed)
+        Def!(BeerTrackerSimulator.completed),
+        Def!(BeerTrackerSimulator.getSensors)
     )();
     wrap_class!(
         ANN,
