@@ -27,7 +27,7 @@ class BeerTrackerIndividual {
         this.config = config;
         this.genotypeLength = config.getGenotypeLength; //genotypeLength;
         genotype = new bool[](config.getGenotypeLength); //genotypeLength);
-        phenotype = new float[](config.getGenotypeLength / 16L); //genotypeLength);
+        phenotype = new float[](config.getGenotypeLength / 8L); //genotypeLength);
         fitness = 0.0f;
         fitnessRange = [0.0f, 1.0f];
     }
@@ -53,18 +53,30 @@ class BeerTrackerIndividual {
         }
     }
 
+    float phenToGen(bool[] phen, float min, float max) {
+        ushort myInt = 0;
+        foreach(i; 0 .. 8L) {
+            if (phen[i]) myInt += cast(ushort)(1<<i);
+        }
+        float n = cast(float)myInt / cast(float)ushort.max;
+        return (((n - 0.0f) * (max - min)) / (1.0f - 0.0f)) + min
+    }
+
     void generatePhenotype() {
+
+        
+
         int phenotypeIndex = 0;
         for (int i = 0; i < config.getGenotypeLength; i++) {
             ushort myInt = 0;
             ushort index = 0;
-            foreach(j; i .. i + 16L) {
+            foreach(j; i .. i + 8L) {
                 if (genotype[j]) myInt += cast(ushort)(1 << index);
                 index++;
             }
             phenotype[phenotypeIndex] = cast(float)myInt / cast(float)ushort.max;
             phenotypeIndex++;
-            i += 16L - 1L;
+            i += 8L - 1L;
         }
     }
 

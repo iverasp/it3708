@@ -234,7 +234,7 @@ class BeerTrackerPopulation {
                 foreach (j; 0 .. config.getChildrenPerPair) {
                     auto genotypeLength = to!int(
                                             parents[i][0].genotype.length);
-                    auto crossoverPoint = uniform(0, 6) * 3 * 16;
+                    auto crossoverPoint = uniform(0, 13) * 2 * 8;
                     auto newborn = new BeerTrackerIndividual(config);
                     newborn.genotype = (
                         parents[i][0].genotype[0..crossoverPoint].dup
@@ -250,8 +250,8 @@ class BeerTrackerPopulation {
                     auto newborn = new BeerTrackerIndividual(config);
                     if (chance < config.getMutationRate) {
                         auto genotype = parents[i][0].genotype.dup;
-                        int index = uniform(0, 6);
-                        foreach(v; index * 3 * 16 .. index * 3 * 16 + 16 * 3) {
+                        int index = uniform(0, 13);
+                        foreach(v; index * 2 * 8 .. index * 2 * 8 + 8 * 2) {
                             genotype[v] = cast(bool)uniform(1,2);
                         }
                         newborn.genotype = genotype;

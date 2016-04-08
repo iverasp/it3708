@@ -6,7 +6,6 @@ class EaConfig {
     this(){
     }
 
-
     // EA config
     // Generic variables
     auto generations = 50;

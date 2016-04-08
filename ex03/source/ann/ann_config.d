@@ -5,7 +5,7 @@ class AnnConfig {
     }
 
     // ANN config
-	auto layer1Function = "s";
+	auto layer1Function = "s"; // for flatland, set to "s"
 	auto layer2Function = "s";
 
     // ANN getters

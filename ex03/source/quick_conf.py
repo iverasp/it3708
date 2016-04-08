@@ -1,6 +1,6 @@
 class QuickConf:
     
-    flatland = True
+    flatland = False
 
     if flatland:
         generations = 50
@@ -19,12 +19,14 @@ class QuickConf:
         mutation_rate = 1.0
         food_bonus = 1.0
         poison_penalty = 2.0
+        small_object_bonus = 1.0
+        big_object_penalty = 2.0
 
     else:
         generations = 50
         population_size = 200
         number_of_children = 200
-        genotype_length = 18 * 16
+        genotype_length = 29 * 8
         adult_selection = "g"
         parent_selection = "t"
         tournament_epsilon = 0.9
@@ -37,3 +39,5 @@ class QuickConf:
         mutation_rate = 1.0
         food_bonus = 1.0
         poison_penalty = 2.0
+        small_object_bonus = 1.0
+        big_object_penalty = 2.0

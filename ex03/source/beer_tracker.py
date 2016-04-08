@@ -43,17 +43,23 @@ ann_config = AnnConfig()
 ann = CTRNN(ann_config)
 generation = 0
 
-for _ in range(50):
+for _ in range(ea_config.getGenerations):
     population.develop()
 
     for child in population.getChildren:
-        synapsis0 = [child.getPhenotype[i:i+3]
-                    for i in range(0, len(child.getPhenotype), 3)]
+        synapsis0 = [child.getPhenotype[i:i+2]
+                    for i in range(0, len(child.getPhenotype), 2)]
+        synapsis1 = [
+
         #print("synapsis0: ", synapsis0)
         ann.setWeightsSynapsis0(synapsis0)
+
         sim = BeerTrackerSimulator(600)
         while not sim.completed():
             inputs = sim.getSensors()
+            # Add a random bias input
+            # Save memory neuron from lastrun in individual
+
             #print(inputs)
             #move = ann.getMove(sim.getAgent.sense(sim.getCells))
             #sim.move(move)
