@@ -53,7 +53,7 @@ class BeerTrackerIndividual {
         }
     }
 
-    float phenToGen(bool[] phen, float min, float max) {
+    float genToPhen(bool[] phen, float min, float max) {
         ushort myInt = 0;
         foreach(i; 0 .. 8L) {
             if (phen[i]) myInt += cast(ushort)(1<<i);
@@ -64,16 +64,16 @@ class BeerTrackerIndividual {
 
     void generatePhenotype() {
         // BIAS of layer0
-        phenotype[0] = phenToGen(genotype[0 .. 8], -10, 0);
+        phenotype[0] = genToPhen(genotype[0 .. 8], -10, 0);
         // remaining weights of layer0
         foreach(i; 1 .. 1 + 7) {
-            phenotype[i] = phenToGen(genotype[i * 8 .. i * 8 + 8], -5, 5);
+            phenotype[i] = genToPhen(genotype[i * 8 .. i * 8 + 8], -5, 5);
         }
         // BIAS of layer1
-        phenotype[8] = phenToGen(genotype[9 * 8 .. 9 * 8 + 8], -10, 0);
+        phenotype[8] = genToPhen(genotype[9 * 8 .. 9 * 8 + 8], -10, 0);
         // remaining weights of layer1
         foreach(i; 9 .. 13) {
-            phenotype[i] = phenToGen(genotype[i * 8 .. i * 8 + 8], -5, 5);
+            phenotype[i] = genToPhen(genotype[i * 8 .. i * 8 + 8], -5, 5);
         }
     }
 
