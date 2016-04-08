@@ -49,7 +49,6 @@ for _ in range(ea_config.getGenerations):
     for child in population.getChildren:
         synapsis0 = [child.getPhenotype[i:i+2]
                     for i in range(0, len(child.getPhenotype), 2)]
-        synapsis1 = [
 
         #print("synapsis0: ", synapsis0)
         ann.setWeightsSynapsis0(synapsis0)
@@ -66,6 +65,7 @@ for _ in range(ea_config.getGenerations):
             sim.moveAgent(0,1)
         child.setCapturedSmallObjects(sim.getCapturedSmallObjects)
         child.setCapturedBigObjects(sim.getCapturedBigObjects)
+        print(child.getPhenotype)
 
     population.evaluate()
     population.adultSelection()

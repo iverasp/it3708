@@ -59,7 +59,7 @@ class BeerTrackerIndividual {
             if (phen[i]) myInt += cast(ushort)(1<<i);
         }
         float n = cast(float)myInt / cast(float)ushort.max;
-        return (((n - 0.0f) * (max - min)) / (1.0f - 0.0f)) + min
+        return (((n - 0.0f) * (max - min)) / (1.0f - 0.0f)) + min;
     }
 
     void generatePhenotype() {
