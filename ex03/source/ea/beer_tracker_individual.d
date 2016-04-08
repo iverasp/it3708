@@ -63,20 +63,17 @@ class BeerTrackerIndividual {
     }
 
     void generatePhenotype() {
-
-        
-
-        int phenotypeIndex = 0;
-        for (int i = 0; i < config.getGenotypeLength; i++) {
-            ushort myInt = 0;
-            ushort index = 0;
-            foreach(j; i .. i + 8L) {
-                if (genotype[j]) myInt += cast(ushort)(1 << index);
-                index++;
-            }
-            phenotype[phenotypeIndex] = cast(float)myInt / cast(float)ushort.max;
-            phenotypeIndex++;
-            i += 8L - 1L;
+        // BIAS of layer0
+        phenotype[0] = phenToGen(genotype[0 .. 8], -10, 0);
+        // remaining weights of layer0
+        foreach(i; 1 .. 1 + 7) {
+            phenotype[i] = phenToGen(genotype[i * 8 .. i * 8 + 8], -5, 5);
+        }
+        // BIAS of layer1
+        phenotype[8] = phenToGen(genotype[9 * 8 .. 9 * 8 + 8], -10, 0);
+        // remaining weights of layer1
+        foreach(i; 9 .. 13) {
+            phenotype[i] = phenToGen(genotype[i * 8 .. i * 8 + 8], -5, 5);
         }
     }
 
