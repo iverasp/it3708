@@ -100,6 +100,7 @@ class BeerTrackerSimulator {
             int objX2 = objX1 + obj.getSize;
             sensors[i] = objX1 >= agentX && objX2 <= agentX;
         }
+        return sensors;
     }
 
     @property BeerTrackerObject getObject() {
