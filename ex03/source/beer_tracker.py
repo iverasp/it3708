@@ -79,6 +79,9 @@ for _ in range(50):
     print("Average fitness: ", average_fitness)
     standard_deviation = population.getStandardDeviation
     print("Standard deviation: ", standard_deviation)
+    print("Small objects captured:", sim.getCapturedSmallObjects)
+    print("Big objects captured:", sim.getCapturedBigObjects)
+    print("Avoided objects:", sim.getAvoidedObjects)
 
 """
 for i in range(1000):
