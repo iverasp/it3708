@@ -1,5 +1,5 @@
 .DS_Store
-.dub
+.dub/
 docs.json
 __dummy.html
 *.o
