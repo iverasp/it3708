@@ -14,6 +14,8 @@ import beertracker.object;
 import beertracker.simulator;
 import beertracker.evolve;
 import ann.ann_config;
+import ea.beertrackerindividual;
+import ea.beertrackerpopulation;
 
 public class DBindings { }
 
@@ -146,5 +148,13 @@ extern(C) void PydMain() {
         Property!(BeerTrackerEvolve.getHighestFitness),
         Property!(BeerTrackerEvolve.getFittestPhenotype),
         Def!(BeerTrackerEvolve.evolve)
+    )();
+    wrap_class!(
+        BeerTrackerIndividual,
+        Init!(EaConfig)
+    )();
+    wrap_class!(
+        BeerTrackerPopulation,
+        Init!(EaConfig)
     )();
 }
