@@ -49,15 +49,13 @@ class Matrix {
     }
 
     // activation function
-    Matrix nonLinear(bool derivative = false) {
-        auto result = new float[][](matrix.length, matrix[0].length);
+    void nonLinear(bool derivative = false) {
         foreach(i; 0 .. matrix.length) {
             foreach(j; 0 .. matrix[0].length) {
-                if (derivative) result[i][j] = matrix[i][j] * (1-matrix[i][j]);
-                else result[i][j] = 1f/(1f+exp(-matrix[i][j]));
+                if (derivative) matrix[i][j] = matrix[i][j] * (1-matrix[i][j]);
+                else matrix[i][j] = 1f/(1f+exp(-matrix[i][j]));
             }
         }
-        return new Matrix(result);
     }
 
     Matrix opBinaryRight(string op)(Matrix other)if(op=="-") {

@@ -38,7 +38,7 @@ class ANN {
 
         switch(config.getLayer1Function) {
             case("s"):
-                layer1 = layer1.nonLinear();
+                layer1.nonLinear();
                 break;
             default:
                 break;
