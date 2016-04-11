@@ -105,6 +105,7 @@ class CTRNN {
         float[][] result = layer2.toArray();
         return result;
     }
+    
 
     int getSteps(float n) {
         if (n < 0.2) return 0;

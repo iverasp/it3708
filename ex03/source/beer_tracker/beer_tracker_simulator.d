@@ -38,7 +38,7 @@ class BeerTrackerSimulator {
 
     void generateObject() {
         int size = uniform(1, 7);
-        int start = uniform(0, width);
+        int start = uniform(0, width - size);
         object.size = size;
         object.x = start;
         object.y = 0;
@@ -80,16 +80,18 @@ class BeerTrackerSimulator {
     }
 
     void checkWhatAgentCaptured() {
-        if (object.getSize >= 5) {
+        if (object.size > 4) {
             capturedBigObjects++;
             return;
         }
         int objX1 = object.getX;
-        int objX2 = objX1+ object.getSize;
+        int objX2 = objX1 + object.getSize;
         int agentX1 = agent.getX;
         int agentX2 = agentX1 + agent.getSize;
-
-        if (objX1 >= agentX1 && objX2 <= agentX2) capturedSmallObjects++;
+        if (objX1 >= agentX1 && objX2 <= agentX2) {
+            capturedSmallObjects++;
+            return;
+        }
     }
 
     int[] getSensors() {
