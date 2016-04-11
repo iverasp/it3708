@@ -23,21 +23,21 @@ class QuickConf:
         big_object_penalty = 2.0
 
     else:
-        generations = 50
+        generations = 100
         population_size = 200
         number_of_children = 200
         genotype_length = 34 * 8
         adult_selection = "g"
         parent_selection = "t"
-        tournament_epsilon = 0.2
-        tournament_group_size = 40
+        tournament_epsilon = 0.1
+        tournament_group_size = 100
         boltzmann_temperature = 1.0
         boltzmann_delta_t = 0.01
-        crossover_rate = 0.8
+        crossover_rate = 0.9
         children_per_pair = 2
         mutation_type = "g"
         mutation_rate = 1.0
         food_bonus = 1.0
         poison_penalty = 2.0
-        small_object_bonus = 1.0
-        big_object_penalty = 2.0
+        small_object_bonus = 1.0 
+        big_object_penalty = 2.5
