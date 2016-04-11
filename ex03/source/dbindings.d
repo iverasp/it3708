@@ -186,6 +186,10 @@ extern(C) void PydMain() {
         CTRNN,
         Init!(AnnConfig),
         Def!(CTRNN.setWeightsSynapsis0),
-        Def!(CTRNN.setWeightsSynapsis1)
+        Def!(CTRNN.setWeightsSynapsis1),
+        Def!(CTRNN.setGains0),
+        Def!(CTRNN.setGains1),
+        Def!(CTRNN.setTimeConstants0),
+        Def!(CTRNN.setTimeConstants1)
     )();
 }

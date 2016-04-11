@@ -26,7 +26,7 @@ class QuickConf:
         generations = 50
         population_size = 200
         number_of_children = 200
-        genotype_length = 26 * 8
+        genotype_length = 34 * 8
         adult_selection = "g"
         parent_selection = "t"
         tournament_epsilon = 0.9

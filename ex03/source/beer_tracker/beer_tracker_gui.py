@@ -12,21 +12,24 @@ libDir = join('build', 'lib.%s-%s' % (
     '.'.join(str(v) for v in version_info[:2])
 ))
 path.append(abspath(libDir))
-from dbindings import BeerTrackerAgent, BeerTrackerObject, BeerTrackerSimulator
+from dbindings import *
 
 
 class BeerTrackerGUI:
 
-    def __init__(self, timesteps):
+    def __init__(self, timesteps, phenotype):
         self.WIDTH = 30
         self.HEIGHT = 15
         self.TILESIZE = 40
         self.agent = BeerTrackerAgent()
         self.agent_color = (255, 0, 0)
-        self.object_color = (0, 0, 255)
+        self.big_object_color = (0, 0, 255)
+        self.small_object_color = (0, 255, 0)
         self.DELAY = 500
-
-        self.sim = BeerTrackerSimulator(timesteps)
+        self.sim = BeerTrackerSimulator(600)
+        ann_config = AnnConfig()
+        self.ann = CTRNN(ann_config)
+        # TODO: load phenotype into ANN
 
         pygame.init()
         self.display = pygame.display.set_mode((self.WIDTH*self.TILESIZE, self.HEIGHT*self.TILESIZE))
@@ -40,7 +43,12 @@ class BeerTrackerGUI:
             pygame.time.wait(5) # do not hog the CPU
             if clock + self.DELAY <= pygame.time.get_ticks():
                 clock = pygame.time.get_ticks()
+                self.iterateSim()
                 self.update()
+
+    def iterateSim(self):
+        # TODO: get move from ann
+        self.sim.moveAgent(0,1)
 
     def listen(self):
         for event in pygame.event.get():
@@ -71,6 +79,7 @@ class BeerTrackerGUI:
 
         # Draw the objects
         obj = self.sim.getObject
+        object_color = self.small_object_color if obj.getSize < 4 else self.big_object_color
         for x in range(obj.getX, obj.getX + obj.getSize):
             surface = Rect(
                 x * self.TILESIZE,
@@ -80,7 +89,7 @@ class BeerTrackerGUI:
             )
             pygame.draw.rect(
                 self.display,
-                self.object_color,
+                object_color,
                 surface,
                 5
             )
@@ -104,6 +113,3 @@ class BeerTrackerGUI:
                 5
             )
         pygame.display.flip()
-
-        self.sim.moveAgent(randint(0, 1), randint(1, 4))
-        self.sim.descendObject()

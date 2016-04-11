@@ -4,6 +4,7 @@ import os.path
 import sys
 from random import randint
 from quick_conf import QuickConf
+import threading
 
 # Append the directory in which the binaries were placed to Python's sys.path,
 # then import the D DLL.
@@ -42,19 +43,33 @@ population = BeerTrackerPopulation(ea_config)
 ann_config = AnnConfig()
 ann = CTRNN(ann_config)
 generation = 0
+fittest_phenotype = ""
 
-for _ in range(ea_config.getGenerations):
+for _ in range(0):
     population.develop()
 
     for child in population.getChildren:
         synapsis0 = [child.getPhenotype[i:i+2]
-                    for i in range(0, 2*8, 2)]
+                    for i in range(0, 16, 2)]
+        time_constants_synapsis0 = [child.getPhenotype[i]
+                    for i in range(16, 18)]
+        gains_synapsis0 = [child.getPhenotype[i]
+                    for i in range(18, 20)]
 
         synapsis1 = [child.getPhenotype[i:i+2]
-                    for i in range(2*8, 2*13, 2)]
+                    for i in range(20, 30, 2)]
+        time_constants_synapsis1 = [child.getPhenotype[i]
+                    for i in range(30, 32)]
+        gains_synapsis1 = [child.getPhenotype[i]
+                    for i in range(32, 34)]
 
         #print("synapsis0: ", synapsis0)
         ann.setWeightsSynapsis0(synapsis0)
+        ann.setWeightsSynapsis1(synapsis1)
+        ann.setGains0(gains_synapsis0)
+        ann.setGains1(gains_synapsis1)
+        ann.setTimeConstants0(time_constants_synapsis0)
+        ann.setTimeConstants1(time_constants_synapsis1)
 
         sim = BeerTrackerSimulator(600)
         while not sim.completed():
@@ -63,12 +78,11 @@ for _ in range(ea_config.getGenerations):
             # Save memory neuron from lastrun in individual
 
             #print(inputs)
-            #move = ann.getMove(sim.getAgent.sense(sim.getCells))
-            #sim.move(move)
-            sim.moveAgent(0,1)
+            move = ann.getMove(inputs)
+            sim.moveAgent(move[0], move[1])
         child.setCapturedSmallObjects(sim.getCapturedSmallObjects)
         child.setCapturedBigObjects(sim.getCapturedBigObjects)
-        print(child.getPhenotype)
+        #print(child.getPhenotype)
 
     population.evaluate()
     population.adultSelection()
@@ -91,6 +105,10 @@ for _ in range(ea_config.getGenerations):
     print("Small objects captured:", sim.getCapturedSmallObjects)
     print("Big objects captured:", sim.getCapturedBigObjects)
     print("Avoided objects:", sim.getAvoidedObjects)
+
+
+BeerTrackerGUI(600, fittest_phenotype)
+
 
 """
 for i in range(1000):

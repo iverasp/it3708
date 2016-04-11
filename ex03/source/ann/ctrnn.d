@@ -16,11 +16,21 @@ class CTRNN {
     AnnConfig config;
     Matrix synapsis0;
     Matrix synapsis1;
+    float[] neuronStates;
+    float[] timeConstants0;
+    float[] timeConstants1;
+    float[] gains0;
+    float[] gains1;
 
     this(AnnConfig config) {
         this.config = config;
         this.synapsis0 = new Matrix();
         this.synapsis1 = new Matrix();
+        this.neuronStates = new float[](4);
+        this.timeConstants0 = new float[](2);
+        this.timeConstants1 = new float[](2);
+        this.gains0 = new float[](2);
+        this.gains1 = new float[](2);
     }
 
     void setWeightsSynapsis0(float[][] weights) {
@@ -29,6 +39,22 @@ class CTRNN {
 
     void setWeightsSynapsis1(float[][] weights) {
         this.synapsis1.matrix = weights;
+    }
+
+    void setTimeConstants0(float[] t) {
+        this.timeConstants0 = t;
+    }
+
+    void setTimeConstants1(float[] t) {
+        this.timeConstants1 = t;
+    }
+
+    void setGains0(float[] g) {
+        this.gains0 = g;
+    }
+
+    void setGains1(float[] g) {
+        this.gains1 = g;
     }
 
     float[][] predict(int[][] input) {
@@ -48,29 +74,24 @@ class CTRNN {
         //writeln("layer1 or ouput: ", layer1);
         float[][] result = layer1.toArray();
         return result;
-
-        /**
-        auto layer1 = (layer0 * synapsis0).nonLinear();
-        writeln("layer1 or hidden: ", layer1);
-        auto layer2 = layer1 * synapsis1;
-        writeln("layer2 or output: ", layer2);
-        float[][] result = layer2.nonLinear().toArray();
-        writeln("result (toarray?): ", result);
-        return result;
-        */
     }
 
-    int getMove(int[][] input) {
-        auto moves = predict(input);
-        float max = 0;
-        int move = 0;
-        foreach(i; 0 .. moves[0].length) {
-            if (moves[0][i] > max) {
-                move = cast(int)i;
-                max = moves[0][i];
-            }
-        }
-        //writeln("move: ", move);
-        return move;
+    int getSteps(float n) {
+        if (n < 0.2) return = 0;
+        if (n < 0.4) return = 1;
+        if (n < 0.6) return = 2;
+        if (n < 0.8) return = 3;
+        if (n <= 1.0) return = 4;
+    }
+
+    int[][] getMove(int[] inputs) {
+        auto predicted = predict([inputs]);
+        float left = predicted[0][0];
+        float right = predicted[0][1];
+        left = cast(int)getSteps(left);
+        right = cast(int)getSteps(right);
+        if ((left - right) < 0) return [1][abs(left - right)];
+        if ((right - left) < 0) return [-1][abs(right - left)];
+
     }
 }
