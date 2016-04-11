@@ -45,7 +45,7 @@ ann = CTRNN(ann_config)
 generation = 0
 fittest_phenotype = ""
 
-for _ in range(50):
+for _ in range(qc.generations):
     population.develop()
 
     for child in population.getChildren:
@@ -63,7 +63,6 @@ for _ in range(50):
         gains_synapsis1 = [child.getPhenotype[i]
                     for i in range(32, 34)]
 
-        #print("synapsis0: ", synapsis0)
         ann.setWeightsSynapsis0(synapsis0)
         ann.setWeightsSynapsis1(synapsis1)
         ann.setGains0(gains_synapsis0)
@@ -72,16 +71,12 @@ for _ in range(50):
         ann.setTimeConstants1(time_constants_synapsis1)
 
         sim = BeerTrackerSimulator(600)
-        #print(child.getPhenotype)
         while not sim.completed():
             inputs = sim.getSensors()
             move = ann.getMove(inputs)
-            #print(inputs)
-            #print(move)
             sim.moveAgent(move[0], move[1])
         child.setCapturedSmallObjects(sim.getCapturedSmallObjects)
         child.setCapturedBigObjects(sim.getCapturedBigObjects)
-        #print(child.getPhenotype)
 
     population.evaluate()
     population.adultSelection()
@@ -101,21 +96,5 @@ for _ in range(50):
     print("Average fitness: ", average_fitness)
     standard_deviation = population.getStandardDeviation
     print("Standard deviation: ", standard_deviation)
-    #print("Small objects captured:", smallObj)
-    #print("Big objects captured:", bigObj)
-    #print("Avoided objects:", avoidObj)
-
 
 BeerTrackerGUI(600, fittest_phenotype)
-
-
-"""
-for i in range(1000):
-    sim = BeerTrackerSimulator(600);
-    while not sim.completed():
-        sim.moveAgent(randint(0,1), randint(1,4))
-    print("Simulation:", i+1)
-    print("Small objects captured:", sim.getCapturedSmallObjects)
-    print("Big objects captured:", sim.getCapturedBigObjects)
-    print("Avoided objects:", sim.getAvoidedObjects)
-"""

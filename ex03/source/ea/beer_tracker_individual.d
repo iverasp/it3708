@@ -101,7 +101,30 @@ class BeerTrackerIndividual {
     }
 
     void evaluateFitness() {
+        // This one needs avoidedObjects
+        //auto balance = 0.0f;
+        //if (capturedSmallObjects > 2 * capturedBigObjects) {
+        //    balance = capturedSmallObjects - 2 * capturedBigObjects;
+        //}
+        //else { balance = 2 * capturedBigObjects - capturedSmallObjects; }
+        //fitness = (capturedSmallObjects * config.smallObjectBonus
+        //    - capturedBigObjects * config.bigObjectPenalty) - balance;
+
+        // This one also needs avoidedObjects
+        //if (capturedSmallObjects < 2 * capturedBigObjects) {
+        //    fitness = capturedSmallObjects * config.smallObjectBonus
+        //            - capturedBigObjects * (config.bigObjectPenalty - 5.0f);
+        //}
+        //else if (capturedSmallObjects > 2 * capturedBigObjects) {
+        //    fitness = capturedSmallObjects * (config.smallObjectBonus - 5.0f)
+        //            - capturedBigObjects * config.bigObjectPenalty;
+        //}
+        //else { 
+        //    fitness = capturedSmallObjects * config.smallObjectBonus
+        //            - capturedBigObjects * config.bigObjectPenalty;
+        //}
+
         fitness = capturedSmallObjects * config.smallObjectBonus
-            - capturedBigObjects * config.bigObjectPenalty;
+                - capturedBigObjects * config.bigObjectPenalty;
     }
 }
