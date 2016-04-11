@@ -35,6 +35,29 @@ class BeerTrackerGUI:
         self.display = pygame.display.set_mode((self.WIDTH*self.TILESIZE, self.HEIGHT*self.TILESIZE))
         self.run()
 
+    def load_ann(self, phenotype):
+        synapsis0 = [phenotype[i:i+2]
+                    for i in range(0, 16, 2)]
+        time_constants_synapsis0 = [phenotype[i]
+                    for i in range(16, 18)]
+        gains_synapsis0 = [phenotype[i]
+                    for i in range(18, 20)]
+
+        synapsis1 = [phenotype[i:i+2]
+                    for i in range(20, 30, 2)]
+        time_constants_synapsis1 = [phenotype[i]
+                    for i in range(30, 32)]
+        gains_synapsis1 = [phenotype[i]
+                    for i in range(32, 34)]
+
+        #print("synapsis0: ", synapsis0)
+        self.ann.setWeightsSynapsis0(synapsis0)
+        self.ann.setWeightsSynapsis1(synapsis1)
+        self.ann.setGains0(gains_synapsis0)
+        self.ann.setGains1(gains_synapsis1)
+        self.ann.setTimeConstants0(time_constants_synapsis0)
+        self.ann.setTimeConstants1(time_constants_synapsis1)
+
     def run(self):
         clock = pygame.time.get_ticks()
         self.update()
@@ -47,8 +70,9 @@ class BeerTrackerGUI:
                 self.update()
 
     def iterateSim(self):
-        # TODO: get move from ann
-        self.sim.moveAgent(0,1)
+        inputs = self.sim.getSensors()
+        move = self.ann.getMove(inputs)
+        self.sim.moveAgent(move[0], move[1])
 
     def listen(self):
         for event in pygame.event.get():
