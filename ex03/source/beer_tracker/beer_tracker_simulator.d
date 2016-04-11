@@ -22,7 +22,7 @@ class BeerTrackerSimulator {
     this(int timesteps) {
         this.timesteps = timesteps;
         int size = uniform(1, 7);
-        int start = uniform(0, width);
+        int start = uniform(0, width - size);
         object = new BeerTrackerObject(size, start);
         agent = new BeerTrackerAgent();
     }

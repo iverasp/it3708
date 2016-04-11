@@ -103,7 +103,7 @@ class BeerTrackerGUI:
 
         # Draw the objects
         obj = self.sim.getObject
-        object_color = self.small_object_color if obj.getSize < 4 else self.big_object_color
+        object_color = self.small_object_color if obj.getSize < 5 else self.big_object_color
         for x in range(obj.getX, obj.getX + obj.getSize):
             surface = Rect(
                 x * self.TILESIZE,

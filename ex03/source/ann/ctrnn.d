@@ -116,13 +116,17 @@ class CTRNN {
 
     int[] getMove(int[] inputs) {
         auto predicted = predict(inputs);
-        //writeln(to!string(predicted));
+        //writeln("predicted: " ~ to!string(predicted));
         float left = predicted[0][0];
         float right = predicted[0][1];
-        left = cast(int)getSteps(left);
-        right = cast(int)getSteps(right);
-        if ((left - right) < 0) return [1, cast(int)abs(left - right)];
-        return [-1, cast(int)abs(right - left)];
+        left = getSteps(left);
+        right = getSteps(right);
+        //writeln("left: " ~ to!string(left) ~ " right: " ~to!string(right));
+        int[] result = [0, 0];
+        if (right > left) result = [1, cast(int)(right - left)];
+        else if (left > right) result = [0, cast(int)(left - right)];
+        //writeln("result: " ~to!string(result));
+        return result;
 
     }
 }
