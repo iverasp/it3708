@@ -58,6 +58,15 @@ class Matrix {
         }
     }
 
+    // activation function
+    void gainSigmoid(float[] gains, float[] neuronStates) {
+        foreach(i; 0 .. matrix.length) {
+            foreach(j; 0 .. matrix[0].length) {
+                matrix[i][j] = 1f/(1f+exp(-gains[j] * neuronStates[j]));
+            }
+        }
+    }
+
     Matrix opBinaryRight(string op)(Matrix other)if(op=="-") {
         auto result = new Matrix(to!int(matrix.length), to!int(matrix[0].length));
         foreach(i; 0 .. matrix.length) {

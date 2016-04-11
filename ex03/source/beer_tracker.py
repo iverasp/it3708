@@ -74,10 +74,6 @@ for _ in range(10):
         sim = BeerTrackerSimulator(600)
         while not sim.completed():
             inputs = sim.getSensors()
-            # Add a random bias input
-            # Save memory neuron from lastrun in individual
-
-            #print(inputs)
             move = ann.getMove(inputs)
             sim.moveAgent(move[0], move[1])
         child.setCapturedSmallObjects(sim.getCapturedSmallObjects)
