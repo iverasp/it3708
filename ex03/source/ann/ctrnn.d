@@ -62,7 +62,11 @@ class CTRNN {
     void setGains1(float[] g) {
         this.gains1 = g;
     }
-    
+
+    float gainSigmoid(float gain, float neuronState) {
+		return 1f/(1f+exp(-gain * neuronState));
+    }
+ 
     float deltaState(float signal, float[] neuronStates, float[] timeConstants,
                     int index) {
         return (signal - neuronStates[index]) / timeConstants[index];
@@ -71,8 +75,8 @@ class CTRNN {
     float[][] predict(int[] input) {
         float[] myInput = new float[](8);
         myInput[0] = 1.0f;
-        myInput[1] = 0.0f;
-        myInput[2] = 0.0f;
+        myInput[1] = gainSigmoid(gains0[0], neuronStates0[0]);
+        myInput[2] = gainSigmoid(gains0[1], neuronStates0[1]);
         myInput[3] = cast(float)input[0];
         myInput[4] = cast(float)input[1];
         myInput[5] = cast(float)input[2];
@@ -80,24 +84,24 @@ class CTRNN {
         myInput[7] = cast(float)input[4];
         auto layer0 = new Matrix([myInput]);
         auto layer1 = (layer0 * synapsis0);
+        layer1.nonLinear(); 
         neuronStates0[0] += deltaState(layer1.matrix[0][0], neuronStates0, 
                             timeConstants0, 0);
         neuronStates0[1] += deltaState(layer1.matrix[0][1], neuronStates0,
                             timeConstants0, 1);
-        layer1.gainSigmoid(gains0, neuronStates0); 
 
         myInput = new float[](5);
         myInput[0] = 1.0f;
-        myInput[1] = 0.0f;
-        myInput[2] = 0.0f;
+        myInput[1] = gainSigmoid(gains1[0], neuronStates1[0]);
+        myInput[2] = gainSigmoid(gains1[1], neuronStates1[1]);
         myInput[3 .. 5] = layer1.matrix[0];
         layer1 = new Matrix([myInput]);
         auto layer2 = (layer1 * synapsis1);
+        layer2.nonLinear();
         neuronStates1[0] += deltaState(layer2.matrix[0][0], neuronStates1, 
                             timeConstants1, 0);
         neuronStates1[1] += deltaState(layer2.matrix[0][1], neuronStates1,
                             timeConstants1, 1);
-        layer2.gainSigmoid(gains1, neuronStates1);
 
         float[][] result = layer2.toArray();
         return result;
@@ -113,6 +117,7 @@ class CTRNN {
 
     int[] getMove(int[] inputs) {
         auto predicted = predict(inputs);
+        writeln(to!string(predicted));
         float left = predicted[0][0];
         float right = predicted[0][1];
         left = cast(int)getSteps(left);
