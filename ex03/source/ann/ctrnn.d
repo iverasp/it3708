@@ -77,21 +77,21 @@ class CTRNN {
     }
 
     int getSteps(float n) {
-        if (n < 0.2) return = 0;
-        if (n < 0.4) return = 1;
-        if (n < 0.6) return = 2;
-        if (n < 0.8) return = 3;
-        if (n <= 1.0) return = 4;
+        if (n < 0.2) return 0;
+        if (n < 0.4) return 1;
+        if (n < 0.6) return 2;
+        if (n < 0.8) return 3;
+        return 4;
     }
 
-    int[][] getMove(int[] inputs) {
+    int[] getMove(int[] inputs) {
         auto predicted = predict([inputs]);
         float left = predicted[0][0];
         float right = predicted[0][1];
         left = cast(int)getSteps(left);
         right = cast(int)getSteps(right);
-        if ((left - right) < 0) return [1][abs(left - right)];
-        if ((right - left) < 0) return [-1][abs(right - left)];
+        if ((left - right) < 0) return [1, cast(int)abs(left - right)];
+        return [-1, cast(int)abs(right - left)];
 
     }
 }
