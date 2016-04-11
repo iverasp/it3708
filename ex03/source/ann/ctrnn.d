@@ -16,7 +16,8 @@ class CTRNN {
     AnnConfig config;
     Matrix synapsis0;
     Matrix synapsis1;
-    float[] neuronStates;
+    float[] neuronStates0;
+    float[] neuronStates1;
     float[] timeConstants0;
     float[] timeConstants1;
     float[] gains0;
@@ -26,7 +27,12 @@ class CTRNN {
         this.config = config;
         this.synapsis0 = new Matrix();
         this.synapsis1 = new Matrix();
-        this.neuronStates = new float[](4);
+        this.neuronStates0 = new float[](2);
+        this.neuronStates0[0] = 0.0f;
+        this.neuronStates0[1] = 0.0f;
+        this.neuronStates1 = new float[](2);
+        this.neuronStates1[0] = 0.0f;
+        this.neuronStates1[1] = 0.0f;
         this.timeConstants0 = new float[](2);
         this.timeConstants1 = new float[](2);
         this.gains0 = new float[](2);
@@ -56,23 +62,44 @@ class CTRNN {
     void setGains1(float[] g) {
         this.gains1 = g;
     }
+    
+    float deltaState(float signal, float[] neuronStates, float[] timeConstants,
+                    int index) {
+        return (signal - neuronStates[index]) / timeConstants[index];
+    }
 
-    float[][] predict(int[][] input) {
-        auto layer0 = new Matrix(input);
-        //writeln("\nlayer0 or input: ", layer0);
+    float[][] predict(int[] input) {
+        float[] myInput = new float[](8);
+        myInput[0] = 1.0f;
+        myInput[1] = 0.0f;
+        myInput[2] = 0.0f;
+        myInput[3] = cast(float)input[0];
+        myInput[4] = cast(float)input[1];
+        myInput[5] = cast(float)input[2];
+        myInput[6] = cast(float)input[3];
+        myInput[7] = cast(float)input[4];
+        auto layer0 = new Matrix([myInput]);
         auto layer1 = (layer0 * synapsis0);
+        neuronStates0[0] += deltaState(layer1.matrix[0][0], neuronStates0, 
+                            timeConstants0, 0);
+        neuronStates0[1] += deltaState(layer1.matrix[0][1], neuronStates0,
+                            timeConstants0, 1);
+        layer1.gainSigmoid(gains0, neuronStates0); 
 
-        switch(config.getLayer1Function) {
-            case("s"):
-                layer1.nonLinear();
-                break;
-            default:
-                break;
-            // put activation functions here
-        }
+        myInput = new float[](5);
+        myInput[0] = 1.0f;
+        myInput[1] = 0.0f;
+        myInput[2] = 0.0f;
+        myInput[3 .. 5] = layer1.matrix[0];
+        layer1 = new Matrix([myInput]);
+        auto layer2 = (layer1 * synapsis1);
+        neuronStates1[0] += deltaState(layer2.matrix[0][0], neuronStates1, 
+                            timeConstants1, 0);
+        neuronStates1[1] += deltaState(layer2.matrix[0][1], neuronStates1,
+                            timeConstants1, 1);
+        layer2.gainSigmoid(gains1, neuronStates1);
 
-        //writeln("layer1 or ouput: ", layer1);
-        float[][] result = layer1.toArray();
+        float[][] result = layer2.toArray();
         return result;
     }
 
@@ -85,7 +112,7 @@ class CTRNN {
     }
 
     int[] getMove(int[] inputs) {
-        auto predicted = predict([inputs]);
+        auto predicted = predict(inputs);
         float left = predicted[0][0];
         float right = predicted[0][1];
         left = cast(int)getSteps(left);
