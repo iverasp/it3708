@@ -29,7 +29,7 @@ class BeerTrackerGUI:
         self.sim = BeerTrackerSimulator(600)
         ann_config = AnnConfig()
         self.ann = CTRNN(ann_config)
-        # TODO: load phenotype into ANN
+        self.load_ann(phenotype)
 
         pygame.init()
         self.display = pygame.display.set_mode((self.WIDTH*self.TILESIZE, self.HEIGHT*self.TILESIZE))
