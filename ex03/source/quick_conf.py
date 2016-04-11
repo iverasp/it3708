@@ -1,6 +1,6 @@
 class QuickConf:
 
-    flatland = True
+    flatland = False
 
     if flatland:
         generations = 50

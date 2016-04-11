@@ -62,7 +62,7 @@ class CTRNN {
     void setGains1(float[] g) {
         this.gains1 = g;
     }
-    
+
     float deltaState(float signal, float[] neuronStates, float[] timeConstants,
                     int index) {
         return (signal - neuronStates[index]) / timeConstants[index];
@@ -73,18 +73,16 @@ class CTRNN {
         myInput[0] = 1.0f;
         myInput[1] = 0.0f;
         myInput[2] = 0.0f;
-        myInput[3] = cast(float)input[0];
-        myInput[4] = cast(float)input[1];
-        myInput[5] = cast(float)input[2];
-        myInput[6] = cast(float)input[3];
-        myInput[7] = cast(float)input[4];
+        foreach(i; 0 .. input.length) {
+            myInput[i+3] = cast(float)input[i];
+        }
         auto layer0 = new Matrix([myInput]);
         auto layer1 = (layer0 * synapsis0);
-        neuronStates0[0] += deltaState(layer1.matrix[0][0], neuronStates0, 
+        neuronStates0[0] += deltaState(layer1.matrix[0][0], neuronStates0,
                             timeConstants0, 0);
         neuronStates0[1] += deltaState(layer1.matrix[0][1], neuronStates0,
                             timeConstants0, 1);
-        layer1.gainSigmoid(gains0, neuronStates0); 
+        layer1.gainSigmoid(gains0, neuronStates0);
 
         myInput = new float[](5);
         myInput[0] = 1.0f;
@@ -93,7 +91,7 @@ class CTRNN {
         myInput[3 .. 5] = layer1.matrix[0];
         layer1 = new Matrix([myInput]);
         auto layer2 = (layer1 * synapsis1);
-        neuronStates1[0] += deltaState(layer2.matrix[0][0], neuronStates1, 
+        neuronStates1[0] += deltaState(layer2.matrix[0][0], neuronStates1,
                             timeConstants1, 0);
         neuronStates1[1] += deltaState(layer2.matrix[0][1], neuronStates1,
                             timeConstants1, 1);
