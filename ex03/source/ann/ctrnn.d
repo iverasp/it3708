@@ -89,7 +89,6 @@ class CTRNN {
                             timeConstants0, 0);
         neuronStates0[1] += deltaState(layer1.matrix[0][1], neuronStates0,
                             timeConstants0, 1);
-
         myInput = new float[](5);
         myInput[0] = 1.0f;
         myInput[1] = gainSigmoid(gains1[0], neuronStates1[0]);

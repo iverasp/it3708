@@ -45,7 +45,7 @@ ann = CTRNN(ann_config)
 generation = 0
 fittest_phenotype = ""
 
-for _ in range(10):
+for _ in range(5):
     population.develop()
 
     for child in population.getChildren:
@@ -72,9 +72,12 @@ for _ in range(10):
         ann.setTimeConstants1(time_constants_synapsis1)
 
         sim = BeerTrackerSimulator(600)
+        print(child.getPhenotype)
         while not sim.completed():
             inputs = sim.getSensors()
             move = ann.getMove(inputs)
+            print(inputs)
+            print(move)
             sim.moveAgent(move[0], move[1])
         child.setCapturedSmallObjects(sim.getCapturedSmallObjects)
         child.setCapturedBigObjects(sim.getCapturedBigObjects)
