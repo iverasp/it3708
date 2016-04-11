@@ -45,7 +45,7 @@ ann = CTRNN(ann_config)
 generation = 0
 fittest_phenotype = ""
 
-for _ in range(0):
+for _ in range(10):
     population.develop()
 
     for child in population.getChildren:

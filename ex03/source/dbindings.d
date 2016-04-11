@@ -190,6 +190,7 @@ extern(C) void PydMain() {
         Def!(CTRNN.setGains0),
         Def!(CTRNN.setGains1),
         Def!(CTRNN.setTimeConstants0),
-        Def!(CTRNN.setTimeConstants1)
+        Def!(CTRNN.setTimeConstants1),
+        Def!(CTRNN.getMove)
     )();
 }
