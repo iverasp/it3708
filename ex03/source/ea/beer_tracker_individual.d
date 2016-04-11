@@ -53,12 +53,14 @@ class BeerTrackerIndividual {
         }
     }
 
-    float genToPhen(bool[] phen, float min, float max) {
-        ushort myInt = 0;
+    float genToPhen(bool[] gen, float min, float max) {
+        //writeln(to!string(gen));
+        ubyte myInt = 0;
         foreach(i; 0 .. 8L) {
-            if (phen[i]) myInt += cast(ushort)(1<<i);
+            if (gen[i]) myInt += cast(ubyte)(1<<i);
         }
-        float n = cast(float)myInt / cast(float)ushort.max;
+        float n = cast(float)myInt / cast(float)ubyte.max;
+        //writeln(to!string(n));
         return (((n - 0.0f) * (max - min)) / (1.0f - 0.0f)) + min;
     }
 

@@ -72,12 +72,12 @@ for _ in range(5):
         ann.setTimeConstants1(time_constants_synapsis1)
 
         sim = BeerTrackerSimulator(600)
-        print(child.getPhenotype)
+        #print(child.getPhenotype)
         while not sim.completed():
             inputs = sim.getSensors()
             move = ann.getMove(inputs)
-            print(inputs)
-            print(move)
+            #print(inputs)
+            #print(move)
             sim.moveAgent(move[0], move[1])
         child.setCapturedSmallObjects(sim.getCapturedSmallObjects)
         child.setCapturedBigObjects(sim.getCapturedBigObjects)

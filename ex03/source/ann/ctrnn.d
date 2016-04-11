@@ -66,7 +66,7 @@ class CTRNN {
     float gainSigmoid(float gain, float neuronState) {
 		return 1f/(1f+exp(-gain * neuronState));
     }
- 
+
     float deltaState(float signal, float[] neuronStates, float[] timeConstants,
                     int index) {
         return (signal - neuronStates[index]) / timeConstants[index];
@@ -84,8 +84,8 @@ class CTRNN {
         myInput[7] = cast(float)input[4];
         auto layer0 = new Matrix([myInput]);
         auto layer1 = (layer0 * synapsis0);
-        layer1.nonLinear(); 
-        neuronStates0[0] += deltaState(layer1.matrix[0][0], neuronStates0, 
+        layer1.nonLinear();
+        neuronStates0[0] += deltaState(layer1.matrix[0][0], neuronStates0,
                             timeConstants0, 0);
         neuronStates0[1] += deltaState(layer1.matrix[0][1], neuronStates0,
                             timeConstants0, 1);
@@ -97,7 +97,7 @@ class CTRNN {
         layer1 = new Matrix([myInput]);
         auto layer2 = (layer1 * synapsis1);
         layer2.nonLinear();
-        neuronStates1[0] += deltaState(layer2.matrix[0][0], neuronStates1, 
+        neuronStates1[0] += deltaState(layer2.matrix[0][0], neuronStates1,
                             timeConstants1, 0);
         neuronStates1[1] += deltaState(layer2.matrix[0][1], neuronStates1,
                             timeConstants1, 1);
@@ -116,7 +116,7 @@ class CTRNN {
 
     int[] getMove(int[] inputs) {
         auto predicted = predict(inputs);
-        writeln(to!string(predicted));
+        //writeln(to!string(predicted));
         float left = predicted[0][0];
         float right = predicted[0][1];
         left = cast(int)getSteps(left);
