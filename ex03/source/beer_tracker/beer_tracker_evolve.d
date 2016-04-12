@@ -8,6 +8,8 @@ import ann.ctrnn;
 import ann.ann_config;
 
 import std.algorithm.sorting;
+import std.stdio;
+import std.conv;
 
 class BeerTrackerEvolve {
 
