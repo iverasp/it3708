@@ -86,7 +86,7 @@ class BeerTrackerIndividual {
         if (config.noWrap) {
             end += 2;
             foreach(i; start .. end) {
-                genToPhen(i, 1, 10);
+                genToPhen(i, -10, 10);
             }
             start += 4;
             end += 2;
