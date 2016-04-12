@@ -4,6 +4,7 @@ from sys import exit, path, version_info
 import distutils.util
 from os.path import join, abspath
 from random import randint, choice
+import curses
 
 # Append the directory in which the binaries were placed to Python's sys.path,
 # then import the D DLL.
@@ -32,6 +33,10 @@ class BeerTrackerGUI:
         self.ann = CTRNN(ann_config, config)
         self.ann.loadPhenotype(phenotype)
 
+        self.stdscr = curses.initscr()
+        curses.noecho()
+        curses.cbreak()
+
         pygame.init()
         self.display = pygame.display.set_mode((self.WIDTH*self.TILESIZE, self.HEIGHT*self.TILESIZE))
         self.run()
@@ -51,26 +56,44 @@ class BeerTrackerGUI:
         inputs = self.sim.getSensors()
         move = self.ann.getMove(inputs)
         self.sim.moveAgent(move[0], move[1])
-        print("\nAvoided big objects (+): ", self.sim.getAvoidedBigObjects)
-        print("Avoided small objects (-): ", self.sim.getAvoidedSmallObjects)
-        print("Captured big objects (-): ", self.sim.getCapturedBigObjects)
-        print("Captured small objects (+): ", self.sim.getCapturedSmallObjects)
+        """
+        print("\nAvoided big objects (+): ", self.sim.getAvoidedBigObjects, end="\r")
+        print("Avoided small objects (-): ", self.sim.getAvoidedSmallObjects, end="\r")
+        print("Captured big objects (-): ", self.sim.getCapturedBigObjects, end="\r")
+        print("Captured small objects (+): ", self.sim.getCapturedSmallObjects, end="\r")
+        """
+        self.report(self.sim.getAvoidedBigObjects, self.sim.getAvoidedSmallObjects, self.sim.getCapturedBigObjects, self.sim.getCapturedSmallObjects)
+
+    def report(self, a, b, c, d):
+        self.stdscr.addstr(0, 0, "Avoided big objects: {0}".format(a))
+        self.stdscr.addstr(1, 0, "Avoided small objects: {0}".format(b))
+        self.stdscr.addstr(2, 0, "Catpured big objects: {0}".format(c))
+        self.stdscr.addstr(3, 0, "Captured small objects: {0}".format(d))
+        self.stdscr.addstr(4, 0, "Delay: {0} ms".format(self.DELAY))
+
+        self.stdscr.refresh()
 
     def listen(self):
         for event in pygame.event.get():
             if event.type == QUIT:
+                curses.echo()
+                curses.nocbreak()
+                curses.endwin()
                 pygame.quit()
                 exit()
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
+                    curses.echo()
+                    curses.nocbreak()
+                    curses.endwin()
                     pygame.quit()
                     exit()
                 if event.key == K_MINUS:
                     self.DELAY += 50
-                    print("Delay set to:", self.DELAY)
+                    #print("Delay set to:", self.DELAY)
                 if event.key == K_PLUS:
                     self.DELAY -= 50
-                    print("Delay set to:", self.DELAY)
+                    #print("Delay set to:", self.DELAY)
                 if event.key == K_w:
                     self.moves.append(0)
                 if event.key == K_a:
