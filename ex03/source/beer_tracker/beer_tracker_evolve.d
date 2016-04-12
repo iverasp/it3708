@@ -42,7 +42,6 @@ class BeerTrackerEvolve {
             child.setCapturedBigObjects(sim.getCapturedBigObjects);
             child.setCapturedSmallObjects(sim.getCapturedSmallObjects);
         }
-
         population.evaluate();
         population.adultSelection();
         population.parentSelection();

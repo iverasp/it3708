@@ -63,18 +63,21 @@ class BeerTrackerSimulator {
     void descendObject() {
         if (object.getY == height - 1) {
             if (object.getSize > 4) { ++avoidedBigObjects; }
-            else if (object.getSize < 5) { ++avoidedSmallObjects; } 
-            replaceObject(); 
+            else if (object.getSize < 5) { ++avoidedSmallObjects; }
+            replaceObject();
         }
         else { object.descend(); }
-        if (objectIntersectsAgent()) { checkWhatAgentCaptured(); }
+        if (objectIntersectsAgent()) {
+            checkWhatAgentCaptured();
+            replaceObject();
+        }
 
 
     }
 
     void moveAgent(int direction, int steps) {
         if (config.pullMode && steps == 0) {
-            object.y = 14;
+            object.y = 13;
             timestep++;
             descendObject();
             return;

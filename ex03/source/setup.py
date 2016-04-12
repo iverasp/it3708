@@ -3,10 +3,17 @@ from pyd.support import setup
 from pyd import patch_distutils
 from sys import argv
 
-argv.append("build")
-#argv.append("-c")
-#argv.append("ldc2")
-#argv.append("-O")
+if argv[-1] == "opt":
+    print("building with optimalization")
+    argv.pop()
+    argv.append("build")
+    argv.append("-c")
+    argv.append("ldc2")
+    argv.append("-O")
+
+else: argv.append("build")
+
+
 
 projName = 'dbindings'
 sources = ['dbindings.d',
