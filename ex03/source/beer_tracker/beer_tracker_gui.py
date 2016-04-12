@@ -17,7 +17,7 @@ from dbindings import *
 
 class BeerTrackerGUI:
 
-    def __init__(self, timesteps, phenotype):
+    def __init__(self, config, phenotype):
         self.WIDTH = 30
         self.HEIGHT = 15
         self.TILESIZE = 40
@@ -26,9 +26,10 @@ class BeerTrackerGUI:
         self.big_object_color = (0, 0, 255)
         self.small_object_color = (0, 255, 0)
         self.DELAY = 500
-        self.sim = BeerTrackerSimulator(600)
+        self.config = config
+        self.sim = BeerTrackerSimulator(config)
         ann_config = AnnConfig()
-        self.ann = CTRNN(ann_config)
+        self.ann = CTRNN(ann_config, config)
         self.load_ann(phenotype)
 
         pygame.init()
@@ -36,19 +37,32 @@ class BeerTrackerGUI:
         self.run()
 
     def load_ann(self, phenotype):
-        synapsis0 = [phenotype[i:i+2]
-                    for i in range(0, 16, 2)]
-        time_constants_synapsis0 = [phenotype[i]
-                    for i in range(16, 18)]
-        gains_synapsis0 = [phenotype[i]
-                    for i in range(18, 20)]
+        synapsis0_end = 16 if not self.config.isNoWrap else 20
 
+        start = 0
+        end = synapsis0_end
+        synapsis0 = [phenotype[i:i+2]
+                    for i in range(start, end, 2)]
+        start = end
+        end = start + 2
+        time_constants_synapsis0 = [phenotype[i]
+                    for i in range(start, end)]
+        start = end
+        end = start + 2
+        gains_synapsis0 = [phenotype[i]
+                    for i in range(start, end)]
+        start = end
+        end = start + 10
         synapsis1 = [phenotype[i:i+2]
-                    for i in range(20, 30, 2)]
+                    for i in range(start, end, 2)]
+        start = end
+        end = start + 2
         time_constants_synapsis1 = [phenotype[i]
-                    for i in range(30, 32)]
+                    for i in range(start, end)]
+        start = end
+        end = start + 2
         gains_synapsis1 = [phenotype[i]
-                    for i in range(32, 34)]
+                    for i in range(start, end)]
 
         #print("synapsis0: ", synapsis0)
         self.ann.setWeightsSynapsis0(synapsis0)

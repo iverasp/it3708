@@ -21,12 +21,18 @@ class QuickConf:
         poison_penalty = 2.0
         small_object_bonus = 1.0
         big_object_penalty = 2.0
+        pull_mode = False
+        no_wrap = False
+        timesteps = 60
 
     else:
         generations = 50
         population_size = 200
         number_of_children = 200
-        genotype_length = 34 * 8
+        pull_mode = False
+        no_wrap = False
+        timesteps = 600
+        genotype_length = 34 * 8 if not no_wrap else 38 * 8
         adult_selection = "g"
         parent_selection = "t"
         tournament_epsilon = 0.2
@@ -40,4 +46,4 @@ class QuickConf:
         food_bonus = 1.0
         poison_penalty = 2.0
         small_object_bonus = 1.0
-        big_object_penalty = 2.0
+        big_object_penalty = 3.0

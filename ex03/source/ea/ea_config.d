@@ -29,6 +29,10 @@ class EaConfig {
     auto smallObjectBonus = 1.0f;
     auto bigObjectPenalty = 2.0f;
 
+    auto noWrap = false;
+    auto pullMode = false;
+    auto timesteps = 600;
+
     this(
         int generations,
         int populationSize,
@@ -47,7 +51,10 @@ class EaConfig {
         float foodBonus,
         float poisonPenalty,
         float smallObjectBonus,
-        float bigObjectPenalty
+        float bigObjectPenalty,
+        bool noWrap,
+        bool pullMode,
+        int timesteps
     ) {
         this.generations = generations;
         this.populationSize = populationSize;
@@ -67,6 +74,9 @@ class EaConfig {
         this.poisonPenalty = poisonPenalty;
         this.smallObjectBonus = smallObjectBonus;
         this.bigObjectPenalty = bigObjectPenalty;
+        this.noWrap = noWrap;
+        this.pullMode = pullMode;
+        this.timesteps = timesteps;
     }
 
     // EA getters
@@ -91,4 +101,6 @@ class EaConfig {
     @property auto getPoisonPenalty(){ return poisonPenalty; }
     @property auto getSmallObjectBonus() { return smallObjectBonus; }
     @property auto getBigObjectPenalty() { return bigObjectPenalty; }
+
+    @property auto isNoWrap() { return noWrap; }
 }

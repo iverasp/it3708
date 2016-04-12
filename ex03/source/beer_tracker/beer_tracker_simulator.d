@@ -2,6 +2,7 @@ module beertracker.simulator;
 
 import beertracker.object;
 import beertracker.agent;
+import ea.ea_config;
 
 import std.random : uniform;
 import std.algorithm;
@@ -18,9 +19,11 @@ class BeerTrackerSimulator {
     int capturedBigObjects;
     int timesteps;
     int timestep;
+    EaConfig config;
 
-    this(int timesteps) {
-        this.timesteps = timesteps;
+    this(EaConfig config) {
+        this.config = config;
+        this.timesteps = config.timesteps;
         int size = uniform(1, 7);
         int start = uniform(0, width - size);
         object = new BeerTrackerObject(size, start);
@@ -61,9 +64,24 @@ class BeerTrackerSimulator {
     }
 
     void moveAgent(int direction, int steps) {
-        this.agent.move(direction, steps);
-        timestep++;
-        descendObject();
+        if (config.pullMode && steps == 0) {
+            object.y = 14;
+            timestep++;
+            descendObject();
+            return;
+        }
+        if (config.noWrap) {
+            if (direction == 0 && agent.getX - steps < 0) agent.x = 0;
+            else if (direction == 1 && agent.getX + steps + agent.getSize > width)
+                agent.x = width - agent.getSize;
+            else this.agent.move(direction, steps);
+            timestep++;
+            descendObject();
+        } else {
+            this.agent.move(direction, steps);
+            timestep++;
+            descendObject();
+        }
     }
 
     bool completed() {
@@ -95,12 +113,20 @@ class BeerTrackerSimulator {
     }
 
     int[] getSensors() {
-        int[] sensors = new int[](5);
+        int numberOfSensors = 5;
+        if (config.noWrap) {
+            numberOfSensors += 2;
+        }
+        int[] sensors = new int[](numberOfSensors);
         foreach(i; 0 .. 5) {
             int agentX = (width + agent.getX + i) % width;
             int objX1 = object.getX;
             int objX2 = objX1 + object.getSize;
             sensors[i] = cast(int)(objX1 <= agentX && objX2 >= agentX);
+        }
+        if (config.noWrap) {
+            sensors[5] = cast(int)(agent.getX == 0);
+            sensors[6] = cast(int)(agent.getX + agent.getSize == width);
         }
         return sensors;
     }

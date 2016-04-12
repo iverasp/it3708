@@ -80,7 +80,7 @@ extern(C) void PydMain() {
     wrap_class!(
         EaConfig,
         Init!(),
-        Init!(int,int,int,int,string,string,float,int,float,float,float,int,string,float,float,float,float,float),
+        Init!(int,int,int,int,string,string,float,int,float,float,float,int,string,float,float,float,float,float,bool,bool,int),
         Property!(EaConfig.getGenerations),
         Property!(EaConfig.getPopulationSize),
         Property!(EaConfig.getNumberOfChildren),
@@ -98,7 +98,8 @@ extern(C) void PydMain() {
         Property!(EaConfig.getFoodBonus),
         Property!(EaConfig.getPoisonPenalty),
         Property!(EaConfig.getSmallObjectBonus),
-        Property!(EaConfig.getBigObjectPenalty)
+        Property!(EaConfig.getBigObjectPenalty),
+        Property!(EaConfig.isNoWrap)
     )();
     wrap_class!(
         AnnConfig,
@@ -119,7 +120,7 @@ extern(C) void PydMain() {
     )();
     wrap_class!(
         BeerTrackerSimulator,
-        Init!(int),
+        Init!(EaConfig),
         Def!(BeerTrackerSimulator.descendObject),
         Property!(BeerTrackerSimulator.getObject),
         Property!(BeerTrackerSimulator.getAgent),
@@ -130,7 +131,8 @@ extern(C) void PydMain() {
         Def!(BeerTrackerSimulator.completed),
         Def!(BeerTrackerSimulator.getSensors),
         Property!(BeerTrackerSimulator.getCapturedBigObjects),
-        Property!(BeerTrackerSimulator.getCapturedSmallObjects)
+        Property!(BeerTrackerSimulator.getCapturedSmallObjects),
+        Def!(BeerTrackerSimulator.reset)
     )();
     wrap_class!(
         ANN,
@@ -150,7 +152,7 @@ extern(C) void PydMain() {
     )();
     wrap_class!(
         BeerTrackerEvolve,
-        Init!(int),
+        Init!(EaConfig),
         Property!(BeerTrackerEvolve.getHighestFitness),
         Property!(BeerTrackerEvolve.getFittestPhenotype),
         Def!(BeerTrackerEvolve.evolve)
@@ -184,7 +186,7 @@ extern(C) void PydMain() {
     )();
     wrap_class!(
         CTRNN,
-        Init!(AnnConfig),
+        Init!(AnnConfig, EaConfig),
         Def!(CTRNN.setWeightsSynapsis0),
         Def!(CTRNN.setWeightsSynapsis1),
         Def!(CTRNN.setGains0),

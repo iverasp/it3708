@@ -35,33 +35,50 @@ ea_config = EaConfig(
     qc.food_bonus,
     qc.poison_penalty,
     qc.small_object_bonus,
-    qc.big_object_penalty
+    qc.big_object_penalty,
+    qc.no_wrap,
+    qc.pull_mode,
+    qc.timesteps
 )
 population = BeerTrackerPopulation(ea_config)
 
 # ANN
 ann_config = AnnConfig()
-ann = CTRNN(ann_config)
+ann = CTRNN(ann_config, ea_config)
 generation = 0
 fittest_phenotype = ""
+sim = BeerTrackerSimulator(ea_config)
+
+synapsis0_end = 16 if not qc.no_wrap else 20
 
 for _ in range(qc.generations):
     population.develop()
 
     for child in population.getChildren:
+        start = 0
+        end = synapsis0_end
         synapsis0 = [child.getPhenotype[i:i+2]
-                    for i in range(0, 16, 2)]
+                    for i in range(start, end, 2)]
+        start = end
+        end = start + 2
         time_constants_synapsis0 = [child.getPhenotype[i]
-                    for i in range(16, 18)]
+                    for i in range(start, end)]
+        start = end
+        end = start + 2
         gains_synapsis0 = [child.getPhenotype[i]
-                    for i in range(18, 20)]
-
+                    for i in range(start, end)]
+        start = end
+        end = start + 10
         synapsis1 = [child.getPhenotype[i:i+2]
-                    for i in range(20, 30, 2)]
+                    for i in range(start, end, 2)]
+        start = end
+        end = start + 2
         time_constants_synapsis1 = [child.getPhenotype[i]
-                    for i in range(30, 32)]
+                    for i in range(start, end)]
+        start = end
+        end = start + 2
         gains_synapsis1 = [child.getPhenotype[i]
-                    for i in range(32, 34)]
+                    for i in range(start, end)]
 
         ann.setWeightsSynapsis0(synapsis0)
         ann.setWeightsSynapsis1(synapsis1)
@@ -70,13 +87,15 @@ for _ in range(qc.generations):
         ann.setTimeConstants0(time_constants_synapsis0)
         ann.setTimeConstants1(time_constants_synapsis1)
 
-        sim = BeerTrackerSimulator(600)
+        #print(child.getPhenotype)
+
         while not sim.completed():
             inputs = sim.getSensors()
             move = ann.getMove(inputs)
             sim.moveAgent(move[0], move[1])
         child.setCapturedSmallObjects(sim.getCapturedSmallObjects)
         child.setCapturedBigObjects(sim.getCapturedBigObjects)
+        sim.reset()
 
     population.evaluate()
     population.adultSelection()
@@ -97,4 +116,4 @@ for _ in range(qc.generations):
     standard_deviation = population.getStandardDeviation
     print("Standard deviation: ", standard_deviation)
 
-BeerTrackerGUI(600, fittest_phenotype)
+BeerTrackerGUI(ea_config, fittest_phenotype)

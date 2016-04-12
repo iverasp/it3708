@@ -2,6 +2,7 @@ module ann.ctrnn;
 
 import ann.ann_config;
 import ann.matrix;
+import ea.ea_config;
 import std.algorithm;
 import std.array;
 import std.conv;
@@ -14,6 +15,7 @@ import std.string;
 class CTRNN {
 
     AnnConfig config;
+    EaConfig eaconfig;
     Matrix synapsis0;
     Matrix synapsis1;
     float[] neuronStates0;
@@ -23,8 +25,9 @@ class CTRNN {
     float[] gains0;
     float[] gains1;
 
-    this(AnnConfig config) {
+    this(AnnConfig config, EaConfig eaconfig) {
         this.config = config;
+        this.eaconfig = eaconfig;
         this.synapsis0 = new Matrix();
         this.synapsis1 = new Matrix();
         this.neuronStates0 = new float[](2);
@@ -73,15 +76,15 @@ class CTRNN {
     }
 
     float[][] predict(int[] input) {
-        float[] myInput = new float[](8);
+        int inputWeightsLength = 5;
+        if (eaconfig.noWrap) inputWeightsLength += 2;
+        float[] myInput = new float[](inputWeightsLength + 3);
         myInput[0] = 1.0f;
         myInput[1] = gainSigmoid(gains0[0], neuronStates0[0]);
         myInput[2] = gainSigmoid(gains0[1], neuronStates0[1]);
-        myInput[3] = cast(float)input[0];
-        myInput[4] = cast(float)input[1];
-        myInput[5] = cast(float)input[2];
-        myInput[6] = cast(float)input[3];
-        myInput[7] = cast(float)input[4];
+        foreach(i; 0 .. inputWeightsLength) {
+            myInput[i+3] = cast(float)input[i];
+        }
         auto layer0 = new Matrix([myInput]);
         auto layer1 = (layer0 * synapsis0);
         layer1.nonLinear();
@@ -105,7 +108,7 @@ class CTRNN {
         float[][] result = layer2.toArray();
         return result;
     }
-    
+
 
     int getSteps(float n) {
         if (n < 0.2) return 0;

@@ -1,17 +1,16 @@
 module beertracker.evolve;
 
 import beertracker.simulator;
+import ea.ea_config;
 
 class BeerTrackerEvolve {
 
-    int timesteps;
     float[] fittestPhenotype;
     float highestFitness;
     BeerTrackerSimulator sim;
 
-    this(int timesteps) {
-        this.timesteps = timesteps;
-        this.sim = new BeerTrackerSimulator(timesteps);
+    this(EaConfig config) {
+        this.sim = new BeerTrackerSimulator(config);
     }
 
     void evolve() {
