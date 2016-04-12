@@ -7,6 +7,7 @@ import std.random;
 import std.string;
 import std.stdio;
 import std.typecons;
+import std.math;
 import pyd.pyd;
 
 class BeerTrackerIndividual {
@@ -128,9 +129,16 @@ class BeerTrackerIndividual {
     }
 
     void evaluateFitness() {
-        fitness = (capturedSmallObjects * config.smallObjectBonus
-                + avoidedBigObjects * config.bigObjectBonus);
-        
+        int relation = abs(capturedSmallObjects - avoidedBigObjects * 2);
+
+        float score = (capturedSmallObjects * config.smallObjectBonus
+                + avoidedBigObjects * config.bigObjectBonus
+                - capturedBigObjects * config.bigObjectPenalty);
+
+        if (relation == 0) relation = 1;
+        else fitness = score / cast(float)relation;
+
+
         //fitness = (capturedSmallObjects * config.smallObjectBonus
         //        - capturedBigObjects * config.bigObjectPenalty);
     }
