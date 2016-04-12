@@ -125,7 +125,6 @@ class BeerTrackerIndividual {
         foreach(i; start .. end) {
             genToPhen(i, 1, 5);
         }
-
     }
 
     void evaluateFitness() {
@@ -136,9 +135,5 @@ class BeerTrackerIndividual {
 
         if (relation < 4) relation = 1;
         fitness = score / cast(float)relation;
-
-
-        //fitness = (capturedSmallObjects * config.smallObjectBonus
-        //        - capturedBigObjects * config.bigObjectPenalty);
     }
 }
