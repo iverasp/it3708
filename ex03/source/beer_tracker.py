@@ -35,13 +35,16 @@ ea_config = EaConfig(
     qc.food_bonus,
     qc.poison_penalty,
     qc.small_object_bonus,
-    qc.big_object_penalty
+    qc.big_object_penalty,
+    qc.no_wrap,
+    qc.pull_mode,
+    qc.timesteps
 )
 population = BeerTrackerPopulation(ea_config)
 
 # ANN
 ann_config = AnnConfig()
-ann = CTRNN(ann_config)
+ann = CTRNN(ann_config, ea_config)
 generation = 0
 fittest_phenotype = ""
 avoided_big_objects = 0
@@ -49,6 +52,7 @@ avoided_small_objects = 0
 captured_big_objects = 0
 captured_small_objects = 0
 
+#
 for _ in range(qc.generations):
     population.develop()
 
@@ -103,12 +107,33 @@ for _ in range(qc.generations):
             captured_small_objects = adult.getCapturedSmallObjects
     print("Highest fitness: ", highest_fitness)
     average_fitness = population.getAverageFitness
+
+=======
+sim = BeerTrackerSimulator(ea_config)
+evolver = BeerTrackerEvolve(ea_config)
+
+for _ in range(qc.generations):
+    evolver.evolve();
+
+    # Terminal output
+    generation += 1
+    print("Generation: ", generation)
+    highest_fitness = evolver.getHighestFitness;
+    print("Highest fitness: ", highest_fitness)
+#
+    avoided_big_objects = evolver.getAvoidedBigObjects
+    avoided_small_objects = evolver.getAvoidedSmallObjects
+    captured_big_objects = evolver.getCapturedBigObjects
+    captured_small_objects = evolver.get
     print("Avoided big objects (+): ", avoided_big_objects)
     print("Avoided small objects (-): ", avoided_small_objects)
     print("Captured big objects (-): ", captured_big_objects)
     print("Captured small objects (+): ", captured_small_objects)
+#
+    average_fitness = evolver.getAverageFitness
     print("Average fitness: ", average_fitness)
-    standard_deviation = population.getStandardDeviation
+    standard_deviation = evolver.getStandardDeviation
     print("Standard deviation: ", standard_deviation)
+    fittest_phenotype = evolver.getFittestPhenotype;
 
-BeerTrackerGUI(600, fittest_phenotype)
+BeerTrackerGUI(ea_config, fittest_phenotype)

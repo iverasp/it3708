@@ -6,6 +6,7 @@ import std.conv;
 import std.random;
 import std.string;
 import std.stdio;
+import std.typecons;
 import pyd.pyd;
 
 class BeerTrackerIndividual {
@@ -56,49 +57,74 @@ class BeerTrackerIndividual {
         }
     }
 
-    float genToPhen(bool[] gen, float min, float max) {
+    void genToPhen(int position, float min, float max) {
+        int bitsize = 8;
         ubyte myInt = 0;
-        foreach(i; 0 .. 8L) {
-            if (gen[i]) myInt += cast(ubyte)(1<<i);
+        int byteIndex = 0;
+        foreach(i; position * bitsize .. position * bitsize + bitsize) {
+            if (genotype[i]) myInt += cast(ubyte)(1 << byteIndex);
+            byteIndex++;
         }
         float n = cast(float)myInt / cast(float)ubyte.max;
-        return (((n - 0.0f) * (max - min)) / (1.0f - 0.0f)) + min;
+        float result = (((n - 0.0f) * (max - min)) / (1.0f - 0.0f)) + min;
+        phenotype[position] = result;
     }
 
     void generatePhenotype() {
-        int bitsize = 8;
+        int start = 2;
+        int end = 16;
         // BIAS of layer0
-        phenotype[0] = genToPhen(genotype[0 .. bitsize], -10, 0);
-        phenotype[1] = genToPhen(genotype[bitsize .. 2*bitsize], -10 ,0);
+        genToPhen(0, -10, 0);
+        genToPhen(1, -10 ,0);
         // weights of layer0
-        foreach(i; 2 .. 16) {
-            phenotype[i] = genToPhen(genotype[i * bitsize .. i * bitsize + bitsize], -5, 5);
+        foreach(i; start .. end) {
+            genToPhen(i, -5, 5);
+        }
+        start = 16;
+        end += 2;
+        if (config.noWrap) {
+            end += 2;
+            foreach(i; start .. end) {
+                genToPhen(i, 1, 10);
+            }
+            start += 4;
+            end += 2;
         }
         // time constants of layer0
-        foreach(i; 16 .. 18) {
-            phenotype[i] = genToPhen(genotype[i * bitsize .. i * bitsize + bitsize], 1, 2);
+        foreach(i; start .. end) {
+            genToPhen(i, 1, 2);
         }
+        start += 2;
+        end += 2;
         // gains of layer0
-        foreach(i; 18 .. 20) {
-            phenotype[i] = genToPhen(genotype[i * bitsize .. i * bitsize + bitsize], 1, 5);
+        foreach(i; start .. end) {
+            genToPhen(i, 1, 5);
         }
+        start += 2;
+        end += 2;
         // BIAS of layer1
-        int bias0 = 7*2*8;
-        int bias1 = bias0 + 1;
-        phenotype[20] = genToPhen(genotype[bias0 .. bias0 + bitsize], -10, 0);
-        phenotype[21] = genToPhen(genotype[bias1 .. bias1 + bitsize], -10, 0);
+        foreach(i; start .. end) {
+            genToPhen(i, -10, 0);
+        }
+        start += 2;
+        end += 8;
         // weights of layer1
-        foreach(i; 22 .. 30) {
-            phenotype[i] = genToPhen(genotype[i * bitsize .. i * bitsize + bitsize], -5, 5);
+        foreach(i; start .. end) {
+            genToPhen(i, -5, 5);
         }
+        start += 8;
+        end += 2;
         // time constants of layer1
-        foreach(i; 30 .. 32) {
-            phenotype[i] = genToPhen(genotype[i * bitsize .. i * bitsize + bitsize], 1, 2);
+        foreach(i; start .. end) {
+            genToPhen(i, 1, 2);
         }
+        start += 2;
+        end += 2;
         // gains of layer1
-        foreach(i; 32 .. 34) {
-            phenotype[i] = genToPhen(genotype[i * bitsize .. i * bitsize + bitsize], 1, 5);
+        foreach(i; start .. end) {
+            genToPhen(i, 1, 5);
         }
+
     }
 
     void evaluateFitness() {
@@ -120,7 +146,7 @@ class BeerTrackerIndividual {
         //    fitness = capturedSmallObjects * (config.smallObjectBonus - 5.0f)
         //            - capturedBigObjects * config.bigObjectPenalty;
         //}
-        //else { 
+        //else {
         //    fitness = capturedSmallObjects * config.smallObjectBonus
         //            - capturedBigObjects * config.bigObjectPenalty;
         //}
