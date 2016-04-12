@@ -30,47 +30,11 @@ class BeerTrackerGUI:
         self.sim = BeerTrackerSimulator(config)
         ann_config = AnnConfig()
         self.ann = CTRNN(ann_config, config)
-        self.load_ann(phenotype)
+        self.ann.loadPhenotype(phenotype)
 
         pygame.init()
         self.display = pygame.display.set_mode((self.WIDTH*self.TILESIZE, self.HEIGHT*self.TILESIZE))
         self.run()
-
-    def load_ann(self, phenotype):
-        synapsis0_end = 16 if not self.config.isNoWrap else 20
-
-        start = 0
-        end = synapsis0_end
-        synapsis0 = [phenotype[i:i+2]
-                    for i in range(start, end, 2)]
-        start = end
-        end = start + 2
-        time_constants_synapsis0 = [phenotype[i]
-                    for i in range(start, end)]
-        start = end
-        end = start + 2
-        gains_synapsis0 = [phenotype[i]
-                    for i in range(start, end)]
-        start = end
-        end = start + 10
-        synapsis1 = [phenotype[i:i+2]
-                    for i in range(start, end, 2)]
-        start = end
-        end = start + 2
-        time_constants_synapsis1 = [phenotype[i]
-                    for i in range(start, end)]
-        start = end
-        end = start + 2
-        gains_synapsis1 = [phenotype[i]
-                    for i in range(start, end)]
-
-        #print("synapsis0: ", synapsis0)
-        self.ann.setWeightsSynapsis0(synapsis0)
-        self.ann.setWeightsSynapsis1(synapsis1)
-        self.ann.setGains0(gains_synapsis0)
-        self.ann.setGains1(gains_synapsis1)
-        self.ann.setTimeConstants0(time_constants_synapsis0)
-        self.ann.setTimeConstants1(time_constants_synapsis1)
 
     def run(self):
         clock = pygame.time.get_ticks()

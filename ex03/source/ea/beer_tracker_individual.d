@@ -64,7 +64,7 @@ class BeerTrackerIndividual {
         }
         float n = cast(float)myInt / cast(float)ubyte.max;
         float result = (((n - 0.0f) * (max - min)) / (1.0f - 0.0f)) + min;
-        phenotype[position] = result;
+        phenotype[position] = max;
     }
 
     void generatePhenotype() {

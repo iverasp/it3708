@@ -39,11 +39,11 @@ class QuickConf:
         tournament_group_size = 40
         boltzmann_temperature = 1.0
         boltzmann_delta_t = 0.01
-        crossover_rate = 0.8
+        crossover_rate = 0.5
         children_per_pair = 2
         mutation_type = "g"
         mutation_rate = 1.0
         food_bonus = 1.0
         poison_penalty = 2.0
         small_object_bonus = 1.0
-        big_object_penalty = 3.0
+        big_object_penalty = 10.0

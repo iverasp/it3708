@@ -155,7 +155,9 @@ extern(C) void PydMain() {
         Init!(EaConfig),
         Property!(BeerTrackerEvolve.getHighestFitness),
         Property!(BeerTrackerEvolve.getFittestPhenotype),
-        Def!(BeerTrackerEvolve.evolve)
+        Def!(BeerTrackerEvolve.evolve),
+        Property!(BeerTrackerEvolve.getStandardDeviation),
+        Property!(BeerTrackerEvolve.getAverageFitness)
     )();
     wrap_class!(
         BeerTrackerIndividual,
@@ -193,6 +195,7 @@ extern(C) void PydMain() {
         Def!(CTRNN.setGains1),
         Def!(CTRNN.setTimeConstants0),
         Def!(CTRNN.setTimeConstants1),
-        Def!(CTRNN.getMove)
+        Def!(CTRNN.getMove),
+        Def!(CTRNN.loadPhenotype)
     )();
 }

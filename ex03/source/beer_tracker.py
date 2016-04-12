@@ -48,72 +48,20 @@ ann = CTRNN(ann_config, ea_config)
 generation = 0
 fittest_phenotype = ""
 sim = BeerTrackerSimulator(ea_config)
-
-synapsis0_end = 16 if not qc.no_wrap else 20
+evolver = BeerTrackerEvolve(ea_config)
 
 for _ in range(qc.generations):
-    population.develop()
-
-    for child in population.getChildren:
-        start = 0
-        end = synapsis0_end
-        synapsis0 = [child.getPhenotype[i:i+2]
-                    for i in range(start, end, 2)]
-        start = end
-        end = start + 2
-        time_constants_synapsis0 = [child.getPhenotype[i]
-                    for i in range(start, end)]
-        start = end
-        end = start + 2
-        gains_synapsis0 = [child.getPhenotype[i]
-                    for i in range(start, end)]
-        start = end
-        end = start + 10
-        synapsis1 = [child.getPhenotype[i:i+2]
-                    for i in range(start, end, 2)]
-        start = end
-        end = start + 2
-        time_constants_synapsis1 = [child.getPhenotype[i]
-                    for i in range(start, end)]
-        start = end
-        end = start + 2
-        gains_synapsis1 = [child.getPhenotype[i]
-                    for i in range(start, end)]
-
-        ann.setWeightsSynapsis0(synapsis0)
-        ann.setWeightsSynapsis1(synapsis1)
-        ann.setGains0(gains_synapsis0)
-        ann.setGains1(gains_synapsis1)
-        ann.setTimeConstants0(time_constants_synapsis0)
-        ann.setTimeConstants1(time_constants_synapsis1)
-
-        #print(child.getPhenotype)
-
-        while not sim.completed():
-            inputs = sim.getSensors()
-            move = ann.getMove(inputs)
-            sim.moveAgent(move[0], move[1])
-        child.setCapturedSmallObjects(sim.getCapturedSmallObjects)
-        child.setCapturedBigObjects(sim.getCapturedBigObjects)
-        sim.reset()
-
-    population.evaluate()
-    population.adultSelection()
-    population.parentSelection()
-    population.reproduce()
+    evolver.evolve();
 
     # Terminal output
     generation += 1
     print("Generation: ", generation)
-    highest_fitness = -sys.maxsize - 1
-    for adult in population.getAdults:
-        if adult.getFitness > highest_fitness:
-            highest_fitness = adult.getFitness
-            fittest_phenotype = adult.getPhenotype
+    highest_fitness = evolver.getHighestFitness;
+    fittest_phenotype = evolver.getFittestPhenotype;
     print("Highest fitness: ", highest_fitness)
-    average_fitness = population.getAverageFitness
+    average_fitness = evolver.getAverageFitness
     print("Average fitness: ", average_fitness)
-    standard_deviation = population.getStandardDeviation
+    standard_deviation = evolver.getStandardDeviation
     print("Standard deviation: ", standard_deviation)
 
 BeerTrackerGUI(ea_config, fittest_phenotype)

@@ -42,6 +42,32 @@ class CTRNN {
         this.gains1 = new float[](2);
     }
 
+    void loadPhenotype(float[] phenotype) {
+        int end = 8;
+        if (eaconfig.noWrap) end += 2;
+        float[][] syn0 = new float[][](end, 2);
+        foreach(i; 0 .. end) {
+            syn0[i] = phenotype[i*2 .. i*2 + 2];
+        }
+        end = end*2;
+        this.synapsis0.matrix = syn0;
+        this.timeConstants0[0] = phenotype[end++];
+        this.timeConstants0[1] = phenotype[end++];
+        this.gains0[0] = phenotype[end++];
+        this.gains0[1] = phenotype[end++];
+        float[][] syn1 = new float[][](5, 2);
+        for (int i = end; i < end + 10; i++) {
+            syn1[(i - end)/2] = phenotype[i .. i + 2];
+            i++;
+        }
+        end += 10;
+        this.synapsis1.matrix = syn1;
+        this.timeConstants1[0] = phenotype[end++];
+        this.timeConstants1[1] = phenotype[end++];
+        this.gains1[0] = phenotype[end++];
+        this.gains1[1] = phenotype[end++];
+    }
+
     void setWeightsSynapsis0(float[][] weights) {
         this.synapsis0.matrix = weights;
     }
