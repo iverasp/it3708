@@ -131,7 +131,9 @@ class BeerTrackerIndividual {
         int relation = abs(capturedSmallObjects - avoidedBigObjects * 2);
 
         float score = (capturedSmallObjects * config.smallObjectBonus
-                    + avoidedBigObjects * config.bigObjectBonus);
+                    + avoidedBigObjects * config.bigObjectBonus
+                    - capturedBigObjects * config.bigObjectPenalty
+                    - avoidedSmallObjects * config.smallObjectPenalty);
 
         if (relation < 4) relation = 1;
         fitness = score / cast(float)relation;

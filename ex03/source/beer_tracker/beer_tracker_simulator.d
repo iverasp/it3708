@@ -74,7 +74,7 @@ class BeerTrackerSimulator {
     }
 
     void moveAgent(int direction, int steps) {
-        if (config.pullMode && steps == 0) {
+        if (config.pullMode && steps == 0 && object.y < height - 3) {
             object.y = height - 3;
             timestep++;
             descendObject();
