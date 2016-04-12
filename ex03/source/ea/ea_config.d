@@ -22,10 +22,15 @@ class EaConfig {
     auto mutationRate = 1.0f;
 
     // Problem specific variables
+    // Flatland
     auto foodBonus = 1.0f;
     auto poisonPenalty = 2.0f;
-    auto smallObjectBonus = 1.0f;
+    
+    // BeerTracker
+    auto bigObjectBonus = 2.0f;
     auto bigObjectPenalty = 2.0f;
+    auto smallObjectBonus = 1.0f;
+    auto smallObjectPenalty = 1.0f;
 
     auto noWrap = false;
     auto pullMode = false;
@@ -48,8 +53,10 @@ class EaConfig {
         float mutationRate,
         float foodBonus,
         float poisonPenalty,
-        float smallObjectBonus,
+        float bigObjectBonus,
         float bigObjectPenalty,
+        float smallObjectBonus,
+        float smallObjectPenalty,
         bool noWrap,
         bool pullMode,
         int timesteps
@@ -70,8 +77,10 @@ class EaConfig {
         this.mutationRate = mutationRate;
         this.foodBonus = foodBonus;
         this.poisonPenalty = poisonPenalty;
-        this.smallObjectBonus = smallObjectBonus;
+        this.bigObjectBonus = bigObjectBonus;
         this.bigObjectPenalty = bigObjectPenalty;
+        this.smallObjectBonus = smallObjectBonus;
+        this.smallObjectPenalty = smallObjectPenalty;
         this.noWrap = noWrap;
         this.pullMode = pullMode;
         this.timesteps = timesteps;
@@ -95,10 +104,12 @@ class EaConfig {
     @property auto getMutationRate(){ return mutationRate; }
 
     // Problem specific variable
+    // Flatland
     @property auto getFoodBonus(){ return foodBonus; }
     @property auto getPoisonPenalty(){ return poisonPenalty; }
     @property auto getSmallObjectBonus() { return smallObjectBonus; }
     @property auto getBigObjectPenalty() { return bigObjectPenalty; }
 
+    // BeerTracker
     @property auto isNoWrap() { return noWrap; }
 }
