@@ -1,7 +1,5 @@
 module ea.ea_config;
 
-//CHANGES HAS BEEN MADE
-
 class EaConfig {
     this(){
     }

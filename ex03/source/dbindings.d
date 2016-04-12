@@ -163,9 +163,9 @@ extern(C) void PydMain() {
         Property!(BeerTrackerIndividual.setFitnessRange),
         Property!(BeerTrackerIndividual.getFitnessRange),
         Property!(BeerTrackerIndividual.getCapturedBigObjects),
-        Def!(BeerTrackerIndividual.setCapturedBigObjects),
+        Property!(BeerTrackerIndividual.setCapturedBigObjects),
         Property!(BeerTrackerIndividual.getCapturedSmallObjects),
-        Def!(BeerTrackerIndividual.setCapturedSmallObjects)
+        Property!(BeerTrackerIndividual.setCapturedSmallObjects)
     )();
     wrap_class!(
         BeerTrackerPopulation,

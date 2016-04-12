@@ -44,6 +44,9 @@ ann_config = AnnConfig()
 ann = CTRNN(ann_config)
 generation = 0
 fittest_phenotype = ""
+captured_small_objects = 0
+captured_big_objects = 0
+#avoided_objects = 0
 
 for _ in range(qc.generations):
     population.develop()
@@ -75,8 +78,8 @@ for _ in range(qc.generations):
             inputs = sim.getSensors()
             move = ann.getMove(inputs)
             sim.moveAgent(move[0], move[1])
-        child.setCapturedSmallObjects(sim.getCapturedSmallObjects)
-        child.setCapturedBigObjects(sim.getCapturedBigObjects)
+        child.setCapturedSmallObjects = sim.getCapturedSmallObjects
+        child.setCapturedBigObjects = sim.getCapturedBigObjects
 
     population.evaluate()
     population.adultSelection()
@@ -91,8 +94,13 @@ for _ in range(qc.generations):
         if adult.getFitness > highest_fitness:
             highest_fitness = adult.getFitness
             fittest_phenotype = adult.getPhenotype
+            captured_small_objects = adult.getCapturedSmallObjects
+            captured_big_objects = adult.getCapturedBigObjects
+            #avoided_objects = adult.getCapturedSmallObjects
     print("Highest fitness: ", highest_fitness)
     average_fitness = population.getAverageFitness
+    print("Captured small objects: ", captured_small_objects)
+    print("Captured big objects: ", captured_big_objects)
     print("Average fitness: ", average_fitness)
     standard_deviation = population.getStandardDeviation
     print("Standard deviation: ", standard_deviation)
