@@ -52,7 +52,7 @@ avoided_small_objects = 0
 captured_big_objects = 0
 captured_small_objects = 0
 
-#
+"""
 for _ in range(qc.generations):
     population.develop()
 
@@ -108,7 +108,7 @@ for _ in range(qc.generations):
     print("Highest fitness: ", highest_fitness)
     average_fitness = population.getAverageFitness
 
-=======
+"""
 sim = BeerTrackerSimulator(ea_config)
 evolver = BeerTrackerEvolve(ea_config)
 
@@ -117,14 +117,14 @@ for _ in range(qc.generations):
 
     # Terminal output
     generation += 1
-    print("Generation: ", generation)
+    print("\nGeneration: ", generation)
     highest_fitness = evolver.getHighestFitness;
     print("Highest fitness: ", highest_fitness)
 #
     avoided_big_objects = evolver.getAvoidedBigObjects
     avoided_small_objects = evolver.getAvoidedSmallObjects
     captured_big_objects = evolver.getCapturedBigObjects
-    captured_small_objects = evolver.get
+    captured_small_objects = evolver.getCapturedSmallObjects
     print("Avoided big objects (+): ", avoided_big_objects)
     print("Avoided small objects (-): ", avoided_small_objects)
     print("Captured big objects (-): ", captured_big_objects)

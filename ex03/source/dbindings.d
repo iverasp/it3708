@@ -121,7 +121,6 @@ extern(C) void PydMain() {
     wrap_class!(
         BeerTrackerSimulator,
         Init!(EaConfig),
-        Def!(BeerTrackerSimulator.descendObject),
         Property!(BeerTrackerSimulator.getObject),
         Property!(BeerTrackerSimulator.getAgent),
         Property!(BeerTrackerSimulator.getAvoidedBigObjects),
@@ -132,8 +131,6 @@ extern(C) void PydMain() {
         Def!(BeerTrackerSimulator.moveAgent),
         Def!(BeerTrackerSimulator.completed),
         Def!(BeerTrackerSimulator.getSensors),
-        Property!(BeerTrackerSimulator.getCapturedBigObjects),
-        Property!(BeerTrackerSimulator.getCapturedSmallObjects),
         Def!(BeerTrackerSimulator.reset)
     )();
     wrap_class!(
@@ -159,7 +156,11 @@ extern(C) void PydMain() {
         Property!(BeerTrackerEvolve.getFittestPhenotype),
         Def!(BeerTrackerEvolve.evolve),
         Property!(BeerTrackerEvolve.getStandardDeviation),
-        Property!(BeerTrackerEvolve.getAverageFitness)
+        Property!(BeerTrackerEvolve.getAverageFitness),
+        Property!(BeerTrackerSimulator.getAvoidedBigObjects),
+        Property!(BeerTrackerSimulator.getAvoidedSmallObjects),
+        Property!(BeerTrackerSimulator.getCapturedBigObjects),
+        Property!(BeerTrackerSimulator.getCapturedSmallObjects)
     )();
     wrap_class!(
         BeerTrackerIndividual,
