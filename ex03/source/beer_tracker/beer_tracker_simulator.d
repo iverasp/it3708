@@ -71,8 +71,6 @@ class BeerTrackerSimulator {
             checkWhatAgentCaptured();
             replaceObject();
         }
-
-
     }
 
     void moveAgent(int direction, int steps) {

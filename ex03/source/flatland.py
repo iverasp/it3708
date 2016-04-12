@@ -41,8 +41,10 @@ class Flatland(App):
         qc.mutation_rate,
         qc.food_bonus,
         qc.poison_penalty,
-        qc.small_object_bonus,
+        qc.big_object_bonus,
         qc.big_object_penalty,
+        qc.small_object_bonus,
+        qc.small_object_penalty,
         qc.no_wrap,
         qc.pull_mode,
         qc.timesteps
