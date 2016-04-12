@@ -125,20 +125,15 @@ class BeerTrackerIndividual {
         foreach(i; start .. end) {
             genToPhen(i, 1, 5);
         }
-
     }
 
     void evaluateFitness() {
         int relation = abs(capturedSmallObjects - avoidedBigObjects * 2);
 
         float score = (capturedSmallObjects * config.smallObjectBonus
-                + avoidedBigObjects * config.bigObjectBonus);
+                    + avoidedBigObjects * config.bigObjectBonus);
 
-        if (relation == 0) relation = 1;
+        if (relation < 4) relation = 1;
         fitness = score / cast(float)relation;
-
-
-        //fitness = (capturedSmallObjects * config.smallObjectBonus
-        //        - capturedBigObjects * config.bigObjectPenalty);
     }
 }
