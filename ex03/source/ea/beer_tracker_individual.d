@@ -18,9 +18,10 @@ class BeerTrackerIndividual {
     float fitness;
     float[] fitnessRange;
 
+    int avoidedBigObjects;
+    int avoidedSmallObjects;
     int capturedBigObjects;
     int capturedSmallObjects;
-    int avoidedObjects;
 
     this(EaConfig config) {
         this.config = config;
@@ -40,10 +41,14 @@ class BeerTrackerIndividual {
     }
     @property float[] getFitnessRange(){ return fitnessRange; }
 
-    @property int getCapturedBigObjects() { return this.capturedBigObjects; }
+    @property void setAvoidedBigObjects(int o) { this.avoidedBigObjects = o; }
+    @property int getAvoidedBigObjects() { return this.avoidedBigObjects; }
+    @property void setAvoidedSmallObjects(int o) { this.avoidedSmallObjects = o; }
+    @property int getAvoidedSmallObjects() { return this.avoidedSmallObjects; }
     @property void setCapturedBigObjects(int o) { this.capturedBigObjects = o; }
-    @property int getCapturedSmallObjects() { return this.capturedSmallObjects; }
+    @property int getCapturedBigObjects() { return this.capturedBigObjects; }
     @property void setCapturedSmallObjects(int o) { this.capturedSmallObjects = o; }
+    @property int getCapturedSmallObjects() { return this.capturedSmallObjects; }
 
     void generateGenotype() {
         foreach(i; 0 .. genotypeLength) {
@@ -52,13 +57,11 @@ class BeerTrackerIndividual {
     }
 
     float genToPhen(bool[] gen, float min, float max) {
-        //writeln(to!string(gen));
         ubyte myInt = 0;
         foreach(i; 0 .. 8L) {
             if (gen[i]) myInt += cast(ubyte)(1<<i);
         }
         float n = cast(float)myInt / cast(float)ubyte.max;
-        //writeln(to!string(n));
         return (((n - 0.0f) * (max - min)) / (1.0f - 0.0f)) + min;
     }
 

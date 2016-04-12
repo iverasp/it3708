@@ -13,7 +13,8 @@ class BeerTrackerSimulator {
     BeerTrackerAgent agent;
     int width = 30;
     int height = 15;
-    int avoidedObjects;
+    int avoidedBigObjects;
+    int avoidedSmallObjects;
     int capturedSmallObjects;
     int capturedBigObjects;
     int timesteps;
@@ -27,12 +28,20 @@ class BeerTrackerSimulator {
         agent = new BeerTrackerAgent();
     }
 
+    @property BeerTrackerObject getObject() { return this.object; }
+    @property BeerTrackerAgent getAgent() { return this.agent; }
+    @property int getAvoidedBigObjects() { return this.avoidedBigObjects; }
+    @property int getAvoidedSmallObjects() { return this.avoidedSmallObjects; }
+    @property int getCapturedBigObjects() { return this.capturedBigObjects; }
+    @property int getCapturedSmallObjects() { return this.capturedSmallObjects; }
+
     void reset() {
         agent.reset();
         generateObject();
+        avoidedBigObjects = 0;
+        avoidedSmallObjects = 0;
         capturedBigObjects = 0;
         capturedSmallObjects = 0;
-        avoidedObjects = 0;
         timestep = 0;
     }
 
@@ -50,14 +59,14 @@ class BeerTrackerSimulator {
 
     void descendObject() {
         if (object.getY == height - 1) {
-            replaceObject();
-            avoidedObjects++;
+            if (object.getSize > 4) { ++avoidedBigObjects; }
+            else if (object.getSize < 5) { ++avoidedSmallObjects; } 
+            replaceObject(); 
         }
-        else object.descend();
-        if (objectIntersectsAgent()) {
-            checkWhatAgentCaptured();
-            replaceObject();
-        }
+        else { object.descend(); }
+        if (objectIntersectsAgent()) { checkWhatAgentCaptured(); }
+
+
     }
 
     void moveAgent(int direction, int steps) {
@@ -80,8 +89,8 @@ class BeerTrackerSimulator {
     }
 
     void checkWhatAgentCaptured() {
-        if (object.size > 4) {
-            capturedBigObjects++;
+        if (object.getSize > 4) {
+            ++capturedBigObjects;
             return;
         }
         int objX1 = object.getX;
@@ -89,7 +98,7 @@ class BeerTrackerSimulator {
         int agentX1 = agent.getX;
         int agentX2 = agentX1 + agent.getSize;
         if (objX1 >= agentX1 && objX2 <= agentX2) {
-            capturedSmallObjects++;
+            ++capturedSmallObjects;
             return;
         }
     }
@@ -104,12 +113,4 @@ class BeerTrackerSimulator {
         }
         return sensors;
     }
-
-    @property BeerTrackerObject getObject() {
-        return this.object;
-    }
-    @property BeerTrackerAgent getAgent() { return this.agent; }
-    @property int getCapturedSmallObjects() { return this.capturedSmallObjects; }
-    @property int getCapturedBigObjects() { return this.capturedBigObjects; }
-    @property int getAvoidedObjects() { return this.avoidedObjects; }
 }

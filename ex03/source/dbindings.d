@@ -120,17 +120,16 @@ extern(C) void PydMain() {
     wrap_class!(
         BeerTrackerSimulator,
         Init!(int),
-        Def!(BeerTrackerSimulator.descendObject),
         Property!(BeerTrackerSimulator.getObject),
         Property!(BeerTrackerSimulator.getAgent),
-        Def!(BeerTrackerSimulator.moveAgent),
+        Property!(BeerTrackerSimulator.getAvoidedBigObjects),
+        Property!(BeerTrackerSimulator.getAvoidedSmallObjects),
         Property!(BeerTrackerSimulator.getCapturedBigObjects),
         Property!(BeerTrackerSimulator.getCapturedSmallObjects),
-        Property!(BeerTrackerSimulator.getAvoidedObjects),
+        Def!(BeerTrackerSimulator.descendObject),
+        Def!(BeerTrackerSimulator.moveAgent),
         Def!(BeerTrackerSimulator.completed),
         Def!(BeerTrackerSimulator.getSensors),
-        Property!(BeerTrackerSimulator.getCapturedBigObjects),
-        Property!(BeerTrackerSimulator.getCapturedSmallObjects)
     )();
     wrap_class!(
         ANN,
@@ -162,10 +161,14 @@ extern(C) void PydMain() {
         Property!(BeerTrackerIndividual.getFitness),
         Property!(BeerTrackerIndividual.setFitnessRange),
         Property!(BeerTrackerIndividual.getFitnessRange),
-        Property!(BeerTrackerIndividual.getCapturedBigObjects),
+        Property!(BeerTrackerIndividual.setAvoidedBigObjects),
+        Property!(BeerTrackerIndividual.getAvoidedBigObjects),
+        Property!(BeerTrackerIndividual.setAvoidedSmallObjects),
+        Property!(BeerTrackerIndividual.getAvoidedSmallObjects),
         Property!(BeerTrackerIndividual.setCapturedBigObjects),
-        Property!(BeerTrackerIndividual.getCapturedSmallObjects),
-        Property!(BeerTrackerIndividual.setCapturedSmallObjects)
+        Property!(BeerTrackerIndividual.getCapturedBigObjects),
+        Property!(BeerTrackerIndividual.setCapturedSmallObjects),
+        Property!(BeerTrackerIndividual.getCapturedSmallObjects)
     )();
     wrap_class!(
         BeerTrackerPopulation,
