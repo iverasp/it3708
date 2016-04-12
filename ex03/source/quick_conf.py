@@ -29,7 +29,7 @@ class QuickConf:
         generations = 50
         population_size = 200
         number_of_children = 200
-        pull_mode = False
+        pull_mode = True
         no_wrap = False
         timesteps = 600
         genotype_length = 34 * 8 if not no_wrap else 38 * 8
