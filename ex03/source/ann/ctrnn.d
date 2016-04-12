@@ -135,7 +135,6 @@ class CTRNN {
         return result;
     }
 
-
     int getSteps(float n) {
         if (n < 0.2) return 0;
         if (n < 0.4) return 1;

@@ -51,6 +51,8 @@ class BeerTrackerGUI:
         inputs = self.sim.getSensors()
         move = self.ann.getMove(inputs)
         self.sim.moveAgent(move[0], move[1])
+        print("Captured small objects: ", self.sim.getCapturedSmallObjects)
+        print("Captured big objects: ", self.sim.getCapturedBigObjects)
 
     def listen(self):
         for event in pygame.event.get():
