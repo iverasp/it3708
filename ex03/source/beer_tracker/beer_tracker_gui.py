@@ -17,7 +17,7 @@ from dbindings import *
 
 class BeerTrackerGUI:
 
-    def __init__(self, timesteps, phenotype):
+    def __init__(self, config, phenotype):
         self.WIDTH = 30
         self.HEIGHT = 15
         self.TILESIZE = 40
@@ -26,37 +26,15 @@ class BeerTrackerGUI:
         self.big_object_color = (0, 0, 255)
         self.small_object_color = (0, 255, 0)
         self.DELAY = 500
-        self.sim = BeerTrackerSimulator(600)
+        self.config = config
+        self.sim = BeerTrackerSimulator(config)
         ann_config = AnnConfig()
-        self.ann = CTRNN(ann_config)
-        self.load_ann(phenotype)
+        self.ann = CTRNN(ann_config, config)
+        self.ann.loadPhenotype(phenotype)
 
         pygame.init()
         self.display = pygame.display.set_mode((self.WIDTH*self.TILESIZE, self.HEIGHT*self.TILESIZE))
         self.run()
-
-    def load_ann(self, phenotype):
-        synapsis0 = [phenotype[i:i+2]
-                    for i in range(0, 16, 2)]
-        time_constants_synapsis0 = [phenotype[i]
-                    for i in range(16, 18)]
-        gains_synapsis0 = [phenotype[i]
-                    for i in range(18, 20)]
-
-        synapsis1 = [phenotype[i:i+2]
-                    for i in range(20, 30, 2)]
-        time_constants_synapsis1 = [phenotype[i]
-                    for i in range(30, 32)]
-        gains_synapsis1 = [phenotype[i]
-                    for i in range(32, 34)]
-
-        #print("synapsis0: ", synapsis0)
-        self.ann.setWeightsSynapsis0(synapsis0)
-        self.ann.setWeightsSynapsis1(synapsis1)
-        self.ann.setGains0(gains_synapsis0)
-        self.ann.setGains1(gains_synapsis1)
-        self.ann.setTimeConstants0(time_constants_synapsis0)
-        self.ann.setTimeConstants1(time_constants_synapsis1)
 
     def run(self):
         clock = pygame.time.get_ticks()
