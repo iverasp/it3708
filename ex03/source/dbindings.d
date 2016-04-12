@@ -80,7 +80,7 @@ extern(C) void PydMain() {
     wrap_class!(
         EaConfig,
         Init!(),
-        Init!(int,int,int,int,string,string,float,int,float,float,float,int,string,float,float,float,float,float,bool,bool,int),
+        Init!(int,int,int,int,string,string,float,int,float,float,float,int,string,float,float,float,float,float,float,float,bool,bool,int),
         Property!(EaConfig.getGenerations),
         Property!(EaConfig.getPopulationSize),
         Property!(EaConfig.getNumberOfChildren),

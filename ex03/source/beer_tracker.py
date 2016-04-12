@@ -34,8 +34,10 @@ ea_config = EaConfig(
     qc.mutation_rate,
     qc.food_bonus,
     qc.poison_penalty,
-    qc.small_object_bonus,
+    qc.big_object_bonus,
     qc.big_object_penalty,
+    qc.small_object_bonus,
+    qc.small_object_penalty,
     qc.no_wrap,
     qc.pull_mode,
     qc.timesteps
@@ -120,16 +122,14 @@ for _ in range(qc.generations):
     print("\nGeneration: ", generation)
     highest_fitness = evolver.getHighestFitness;
     print("Highest fitness: ", highest_fitness)
-#
     avoided_big_objects = evolver.getAvoidedBigObjects
-    avoided_small_objects = evolver.getAvoidedSmallObjects
-    captured_big_objects = evolver.getCapturedBigObjects
-    captured_small_objects = evolver.getCapturedSmallObjects
     print("Avoided big objects (+): ", avoided_big_objects)
+    avoided_small_objects = evolver.getAvoidedSmallObjects
     print("Avoided small objects (-): ", avoided_small_objects)
+    captured_big_objects = evolver.getCapturedBigObjects
     print("Captured big objects (-): ", captured_big_objects)
+    captured_small_objects = evolver.getCapturedSmallObjects
     print("Captured small objects (+): ", captured_small_objects)
-#
     average_fitness = evolver.getAverageFitness
     print("Average fitness: ", average_fitness)
     standard_deviation = evolver.getStandardDeviation
