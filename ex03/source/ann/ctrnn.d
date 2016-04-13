@@ -136,11 +136,11 @@ class CTRNN {
     }
 
     int getSteps(float n) {
-        if (n < 0.2) return 0;
-        if (n < 0.4) return 1;
+        if (n < 0.2) return 4;
+        if (n < 0.4) return 3;
         if (n < 0.6) return 2;
-        if (n < 0.8) return 3;
-        return 4;
+        if (n < 0.8) return 1;
+        return 0;
     }
 
     int[] getMove(int[] inputs) {
@@ -153,6 +153,5 @@ class CTRNN {
         if (right > left) result = [1, cast(int)(right - left)];
         else if (left > right) result = [0, cast(int)(left - right)];
         return result;
-
     }
 }

@@ -128,6 +128,7 @@ class BeerTrackerIndividual {
     }
 
     void evaluateFitness() {
+
         int relation = abs(capturedSmallObjects - avoidedBigObjects * 2);
 
         float score = (capturedSmallObjects * config.smallObjectBonus

@@ -25,11 +25,12 @@ scenario = int(args.scenario)
 
 if scenario == 1:
     big_object_bonus = 2.0
-    big_object_penalty = 2.0
+    big_object_penalty = 0.0
     small_object_bonus = 1.0
-    small_object_penalty = 1.0
+    small_object_penalty = 0.0
     no_wrap = False
     pull_mode = False
+    genotype_length = 34 * 8
 elif scenario == 2:
     big_object_bonus = 2.0
     big_object_penalty = 2.0
@@ -37,6 +38,7 @@ elif scenario == 2:
     small_object_penalty = 1.0
     no_wrap = False
     pull_mode = True
+    genotype_length = 34 * 8
 elif scenario == 3:
     big_object_bonus = 2.0
     big_object_penalty = 0.0
@@ -44,13 +46,14 @@ elif scenario == 3:
     small_object_penalty = 0.0
     no_wrap = True
     pull_mode = False
+    genotype_length = 38 * 8
 
 qc = QuickConf()
 ea_config = EaConfig(
     qc.generations,
     qc.population_size,
     qc.number_of_children,
-    qc.genotype_length,
+    genotype_length,
     qc.adult_selection,
     qc.parent_selection,
     qc.tournament_epsilon,
