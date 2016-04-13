@@ -5,6 +5,7 @@ import sys
 from random import randint
 from quick_conf import QuickConf
 import threading
+import argparse
 
 # Append the directory in which the binaries were placed to Python's sys.path,
 # then import the D DLL.
@@ -15,6 +16,34 @@ libDir = os.path.join('build', 'lib.%s-%s' % (
 sys.path.append(os.path.abspath(libDir))
 
 from dbindings import *
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--scenario", help="1 for wrap, 2 for pull, 3 for no-wrap")
+args = parser.parse_args()
+
+scenario = int(args.scenario)
+
+if scenario == 1:
+    big_object_bonus = 2.0
+    big_object_penalty = 2.0
+    small_object_bonus = 1.0
+    small_object_penalty = 1.0
+    no_wrap = False
+    pull_mode = False
+elif scenario == 2:
+    big_object_bonus = 2.0
+    big_object_penalty = 2.0
+    small_object_bonus = 1.0
+    small_object_penalty = 1.0
+    no_wrap = False
+    pull_mode = True
+elif scenario == 3:
+    big_object_bonus = 2.0
+    big_object_penalty = 0.0
+    small_object_bonus = 1.0
+    small_object_penalty = 0.0
+    no_wrap = True
+    pull_mode = False
 
 qc = QuickConf()
 ea_config = EaConfig(
@@ -34,12 +63,12 @@ ea_config = EaConfig(
     qc.mutation_rate,
     qc.food_bonus,
     qc.poison_penalty,
-    qc.big_object_bonus,
-    qc.big_object_penalty,
-    qc.small_object_bonus,
-    qc.small_object_penalty,
-    qc.no_wrap,
-    qc.pull_mode,
+    big_object_bonus,
+    big_object_penalty,
+    small_object_bonus,
+    small_object_penalty,
+    no_wrap,
+    pull_mode,
     qc.timesteps
 )
 population = BeerTrackerPopulation(ea_config)

@@ -53,7 +53,6 @@ class BeerTrackerGUI:
                 self.update()
 
     def flash_agent(self):
-        #self.agent_color = (255, 165, 0)
         self.agent_color = (0, 255, 255)
         self.update()
         pygame.time.wait(100)

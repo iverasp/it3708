@@ -9,6 +9,7 @@ from kivy.app import App
 from kivy.clock import Clock, mainthread
 from EAGraph import EAGraph
 from quick_conf import QuickConf
+import argparse
 
 # Append the directory in which the binaries were placed to Python's sys.path,
 # then import the D DLL.
@@ -21,6 +22,11 @@ sys.path.append(os.path.abspath(libDir))
 from dbindings import *
 
 class Flatland(App):
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--scenarios", help="number of scenarios")
+    parser.add_argument("--dynamic", help="1 for dynamic, 0 for static")
+    args = parser.parse_args()
 
     # EA
     qc = QuickConf()
@@ -59,9 +65,9 @@ class Flatland(App):
     graph = EAGraph()
 
     # Simulator
-    run_dynamic = False
+    run_dynamic = bool(args.dynamic)
     random_runs = True
-    scenarios = 1
+    scenarios = int(args.scenarios)
     N = 10
     START = (6, 6)
     timesteps = 60

@@ -28,3 +28,15 @@
 
     cd source
     python3 setup.py build
+
+## Running Flatland
+
+    python3 flatland.py -- --scenarios X --dynamic Y
+
+Where X is the number of scenarios and Y is either 1 or 0 (true or false)
+
+## Running Beer Tracker
+
+    python3 beer_tracker.py --scenario X
+
+Where X is 1 for wrap, 2 for pull and 3 for no-wrap

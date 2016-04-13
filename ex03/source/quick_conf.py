@@ -31,8 +31,8 @@ class QuickConf:
         generations = 100
         population_size = 200
         number_of_children = 200
-        pull_mode = False
-        no_wrap = True
+        pull_mode = True
+        no_wrap = False
         timesteps = 600
         genotype_length = 34 * 8 if not no_wrap else 38 * 8
         adult_selection = "g"
