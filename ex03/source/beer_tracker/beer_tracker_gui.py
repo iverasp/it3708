@@ -52,9 +52,19 @@ class BeerTrackerGUI:
                 self.iterateSim()
                 self.update()
 
+    def flash_agent(self):
+        #self.agent_color = (255, 165, 0)
+        self.agent_color = (0, 255, 255)
+        self.update()
+        pygame.time.wait(100)
+        self.agent_color = (255, 0, 0)
+        self.update()
+
     def iterateSim(self):
         inputs = self.sim.getSensors()
         move = self.ann.getMove(inputs)
+        if self.config.isPullMode and move[1] == 0:
+            self.flash_agent()
         self.sim.moveAgent(move[0], move[1])
         """
         print("\nAvoided big objects (+): ", self.sim.getAvoidedBigObjects, end="\r")

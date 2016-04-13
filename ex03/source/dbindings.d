@@ -99,7 +99,8 @@ extern(C) void PydMain() {
         Property!(EaConfig.getPoisonPenalty),
         Property!(EaConfig.getSmallObjectBonus),
         Property!(EaConfig.getBigObjectPenalty),
-        Property!(EaConfig.isNoWrap)
+        Property!(EaConfig.isNoWrap),
+        Property!(EaConfig.isPullMode)
     )();
     wrap_class!(
         AnnConfig,

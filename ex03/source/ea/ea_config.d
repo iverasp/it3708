@@ -25,7 +25,7 @@ class EaConfig {
     // Flatland
     auto foodBonus = 1.0f;
     auto poisonPenalty = 2.0f;
-    
+
     // BeerTracker
     auto bigObjectBonus = 2.0f;
     auto bigObjectPenalty = 2.0f;
@@ -112,4 +112,5 @@ class EaConfig {
 
     // BeerTracker
     @property auto isNoWrap() { return noWrap; }
+    @property auto isPullMode() { return pullMode; }
 }
