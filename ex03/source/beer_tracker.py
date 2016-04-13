@@ -86,63 +86,6 @@ avoided_small_objects = 0
 captured_big_objects = 0
 captured_small_objects = 0
 
-"""
-for _ in range(qc.generations):
-    population.develop()
-
-    for child in population.getChildren:
-        synapsis0 = [child.getPhenotype[i:i+2]
-                    for i in range(0, 16, 2)]
-        time_constants_synapsis0 = [child.getPhenotype[i]
-                    for i in range(16, 18)]
-        gains_synapsis0 = [child.getPhenotype[i]
-                    for i in range(18, 20)]
-
-        synapsis1 = [child.getPhenotype[i:i+2]
-                    for i in range(20, 30, 2)]
-        time_constants_synapsis1 = [child.getPhenotype[i]
-                    for i in range(30, 32)]
-        gains_synapsis1 = [child.getPhenotype[i]
-                    for i in range(32, 34)]
-
-        ann.setWeightsSynapsis0(synapsis0)
-        ann.setWeightsSynapsis1(synapsis1)
-        ann.setGains0(gains_synapsis0)
-        ann.setGains1(gains_synapsis1)
-        ann.setTimeConstants0(time_constants_synapsis0)
-        ann.setTimeConstants1(time_constants_synapsis1)
-
-        sim = BeerTrackerSimulator(600)
-        while not sim.completed():
-            inputs = sim.getSensors()
-            move = ann.getMove(inputs)
-            sim.moveAgent(move[0], move[1])
-        child.setAvoidedBigObjects = sim.getAvoidedBigObjects
-        child.setAvoidedSmallObjects = sim.getAvoidedSmallObjects
-        child.setCapturedBigObjects = sim.getCapturedBigObjects
-        child.setCapturedSmallObjects = sim.getCapturedSmallObjects
-
-    population.evaluate()
-    population.adultSelection()
-    population.parentSelection()
-    population.reproduce()
-
-    # Terminal output
-    generation += 1
-    print("\nGeneration: ", generation)
-    highest_fitness = -sys.maxsize - 1
-    for adult in population.getAdults:
-        if adult.getFitness > highest_fitness:
-            highest_fitness = adult.getFitness
-            fittest_phenotype = adult.getPhenotype
-            avoided_big_objects = adult.getAvoidedBigObjects
-            avoided_small_objects = adult.getAvoidedSmallObjects
-            captured_big_objects = adult.getCapturedBigObjects
-            captured_small_objects = adult.getCapturedSmallObjects
-    print("Highest fitness: ", highest_fitness)
-    average_fitness = population.getAverageFitness
-
-"""
 sim = BeerTrackerSimulator(ea_config)
 evolver = BeerTrackerEvolve(ea_config)
 
@@ -168,4 +111,5 @@ for _ in range(qc.generations):
     print("Standard deviation: ", standard_deviation)
     fittest_phenotype = evolver.getFittestPhenotype;
 
+#fittest_phenotype = [-7.960783958435059, -6.392156600952148, -2.3333332538604736, -3.117647171020508, 2.058823585510254, 4.725490570068359, 3.9803924560546875, 3.3529415130615234, -0.843137264251709, 1.7058825492858887, -1.470588207244873, 2.56862735748291, 3.588235855102539, 3.313725471496582, -3.5098037719726562, -4.372549057006836, 1.5803921222686768, 1.9215686321258545, 1.1882352828979492, 4.419608116149902, -3.4509801864624023, -3.6470584869384766, 1.0392160415649414, -2.725490093231201, 3.0392160415649414, 4.529411315917969, -1.6666665077209473, 0.5686278343200684, -2.098039150238037, -2.2941174507141113, 1.1019607782363892, 1.8745098114013672, 4.435294151306152, 2.098039150238037]
 BeerTrackerGUI(ea_config, fittest_phenotype)
