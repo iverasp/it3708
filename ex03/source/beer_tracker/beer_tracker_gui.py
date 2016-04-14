@@ -33,6 +33,8 @@ class BeerTrackerGUI:
         self.ann = CTRNN(ann_config, config)
         self.ann.loadPhenotype(phenotype)
 
+        #self.report_stuff(phenotype)
+
         self.stdscr = curses.initscr()
         curses.noecho()
         curses.cbreak()
@@ -51,6 +53,27 @@ class BeerTrackerGUI:
                 clock = pygame.time.get_ticks()
                 self.iterateSim()
                 self.update()
+
+    def report_stuff(self, phenotype):
+        print(phenotype)
+        test1 = [0,0,0,1,1]
+        test2 = [0,0,1,1,0]
+        test3 = [0,1,1,1,1]
+        test4 = [1,1,1,1,1]
+        test5 = [1,1,1,1,1]
+        test6 = [1,1,1,1,1]
+        test7 = [1,1,1,1,1]
+
+        print(self.ann.predict(test1))
+        print(self.ann.predict(test2))
+        print(self.ann.predict(test3))
+        print(self.ann.predict(test4))
+        print(self.ann.predict(test5))
+        print(self.ann.predict(test6))
+        print(self.ann.predict(test7))
+
+        pygame.quit()
+        exit()
 
     def flash_agent(self):
         self.agent_color = (0, 255, 255)

@@ -204,6 +204,7 @@ extern(C) void PydMain() {
         Def!(CTRNN.setTimeConstants0),
         Def!(CTRNN.setTimeConstants1),
         Def!(CTRNN.getMove),
-        Def!(CTRNN.loadPhenotype)
+        Def!(CTRNN.loadPhenotype),
+        Def!(CTRNN.predict)
     )();
 }

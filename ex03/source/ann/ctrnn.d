@@ -153,6 +153,5 @@ class CTRNN {
         if (right > left) result = [1, cast(int)(right - left)];
         else if (left > right) result = [0, cast(int)(left - right)];
         return result;
-
     }
 }
