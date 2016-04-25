@@ -2,12 +2,18 @@ import std.stdio;
 import std.string;
 import std.conv;
 
-import beertracker.evolve;
 import ea.ea_config;
+import ea.population;
 
 public void main() {
     EaConfig ea_config = new EaConfig();
-    BeerTrackerEvolve e = new BeerTrackerEvolve(ea_config);
+    Population pop = new Population(ea_config);
+    foreach(i; 0 .. 100) {
+        population.develop();
+        population.evaluate();
+        population.adultSelection();
+        population.parentSelection();
+        population.reproduce();
 
-
+    }
 }

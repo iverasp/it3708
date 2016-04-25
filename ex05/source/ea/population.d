@@ -138,53 +138,6 @@ class Population {
         }
     }
 
-    // Denne er ubrukelig
-    void fitnessProportionate() {
-        auto numberOfParents = (config.getNumberOfChildren
-                                / config.getChildrenPerPair);
-        auto myParents = new Individual[][](numberOfParents);
-        auto newParents = 0;
-        auto tempFitness = 0f;
-        foreach (j; 0 .. adults.length) {
-            adults[j].setFitnessRange = [tempFitness,
-                        tempFitness + (adults[j].getFitness / totalFitness)];
-            tempFitness += adults[j].getFitness / totalFitness;
-        }
-        while (newParents < numberOfParents) {
-            auto chanceA = uniform(0.0f, 1.0f);
-            foreach (k; 0 .. adults.length) {
-                if (adults[k].getFitnessRange[0] < chanceA
-                        && chanceA < adults[k].getFitnessRange[1]) {
-                    auto chanceB = uniform(0.0f, 1.0f);
-                    foreach (l; 0 .. adults.length) {
-                        if (k != l && adults[l].getFitnessRange[0] < chanceB
-                                && chanceB < adults[l].getFitnessRange[1]) {
-                            auto pair = new Individual[2];
-                            pair[0] = adults[k];
-                            pair[1] = adults[l];
-                            myParents[newParents] = pair.dup;
-                            ++newParents;
-                            break;
-                        }
-                    }
-                    break;
-                }
-            }
-        }
-        parents = myParents.dup;
-    }
-
-    // todo?
-    void sigmaScaling() {
-        //auto myParents = new Individual[][](config.getNumberOfChildren
-        //                                    / config.getChildrenPerPair);
-        //auto newParents = 0;
-        //auto total_fitness = 0;
-        //auto sigma_list = new float[
-        //foreach (i; 0 .. adults.length) {
-        //    if adults[i].getFitness -
-    }
-
     void tournamentSelection() {
         auto numberOfParents = (config.getNumberOfChildren
                                 / config.getChildrenPerPair);
@@ -220,10 +173,6 @@ class Population {
             }
         parents = myParents.dup;
         }
-    }
-
-    // todo?
-    void boltzmannScaling() {
     }
 
     void reproduce() {
