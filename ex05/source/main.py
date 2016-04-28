@@ -1,3 +1,7 @@
+import distutils.util
+import os.path
+import sys
+
 # Append the directory in which the binaries were placed to Python's sys.path,
 # then import the D DLL.
 libDir = os.path.join('build', 'lib.%s-%s' % (
