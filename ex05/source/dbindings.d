@@ -5,6 +5,7 @@ import pyd.pyd;
 import ea.population;
 import ea.individual;
 import ea.ea_config;
+import tsp.tsp;
 
 public class DBindings { }
 
@@ -57,5 +58,10 @@ extern(C) void PydMain() {
         Property!(EaConfig.getBigObjectPenalty),
         Property!(EaConfig.isNoWrap),
         Property!(EaConfig.isPullMode)
+    )();
+    wrap_class!(
+        TSP,
+        Init!(int[][], int[][]),
+        Def!(TSP.getTravelValue)
     )();
 }

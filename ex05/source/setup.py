@@ -18,7 +18,8 @@ projName = 'dbindings'
 sources = ['dbindings.d',
 'ea/ea_config.d',
 'ea/population.d',
-'ea/individual.d']
+'ea/individual.d',
+'tsp/tsp.d']
 
 setup(
     name=projName,

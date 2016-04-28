@@ -18,6 +18,10 @@ def main():
 
     rc = ReadCities("res/")
     print(len(rc.costs))
+    for distance in rc.distances:
+        print(distance)
+    tsp = TSP(rc.distances, rc.costs)
+    print (tsp.getTravelValue([1,2,3], True))
 
     qc = QuickConf()
     config = EaConfig(
@@ -47,7 +51,7 @@ def main():
     )
     population = Population(config, len(rc.costs))
 
-
+    """
     for generation in range(config.getGenerations):
         print("Generation:", generation + 1)
         population.develop()
@@ -55,7 +59,7 @@ def main():
         population.adultSelection()
         population.parentSelection()
         population.reproduce()
-
+    """
 
 if __name__ == "__main__":
     main()
