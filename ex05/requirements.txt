@@ -1,5 +1,2 @@
 pyd
-numpy
-hg+http://bitbucket.org/pygame/pygame
-kivy
-kivy-garden
+openpyxl
