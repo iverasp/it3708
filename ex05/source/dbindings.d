@@ -14,7 +14,7 @@ extern(C) void PydMain() {
     module_init();
     wrap_class!(
         Population,
-        Init!(EaConfig),
+        Init!(EaConfig, int),
         Repr!(Population.toString),
         Property!(Population.getChildren),
         Property!(Population.getAdults),
@@ -31,11 +31,7 @@ extern(C) void PydMain() {
         Individual,
         Init!(EaConfig),
         Property!(Individual.getPhenotype),
-        Property!(Individual.getFitness),
-        Property!(Individual.setFitnessRange),
-        Property!(Individual.getFitnessRange),
-        Property!(Individual.addDevouredFood),
-        Property!(Individual.addDevouredPoison)
+        Property!(Individual.getFitness)
     )();
     wrap_class!(
         EaConfig,

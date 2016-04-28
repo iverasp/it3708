@@ -20,9 +20,16 @@ class Population {
     float totalFitness;
     float averageFitness;
     float standardDeviation;
+    int[] cities;
+    int numberOfCities;
 
-    this(EaConfig config) {
+    this(EaConfig config, int numberOfCities) {
         this.config = config;
+        this.numberOfCities = numberOfCities;
+        cities = new int[](numberOfCities);
+        foreach(i; 0 .. numberOfCities) {
+            cities[i] = i;
+        }
         children = generateChildren();
     }
 
@@ -43,7 +50,9 @@ class Population {
         Individual[] result = new Individual[config.getNumberOfChildren];
         foreach (i; 0 .. config.getNumberOfChildren) {
             auto individual = new Individual(config);
-            individual.generateGenotype();
+            int[] randomGenotype = cities.dup;
+            randomShuffle(randomGenotype[]);
+            individual.setGenotype(randomGenotype);
             result[i] = individual;
         }
         return result;
@@ -57,10 +66,8 @@ class Population {
 
     void evaluate() {
         childrenFitness = new Individual[config.getNumberOfChildren];
-        foreach (i; 0 .. children.length) {
-            children[i].evaluateFitness();
-            children[i].devouredFood = 0;
-            children[i].devouredPoison = 0;
+        foreach (child; children) {
+            child.evaluateFitness();
         }
         childrenFitness = children.dup;
 
@@ -121,17 +128,8 @@ class Population {
     void parentSelection() {
         generateInformation();
         switch(config.getParentSelection) {
-            case("f"):
-                fitnessProportionate();
-                break;
-            case("s"):
-                sigmaScaling();
-                break;
             case("t"):
                 tournamentSelection();
-                break;
-            case("b"):
-                boltzmannScaling();
                 break;
             default:
                 break;
@@ -183,7 +181,7 @@ class Population {
                 foreach (j; 0 .. config.getChildrenPerPair) {
                     auto genotypeLength = to!int(
                                             parents[i][0].genotype.length);
-                    auto crossoverPoint = uniform(0, 6) * 3 * 16;
+                    auto crossoverPoint = uniform(0, numberOfCities);
                     auto newborn = new Individual(config);
                     newborn.genotype = (
                         parents[i][0].genotype[0..crossoverPoint].dup
@@ -199,10 +197,11 @@ class Population {
                     auto newborn = new Individual(config);
                     if (chance < config.getMutationRate) {
                         auto genotype = parents[i][0].genotype.dup;
-                        int index = uniform(0, 6);
-                        foreach(v; index * 3 * 16 .. index * 3 * 16 + 16 * 3) {
-                            genotype[v] = cast(bool)uniform(1,2);
-                        }
+                        int firstIndex = uniform(0, numberOfCities);
+                        int secondIndex = uniform(0, numberOfCities);
+                        int firstTmp = genotype[firstIndex];
+                        genotype[firstIndex] = genotype[secondIndex];
+                        genotype[secondIndex] = firstTmp;
                         newborn.genotype = genotype;
                     } else {
                         newborn.genotype = (
