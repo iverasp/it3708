@@ -1,6 +1,7 @@
 module ea.individual;
 
 import ea.ea_config;
+import tsp.tsp;
 import std.algorithm;
 import std.conv;
 import std.random;
@@ -12,12 +13,15 @@ class Individual {
 
     // These are generic variables
     EaConfig config;
+    TSP tsp;
     int genotypeLength;
     int[] genotype;
     int[] phenotype;
     float fitness;
+    int distanceValue;
+    int costValue;
 
-    this(EaConfig config) {
+    this(EaConfig config TSP tsp) {
         this.config = config;
         this.genotypeLength = config.getGenotypeLength; //genotypeLength;
         genotype = new int[](config.getGenotypeLength); //genotypeLength);
@@ -28,6 +32,17 @@ class Individual {
     @property int[] getPhenotype() { return phenotype; }
 
     @property float getFitness() { return fitness; }
+
+    @property void setFitness(float fitness) { this.fitness = fitness; }
+
+    void calcValues() {
+        distanceValue = tsp.getTravelValue(this.genotype, true);
+        costValue = tsp.getTravelValue(this.genotype, false);
+    }
+
+    int[][] getValues() {
+        return int[distanceValue][costValue];
+    }
 
     void setGenotype(int[] genotype) {
         this.genotype = genotype;

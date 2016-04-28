@@ -51,7 +51,7 @@ class Population {
     Individual[] generateChildren() {
         Individual[] result = new Individual[config.getNumberOfChildren];
         foreach (i; 0 .. config.getNumberOfChildren) {
-            auto individual = new Individual(config);
+            auto individual = new Individual(config, tsp);
             int[] randomGenotype = cities.dup;
             randomShuffle(randomGenotype[]);
             individual.setGenotype(randomGenotype);
@@ -63,6 +63,12 @@ class Population {
     void develop() {
         foreach (i; 0 .. children.length) {
             children[i].generatePhenotype();
+        }
+    }
+
+    void findObjectiveFunctionValues() {
+        foreach(child; children) {
+            child.
         }
     }
 
@@ -184,7 +190,7 @@ class Population {
                     auto genotypeLength = to!int(
                                             parents[i][0].genotype.length);
                     auto crossoverPoint = uniform(0, numberOfCities);
-                    auto newborn = new Individual(config);
+                    auto newborn = new Individual(config, tsp);
                     newborn.genotype = (
                         parents[i][0].genotype[0..crossoverPoint].dup
                         ~ parents[i][1].genotype[crossoverPoint ..
@@ -196,7 +202,7 @@ class Population {
             } else {
                 foreach (j; 0 .. config.getChildrenPerPair) {
                     int parentIndex = j % config.getChildrenPerPair;
-                    auto newborn = new Individual(config);
+                    auto newborn = new Individual(config, tsp);
                     if (chance < config.getMutationRate) {
                         auto genotype = parents[i][0].genotype.dup;
                         int firstIndex = uniform(0, numberOfCities);
