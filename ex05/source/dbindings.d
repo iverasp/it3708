@@ -15,7 +15,7 @@ extern(C) void PydMain() {
     module_init();
     wrap_class!(
         Population,
-        Init!(EaConfig, int),
+        Init!(EaConfig, TSP),
         Repr!(Population.toString),
         Property!(Population.getChildren),
         Property!(Population.getAdults),

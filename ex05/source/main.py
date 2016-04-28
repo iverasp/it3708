@@ -49,7 +49,7 @@ def main():
         qc.pull_mode,
         qc.timesteps
     )
-    population = Population(config, len(rc.costs))
+    population = Population(config, tsp)
 
     """
     for generation in range(config.getGenerations):

@@ -4,10 +4,12 @@ class TSP {
 
     int[][] distances;
     int[][] costs;
+    int numberOfCities;
 
     this(int[][] distances, int[][] costs) {
         this.distances = distances;
         this.costs = costs;
+        this.numberOfCities = cast(int)distances.length;
     }
 
     int getTravelValue(int[] cities, bool dist) {

@@ -2,6 +2,7 @@ module ea.population;
 
 import ea.ea_config;
 import ea.individual;
+import tsp.tsp;
 import pyd.pyd;
 import std.algorithm.sorting;
 import std.container;
@@ -22,12 +23,13 @@ class Population {
     float standardDeviation;
     int[] cities;
     int numberOfCities;
+    TSP tsp;
 
-    this(EaConfig config, int numberOfCities) {
+    this(EaConfig config, TSP tsp) {
         this.config = config;
-        this.numberOfCities = numberOfCities;
-        cities = new int[](numberOfCities);
-        foreach(i; 0 .. numberOfCities) {
+        this.tsp = tsp;
+        cities = new int[](tsp.numberOfCities);
+        foreach(i; 0 .. tsp.numberOfCities) {
             cities[i] = i;
         }
         children = generateChildren();
