@@ -1,4 +1,4 @@
-# Subsymbolic methods in AI, exercise 003
+# Subsymbolic methods in AI, exercise 005
 
 ## Install D compilers and D package manager on OSX
 
