@@ -39,12 +39,11 @@ def main():
 
     for generation in range(config.getGenerations):
         print("Generation:", generation + 1)
-        population.develop()
         population.evaluate()
         population.adultSelection()
         population.parentSelection()
         population.reproduce()
-    
+
 if __name__ == "__main__":
     print("MOOP MTSP with MOEA")
     main()

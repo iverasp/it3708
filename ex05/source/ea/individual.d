@@ -25,7 +25,7 @@ class Individual {
         genotype = new int[](config.getGenotypeLength);
         fitness = 0.0f;
     }
-    
+
     @property int[] getGenotype() { return genotype; }
     @property void setGenotype(int[] genotype) { this.genotype = genotype; }
     @property float getFitness() { return fitness; }
@@ -35,6 +35,23 @@ class Individual {
     void calcValues() {
         distanceValue = tsp.getTravelValue(this.genotype, true);
         costValue = tsp.getTravelValue(this.genotype, false);
+    }
+
+    int opCmp(ref const Individual other) const {
+        writeln("my distance: " ~ to!string(distanceValue));
+        writeln("others distance: " ~ to!string(other.distanceValue));
+        writeln("my cost: " ~ to!string(costValue));
+        writeln("others cost: " ~ to!string(other.costValue));
+        if ((this.distanceValue <= other.distanceValue && this.costValue <= other.costValue) || (this.costValue < other.costValue && this.distanceValue <= other.distanceValue)) {
+            writeln("i am best");
+            return 1;
+        }
+        if (this.distanceValue == other.distanceValue && this.costValue == other.costValue) {
+            writeln("i am equal");
+            return 0;
+        }
+        writeln("i am worst");
+        return -1;
     }
 
     void evaluateFitness() {

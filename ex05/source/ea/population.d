@@ -4,7 +4,7 @@ import ea.ea_config;
 import ea.individual;
 import tsp.tsp;
 import pyd.pyd;
-import std.algorithm.sorting;
+import std.algorithm;
 import std.container;
 import std.conv;
 import std.math;
@@ -55,22 +55,20 @@ class Population {
         }
         return result;
     }
-    
-    // There is currently no phenotype
-    //void develop() {
-    //    foreach (i; 0 .. children.length) {
-    //        children[i].generatePhenotype();
-    //    }
-    //}
 
     void findObjectiveFunctionValues() {
         foreach(child; children) {
             child.calcValues();
         }
-        Individual[] sortedChildren = children.dup;
+        auto sortedChildren = children.dup;
+        writeln("sorting children");
+        sort(sortedChildren);
     }
 
     void evaluate() {
+        writeln("finding objective values");
+        findObjectiveFunctionValues();
+        writeln("done finding objective values");
         childrenFitness = new Individual[config.getNumberOfChildren];
         foreach (child; children) {
             child.evaluateFitness();
