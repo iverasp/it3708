@@ -39,7 +39,7 @@ def main():
 
     for generation in range(config.getGenerations):
         print("Generation:", generation + 1)
-        population.develop()
+        #population.develop()
         population.evaluate()
         population.adultSelection()
         population.parentSelection()
