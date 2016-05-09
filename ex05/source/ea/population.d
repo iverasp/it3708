@@ -80,45 +80,13 @@ class Population {
         sort!(myComp)(childrenFitness);
     }
 
-    void adultSelection() {
-        switch(config.getAdultSelection) {
-            case("f"):
-                fullReplacement();
-                break;
-            case("o"):
-                overProduction();
-                break;
-            case("g"):
-                generationMixing();
-                break;
-            default:
-                break;
-        }
-    }
-
-    void fullReplacement() {
-        adults = new Individual[config.getPopulationSize];
-        foreach (i; 0 .. children.length) {
-            adults[i] = children[i];
-        }
-        children = new Individual[config.getNumberOfChildren];
-    }
-
-    void overProduction() {
-        adults = new Individual[config.getPopulationSize];
-        foreach (i; 0 .. config.getPopulationSize) {
-            adults[i] = childrenFitness[i];
-        }
-        children = new Individual[config.getNumberOfChildren];
-    }
-
     void generationMixing() {
         auto mixedFitness = children.dup;
         if (adults) {
             mixedFitness ~= adults.dup;
         }
         adults = new Individual[config.getPopulationSize];
-        bool myComp(Individual x, Individual y) @safe pure nothrow {
+       bool myComp(Individual x, Individual y) @safe pure nothrow {
             return x.fitness > y.fitness;
         }
         sort!(myComp)(mixedFitness);
@@ -126,17 +94,6 @@ class Population {
             adults[i] = mixedFitness[i];
         }
         children = new Individual[config.getNumberOfChildren];
-    }
-
-    void parentSelection() {
-        generateInformation();
-        switch(config.getParentSelection) {
-            case("t"):
-                tournamentSelection();
-                break;
-            default:
-                break;
-        }
     }
 
     void tournamentSelection() {
