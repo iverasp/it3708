@@ -21,7 +21,7 @@ class Individual {
     int distanceValue;
     int costValue;
 
-    this(EaConfig config TSP tsp) {
+    this(EaConfig config, TSP tsp) {
         this.config = config;
         this.genotypeLength = config.getGenotypeLength; //genotypeLength;
         genotype = new int[](config.getGenotypeLength); //genotypeLength);
@@ -40,8 +40,8 @@ class Individual {
         costValue = tsp.getTravelValue(this.genotype, false);
     }
 
-    int[][] getValues() {
-        return int[distanceValue][costValue];
+    int[] getValues() {
+        return [distanceValue, costValue];
     }
 
     void setGenotype(int[] genotype) {

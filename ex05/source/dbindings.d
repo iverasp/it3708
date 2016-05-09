@@ -30,7 +30,7 @@ extern(C) void PydMain() {
     )();
     wrap_class!(
         Individual,
-        Init!(EaConfig),
+        Init!(EaConfig, TSP),
         Property!(Individual.getPhenotype),
         Property!(Individual.getFitness)
     )();
