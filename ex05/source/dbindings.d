@@ -21,8 +21,6 @@ extern(C) void PydMain() {
         Property!(Population.getAverageFitness),
         Property!(Population.getStandardDeviation),
         Def!(Population.evaluate),
-        Def!(Population.adultSelection),
-        Def!(Population.parentSelection),
         Def!(Population.reproduce),
         Def!(Population.generateInformation)
     )();
@@ -36,7 +34,6 @@ extern(C) void PydMain() {
         Property!(Individual.getValues),
         Def!(Individual.calcValues),
         Def!(Individual.evaluateFitness),
-        Def!(Indidivual.dominates)
     )();
     wrap_class!(
         EaConfig,
