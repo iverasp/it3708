@@ -42,7 +42,7 @@ class Individual {
         writeln("others distance: " ~ to!string(other.distanceValue));
         writeln("my cost: " ~ to!string(costValue));
         writeln("others cost: " ~ to!string(other.costValue));
-        if ((this.distanceValue <= other.distanceValue && this.costValue <= other.costValue) || (this.costValue < other.costValue && this.distanceValue <= other.distanceValue)) {
+        if ((this.distanceValue < other.distanceValue && this.costValue <= other.costValue) || (this.costValue < other.costValue && this.distanceValue <= other.distanceValue)) {
             writeln("i am best");
             return 1;
         }
