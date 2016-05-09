@@ -12,7 +12,6 @@ import std.random;
 import std.stdio;
 
 class Population {
-
     EaConfig config;
     Individual[] children;
     Individual[] adults;
