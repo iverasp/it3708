@@ -22,7 +22,6 @@ class Population {
     float averageFitness;
     float standardDeviation;
     int[] cities;
-    int numberOfCities;
     TSP tsp;
 
     this(EaConfig config, TSP tsp) {
@@ -70,8 +69,8 @@ class Population {
         foreach(child; children) {
             child.calcValues();
         }
-
         Individual[] sortedChildren = children.dup;
+
 
     }
 
@@ -192,7 +191,7 @@ class Population {
                 foreach (j; 0 .. config.getChildrenPerPair) {
                     auto genotypeLength = to!int(
                                             parents[i][0].genotype.length);
-                    auto crossoverPoint = uniform(0, numberOfCities);
+                    auto crossoverPoint = uniform(0, tsp.numberOfCities);
                     auto newborn = new Individual(config, tsp);
                     newborn.genotype = (
                         parents[i][0].genotype[0..crossoverPoint].dup
@@ -208,8 +207,8 @@ class Population {
                     auto newborn = new Individual(config, tsp);
                     if (chance < config.getMutationRate) {
                         auto genotype = parents[i][0].genotype.dup;
-                        int firstIndex = uniform(0, numberOfCities);
-                        int secondIndex = uniform(0, numberOfCities);
+                        int firstIndex = uniform(0, tsp.numberOfCities);
+                        int secondIndex = uniform(0, tsp.numberOfCities);
                         int firstTmp = genotype[firstIndex];
                         genotype[firstIndex] = genotype[secondIndex];
                         genotype[secondIndex] = firstTmp;
