@@ -9,7 +9,6 @@ public void main() {
     EaConfig ea_config = new EaConfig();
     Population pop = new Population(ea_config);
     foreach(i; 0 .. 100) {
-        //population.develop();
         population.evaluate();
         population.adultSelection();
         population.parentSelection();
