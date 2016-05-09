@@ -42,16 +42,25 @@ class Individual {
         writeln("others distance: " ~ to!string(other.distanceValue));
         writeln("my cost: " ~ to!string(costValue));
         writeln("others cost: " ~ to!string(other.costValue));
+        /*
         if ((this.distanceValue < other.distanceValue && this.costValue <= other.costValue) || (this.costValue < other.costValue && this.distanceValue <= other.distanceValue)) {
             writeln("i am best");
             return 1;
         }
+        */
+        if (distanceValue < other.distanceValue || costValue < other.costValue) {
+            writeln("i am best");
+            return 1;
+        }
+        if (distanceValue > other.distanceValue || costValue > other.costValue) return -1;
+        /*
         if (this.distanceValue == other.distanceValue && this.costValue == other.costValue) {
             writeln("i am equal");
             return 0;
         }
+        */
         writeln("i am worst");
-        return -1;
+        return 0;
     }
 
     void evaluateFitness() {
