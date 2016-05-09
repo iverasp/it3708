@@ -68,8 +68,11 @@ class Population {
 
     void findObjectiveFunctionValues() {
         foreach(child; children) {
-            child.
+            child.calcValues();
         }
+
+        Individual[] sortedChildren = children.dup;
+
     }
 
     void evaluate() {
