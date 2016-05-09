@@ -41,7 +41,7 @@ class Individual {
     }
 
     override string toString() {
-        return "Distance: " ~ to!string(distanceValue) ~ ", Cost: " ~ to!string(costValue);
+        return "Rank: " ~ to!string(paretoRank) ~ " Crowding: " ~ to!string(crowdingDistance) ~ " Distance: " ~ to!string(distanceValue) ~ ", Cost: " ~ to!string(costValue);
     }
 
     void evaluateFitness() {

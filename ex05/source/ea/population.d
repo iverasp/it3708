@@ -88,25 +88,25 @@ class Population {
         crowdingValues ~= sortedAdults[0].costValue;
         for (int i = 0; i < sortedAdults.length; i++) {
             for (int j = 0; j < sortedAdults[i].dominatedBy.length; j++) {
-                if (sortedAdults[i].dominatedBy[j].paretoRank > rankCounter) {
+                if (sortedAdults[i].dominatedBy[j].paretoRank == rankCounter) {
                     crowdingValues ~= sortedAdults[i-1].distanceValue;
-                    crowdingValues ~= sortedAdults[i-1].distanceValue;
-                    if (i < sortedAdults.length) {
+                    crowdingValues ~= sortedAdults[i-1].costValue;
+                    if (i < sortedAdults.length - 1) {
                         crowdingValues ~= sortedAdults[i+1].distanceValue;
-                        crowdingValues ~= sortedAdults[i+1].distanceValue;
+                        crowdingValues ~= sortedAdults[i+1].costValue;
                     }
                     rankCounter++;
                     break;
                 }
             }
-            writeln(to!string(rankCounter));
+            writeln("Rank counter: " ~ to!string(rankCounter));
             sortedAdults[i].paretoRank = rankCounter;
         }
 
         rankCounter = 0;
         for (int i = 1; i < sortedAdults.length - 1; i++) {
             if (sortedAdults[i].paretoRank == sortedAdults[i+1].paretoRank) {
-                writeln(to!string(crowdingValues.length));
+                writeln("Crowd length: " ~ to!string(crowdingValues.length));
                 sortedAdults[i].crowdingDistance =
                     calculateCrowdingDistance(
                         sortedAdults[i-1],
@@ -119,12 +119,16 @@ class Population {
                 ++i;
             }
         }
+        foreach (adult; sortedAdults) {
+            writeln(adult);
+        }
     }
 
     float calculateCrowdingDistance(Individual previous, Individual next, float[] crowdingValues) {
-        float x1 = abs(previous.distanceValue - next.distanceValue) / (crowdingValues[2] - crowdingValues[0]);
-        float x2 = abs(previous.costValue - next.costValue) / (crowdingValues[1] - crowdingValues[3]);
-        return x1 + x2;
+        float x1 = (previous.distanceValue - next.distanceValue) / (crowdingValues[2] - crowdingValues[0]);
+        float x2 = (next.costValue - previous.costValue) / (crowdingValues[1] - crowdingValues[3]);
+        writeln(to!string(crowdingValues));
+        return (x1) + (x2);
     }
 
     void tournamentSelection() {
