@@ -10,9 +10,7 @@ if argv[-1] == "opt":
     argv.append("-c")
     argv.append("ldc2")
     argv.append("-O")
-
 else: argv.append("build")
-
 
 projName = 'dbindings'
 sources = ['dbindings.d',

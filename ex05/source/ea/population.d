@@ -40,11 +40,8 @@ class Population {
     }
 
     @property Individual[] getChildren() { return children; }
-
     @property Individual[] getAdults() { return adults; }
-
     @property float getAverageFitness() { return averageFitness; }
-
     @property float getStandardDeviation() { return standardDeviation; }
 
     Individual[] generateChildren() {
@@ -58,20 +55,19 @@ class Population {
         }
         return result;
     }
-
-    void develop() {
-        foreach (i; 0 .. children.length) {
-            children[i].generatePhenotype();
-        }
-    }
+    
+    // There is currently no phenotype
+    //void develop() {
+    //    foreach (i; 0 .. children.length) {
+    //        children[i].generatePhenotype();
+    //    }
+    //}
 
     void findObjectiveFunctionValues() {
         foreach(child; children) {
             child.calcValues();
         }
         Individual[] sortedChildren = children.dup;
-
-
     }
 
     void evaluate() {

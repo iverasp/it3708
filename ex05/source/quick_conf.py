@@ -1,5 +1,4 @@
 class QuickConf:
-
     generations = 1000
     population_size = 1500
     number_of_children = 1500
@@ -14,12 +13,3 @@ class QuickConf:
     children_per_pair = 2
     mutation_type = "g"
     mutation_rate = 1.0
-    food_bonus = 1.0
-    poison_penalty = 2.0
-    big_object_bonus = 2.0
-    big_object_penalty = 2.0
-    small_object_bonus = 1.0
-    small_object_penalty = 1.0
-    pull_mode = False
-    no_wrap = False
-    timesteps = 60

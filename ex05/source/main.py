@@ -15,7 +15,6 @@ sys.path.append(os.path.abspath(libDir))
 from dbindings import *
 
 def main():
-
     rc = ReadCities("res/")
     tsp = TSP(rc.distances, rc.costs)
 
@@ -35,18 +34,8 @@ def main():
         qc.children_per_pair,
         qc.mutation_type,
         qc.mutation_rate,
-        qc.food_bonus,
-        qc.poison_penalty,
-        qc.big_object_bonus,
-        qc.big_object_penalty,
-        qc.small_object_bonus,
-        qc.small_object_penalty,
-        qc.no_wrap,
-        qc.pull_mode,
-        qc.timesteps
     )
     population = Population(config, tsp)
-
 
     for generation in range(config.getGenerations):
         print("Generation:", generation + 1)
@@ -56,6 +45,6 @@ def main():
         population.parentSelection()
         population.reproduce()
     
-
 if __name__ == "__main__":
+    print("MOOP MTSP with MOEA")
     main()

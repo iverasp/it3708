@@ -21,7 +21,7 @@ extern(C) void PydMain() {
         Property!(Population.getAdults),
         Property!(Population.getAverageFitness),
         Property!(Population.getStandardDeviation),
-        Def!(Population.develop),
+        //Def!(Population.develop),
         Def!(Population.evaluate),
         Def!(Population.adultSelection),
         Def!(Population.parentSelection),
@@ -31,13 +31,18 @@ extern(C) void PydMain() {
     wrap_class!(
         Individual,
         Init!(EaConfig, TSP),
-        Property!(Individual.getPhenotype),
-        Property!(Individual.getFitness)
+        Property!(Individual.getGenotype),
+        Property!(Individual.setGenotype),
+        Property!(Individual.getFitness),
+        Property!(Individual.setFitness),
+        Property!(Individual.getValues),
+        Def!(Individual.calcValues),
+        Def!(Individual.evaluateFitness)
     )();
     wrap_class!(
         EaConfig,
         Init!(),
-        Init!(int,int,int,int,string,string,float,int,float,float,float,int,string,float,float,float,float,float,float,float,bool,bool,int),
+        Init!(int,int,int,int,string,string,float,int,float,float,float,int,string,float),
         Property!(EaConfig.getGenerations),
         Property!(EaConfig.getPopulationSize),
         Property!(EaConfig.getNumberOfChildren),
@@ -52,12 +57,6 @@ extern(C) void PydMain() {
         Property!(EaConfig.getChildrenPerPair),
         Property!(EaConfig.getMutationType),
         Property!(EaConfig.getMutationRate),
-        Property!(EaConfig.getFoodBonus),
-        Property!(EaConfig.getPoisonPenalty),
-        Property!(EaConfig.getSmallObjectBonus),
-        Property!(EaConfig.getBigObjectPenalty),
-        Property!(EaConfig.isNoWrap),
-        Property!(EaConfig.isPullMode)
     )();
     wrap_class!(
         TSP,

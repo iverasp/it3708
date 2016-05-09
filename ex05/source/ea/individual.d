@@ -10,52 +10,31 @@ import std.stdio;
 import pyd.pyd;
 
 class Individual {
-
-    // These are generic variables
     EaConfig config;
     TSP tsp;
     int genotypeLength;
     int[] genotype;
-    int[] phenotype;
     float fitness;
     int distanceValue;
     int costValue;
 
     this(EaConfig config, TSP tsp) {
         this.config = config;
-        this.genotypeLength = config.getGenotypeLength; //genotypeLength;
-        genotype = new int[](config.getGenotypeLength); //genotypeLength);
-        phenotype = new int[](config.getGenotypeLength);
+        this.tsp = tsp;
+        this.genotypeLength = config.getGenotypeLength;
+        genotype = new int[](config.getGenotypeLength);
         fitness = 0.0f;
     }
-
-    @property int[] getPhenotype() { return phenotype; }
-
+    
+    @property int[] getGenotype() { return genotype; }
+    @property void setGenotype(int[] genotype) { this.genotype = genotype; }
     @property float getFitness() { return fitness; }
-
     @property void setFitness(float fitness) { this.fitness = fitness; }
+    @property int[] getValues() { return [distanceValue, costValue]; }
 
     void calcValues() {
         distanceValue = tsp.getTravelValue(this.genotype, true);
         costValue = tsp.getTravelValue(this.genotype, false);
-    }
-
-    int[] getValues() {
-        return [distanceValue, costValue];
-    }
-
-    void setGenotype(int[] genotype) {
-        this.genotype = genotype;
-    }
-
-    void generateGenotype() {
-        foreach(i; 0 .. genotypeLength) {
-            genotype[i] = uniform(0, 2) == 0;
-        }
-    }
-
-    void generatePhenotype() {
-        phenotype = genotype.dup;
     }
 
     void evaluateFitness() {

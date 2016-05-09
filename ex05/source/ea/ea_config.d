@@ -4,8 +4,6 @@ class EaConfig {
     this(){
     }
 
-    // EA config
-    // Generic variables
     auto generations = 50;
     auto populationSize = 1500;
     auto numberOfChildren = 1500;
@@ -20,21 +18,6 @@ class EaConfig {
     auto childrenPerPair = 2;
     auto mutationType = "g";
     auto mutationRate = 1.0f;
-
-    // Problem specific variables
-    // Flatland
-    auto foodBonus = 1.0f;
-    auto poisonPenalty = 2.0f;
-
-    // BeerTracker
-    auto bigObjectBonus = 2.0f;
-    auto bigObjectPenalty = 2.0f;
-    auto smallObjectBonus = 1.0f;
-    auto smallObjectPenalty = 1.0f;
-
-    auto noWrap = false;
-    auto pullMode = false;
-    auto timesteps = 600;
 
     this(
         int generations,
@@ -51,15 +34,6 @@ class EaConfig {
         int childrenPerPair,
         string mutationType,
         float mutationRate,
-        float foodBonus,
-        float poisonPenalty,
-        float bigObjectBonus,
-        float bigObjectPenalty,
-        float smallObjectBonus,
-        float smallObjectPenalty,
-        bool noWrap,
-        bool pullMode,
-        int timesteps
     ) {
         this.generations = generations;
         this.populationSize = populationSize;
@@ -75,19 +49,8 @@ class EaConfig {
         this.childrenPerPair = childrenPerPair;
         this.mutationType = mutationType;
         this.mutationRate = mutationRate;
-        this.foodBonus = foodBonus;
-        this.poisonPenalty = poisonPenalty;
-        this.bigObjectBonus = bigObjectBonus;
-        this.bigObjectPenalty = bigObjectPenalty;
-        this.smallObjectBonus = smallObjectBonus;
-        this.smallObjectPenalty = smallObjectPenalty;
-        this.noWrap = noWrap;
-        this.pullMode = pullMode;
-        this.timesteps = timesteps;
     }
 
-    // EA getters
-    // Generic getters
     @property auto getGenerations(){ return generations; }
     @property auto getPopulationSize(){ return populationSize; }
     @property auto getNumberOfChildren(){ return numberOfChildren; }
@@ -102,15 +65,4 @@ class EaConfig {
     @property auto getChildrenPerPair(){ return childrenPerPair; }
     @property auto getMutationType(){ return mutationType; }
     @property auto getMutationRate(){ return mutationRate; }
-
-    // Problem specific variable
-    // Flatland
-    @property auto getFoodBonus(){ return foodBonus; }
-    @property auto getPoisonPenalty(){ return poisonPenalty; }
-    @property auto getSmallObjectBonus() { return smallObjectBonus; }
-    @property auto getBigObjectPenalty() { return bigObjectPenalty; }
-
-    // BeerTracker
-    @property auto isNoWrap() { return noWrap; }
-    @property auto isPullMode() { return pullMode; }
 }
