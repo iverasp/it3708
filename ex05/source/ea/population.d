@@ -15,7 +15,6 @@ class Population {
     EaConfig config;
     Individual[] children;
     Individual[] adults;
-    Individual[] childrenFitness;
     Individual[][] parents;
     float totalFitness;
     float averageFitness;
@@ -59,41 +58,73 @@ class Population {
         foreach(child; children) {
             child.calcValues();
         }
-        auto sortedChildren = children.dup;
-        writeln("sorting children");
-        sort(sortedChildren);
     }
 
     void evaluate() {
-        writeln("finding objective values");
+        //int[ParetoFront] fronts;
         findObjectiveFunctionValues();
-        writeln("done finding objective values");
-        childrenFitness = new Individual[config.getNumberOfChildren];
-        foreach (child; children) {
-            child.evaluateFitness();
+        adults = children;
+        if (parents) {
+            foreach(parent; parents) {
+                adults ~= parent[0];
+                adults ~= parent[1];
+            }
         }
-        childrenFitness = children.dup;
+        auto sortedAdults = adults.dup;
+        writeln("sorting children");
+        multiSort!("a.distanceValue < b.distanceValue", "a.costValue < b.costValue")(sortedAdults);
+        writeln("amount of adults " ~ to!string(sortedAdults.length));
+        for (int i = 1; i < sortedAdults.length; i++) {
+            for (int j = i; j > 0; j--) {
+                if (sortedAdults[i].costValue > sortedAdults[j].costValue) {
+                    sortedAdults[i].dominatedBy ~= sortedAdults[j];
+                }
+            }
+        }
+        multiSort!("a.dominatedBy.length < b.dominatedBy.length", "a.distanceValue < b.distanceValue")(sortedAdults);
+        int rankCounter = 0;
+        float[] crowdingValues;
+        crowdingValues ~= sortedAdults[0].distanceValue;
+        crowdingValues ~= sortedAdults[0].costValue;
+        for (int i = 0; i < sortedAdults.length; i++) {
+            for (int j = 0; j < sortedAdults[i].dominatedBy.length; j++) {
+                if (sortedAdults[i].dominatedBy[j].paretoRank > rankCounter) {
+                    crowdingValues ~= sortedAdults[i-1].distanceValue;
+                    crowdingValues ~= sortedAdults[i-1].distanceValue;
+                    if (i < sortedAdults.length) {
+                        crowdingValues ~= sortedAdults[i+1].distanceValue;
+                        crowdingValues ~= sortedAdults[i+1].distanceValue;
+                    }
+                    rankCounter++;
+                    break;
+                }
+            }
+            writeln(to!string(rankCounter));
+            sortedAdults[i].paretoRank = rankCounter;
+        }
 
-        bool myComp(Individual x, Individual y) @safe pure nothrow {
-            return x.fitness > y.fitness;
+        rankCounter = 0;
+        for (int i = 1; i < sortedAdults.length - 1; i++) {
+            if (sortedAdults[i].paretoRank == sortedAdults[i+1].paretoRank) {
+                writeln(to!string(crowdingValues.length));
+                sortedAdults[i].crowdingDistance =
+                    calculateCrowdingDistance(
+                        sortedAdults[i-1],
+                        sortedAdults[i+1],
+                        crowdingValues[rankCounter .. rankCounter + 4]
+                    );
+            }
+            else {
+                ++rankCounter;
+                ++i;
+            }
         }
-        sort!(myComp)(childrenFitness);
     }
 
-    void generationMixing() {
-        auto mixedFitness = children.dup;
-        if (adults) {
-            mixedFitness ~= adults.dup;
-        }
-        adults = new Individual[config.getPopulationSize];
-       bool myComp(Individual x, Individual y) @safe pure nothrow {
-            return x.fitness > y.fitness;
-        }
-        sort!(myComp)(mixedFitness);
-        foreach (i; 0 .. config.getPopulationSize) {
-            adults[i] = mixedFitness[i];
-        }
-        children = new Individual[config.getNumberOfChildren];
+    float calculateCrowdingDistance(Individual previous, Individual next, float[] crowdingValues) {
+        float x1 = abs(previous.distanceValue - next.distanceValue) / (crowdingValues[2] - crowdingValues[0]);
+        float x2 = abs(previous.costValue - next.costValue) / (crowdingValues[1] - crowdingValues[3]);
+        return x1 + x2;
     }
 
     void tournamentSelection() {
