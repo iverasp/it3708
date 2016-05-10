@@ -36,7 +36,6 @@ class MTSP(App):
         qc.tournament_group_size,
         qc.crossover_rate,
         qc.children_per_pair,
-        qc.mutation_type,
         qc.mutation_rate,
     )
     population = Population(config, tsp)
@@ -53,7 +52,7 @@ class MTSP(App):
         print("Generation:", self.generation)
         self.population.evaluate()
         self.population.reproduce()
-        
+
         # Add datas to plot
         self.graph.add_datas(self.population.getFronts())
 
@@ -61,7 +60,6 @@ class MTSP(App):
             Clock.schedule_once(self.run_evolver, 0)
         else:
             print("Finished computing the computations in the computer")
-
 
 if __name__ == "__main__":
     print("MOOP MTSP with MOEA")
