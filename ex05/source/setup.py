@@ -17,6 +17,7 @@ sources = ['dbindings.d',
 'ea/ea_config.d',
 'ea/population.d',
 'ea/individual.d',
+'ea/paretofront.d',
 'tsp/tsp.d']
 
 setup(

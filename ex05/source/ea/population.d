@@ -2,6 +2,7 @@ module ea.population;
 
 import ea.ea_config;
 import ea.individual;
+import ea.paretofront;
 import tsp.tsp;
 import pyd.pyd;
 import std.algorithm;
@@ -61,7 +62,6 @@ class Population {
     }
 
     void evaluate() {
-        //int[ParetoFront] fronts;
         findObjectiveFunctionValues();
         adults = children;
         if (parents) {
@@ -70,94 +70,79 @@ class Population {
                 adults ~= parent[1];
             }
         }
+        writeln("number of adults: " ~ to!string(adults.length));
         auto sortedAdults = adults.dup;
-        writeln("sorting children");
         multiSort!("a.distanceValue < b.distanceValue", "a.costValue < b.costValue")(sortedAdults);
-        writeln("amount of adults " ~ to!string(sortedAdults.length));
         for (int i = 1; i < sortedAdults.length; i++) {
-            for (int j = i; j > 0; j--) {
+            for (int j = i; j >= 0; j--) {
                 if (sortedAdults[i].costValue > sortedAdults[j].costValue) {
+                    sortedAdults[i].dominatedBy ~= sortedAdults[j];
+                } else if (sortedAdults[i].distanceValue > sortedAdults[j].distanceValue
+                    && sortedAdults[i].costValue == sortedAdults[j].costValue) {
                     sortedAdults[i].dominatedBy ~= sortedAdults[j];
                 }
             }
         }
         multiSort!("a.dominatedBy.length < b.dominatedBy.length", "a.distanceValue < b.distanceValue")(sortedAdults);
         int rankCounter = 0;
-        float[] crowdingValues;
-        crowdingValues ~= sortedAdults[0].distanceValue;
-        crowdingValues ~= sortedAdults[0].costValue;
         for (int i = 0; i < sortedAdults.length; i++) {
             for (int j = 0; j < sortedAdults[i].dominatedBy.length; j++) {
                 if (sortedAdults[i].dominatedBy[j].paretoRank == rankCounter) {
-                    crowdingValues ~= sortedAdults[i-1].distanceValue;
-                    crowdingValues ~= sortedAdults[i-1].costValue;
-                    crowdingValues ~= sortedAdults[i].distanceValue;
-                    crowdingValues ~= sortedAdults[i].costValue;
                     rankCounter++;
                     break;
                 }
             }
-            writeln("Rank counter: " ~ to!string(rankCounter));
             sortedAdults[i].paretoRank = rankCounter;
         }
-        writeln(to!string(crowdingValues));
 
+        multiSort!("a.paretoRank < b.paretoRank", "a.distanceValue < b.distanceValue")(sortedAdults);
         rankCounter = 0;
-        for (int i = 1; i < sortedAdults.length - 1; i++) {
-            if (sortedAdults[i].paretoRank == sortedAdults[i+1].paretoRank) {
-                writeln("Crowd length: " ~ to!string(crowdingValues.length));
-                sortedAdults[i].crowdingDistance =
-                    calculateCrowdingDistance(
-                        sortedAdults[i-1],
-                        sortedAdults[i+1],
-                        crowdingValues[rankCounter .. rankCounter + 4]
-                    );
+        ParetoFront[] fronts;
+        fronts ~= new ParetoFront();
+        for (int i = 0; i < sortedAdults.length; i++) {
+            if (sortedAdults[i].paretoRank > rankCounter) {
+                fronts[rankCounter].calc();
+                ++rankCounter;
+                fronts ~= new ParetoFront();
             }
-            else {
-                rankCounter += 4;
-                i++;
-            }
+            fronts[rankCounter].individuals ~= sortedAdults[i];
         }
-        foreach (adult; sortedAdults) {
-            writeln(adult);
-        }
-    }
 
-    float calculateCrowdingDistance(Individual previous, Individual next, float[] crowdingValues) {
-        float x1 = (next.distanceValue - previous.distanceValue) / (crowdingValues[2] - crowdingValues[0]);
-        float x2 = (previous.costValue - next.costValue) / (crowdingValues[1] - crowdingValues[3]);
-        writeln(to!string(crowdingValues));
-        return (x1) + (x2);
+        foreach (individual; fronts[0].individuals) {
+            writeln(to!string(individual));
+        }
+        adults = sortedAdults;
     }
 
     void tournamentSelection() {
         auto numberOfParents = (config.getNumberOfChildren
                                 / config.getChildrenPerPair);
         auto myParents = new Individual[][](numberOfParents);
-        bool myComp(Individual x, Individual y) @safe pure nothrow {
-            return x.fitness < y.fitness;
-        }
         auto newParents = 0;
         while (newParents < numberOfParents) {
             auto adultPool = adults.dup;
             randomShuffle(adultPool);
-            auto groupSize = (config.getPopulationSize
+            auto groupSize = (adults.length
                                 / config.getTournamentGroupSize);
-            auto tournamentGroups = new Individual[][](groupSize, groupSize);
+            auto tournamentGroups
+                = new Individual[][](groupSize, config.getTournamentGroupSize);
             auto adultIndex = adultPool.length;
             foreach(i; 0 .. groupSize) {
-                foreach(j; 0 .. groupSize) {
-                    if (adultIndex > -1.0f) {
-                        tournamentGroups[i][j] = adultPool[--adultIndex - 1];
+                foreach(j; 0 .. config.getTournamentGroupSize) {
+                    if (adultIndex > 0) {
+                        tournamentGroups[i][j] =
+                        adultPool[--adultIndex];
                     }
                 }
             }
             foreach (i; 0 .. tournamentGroups.length) {
                 auto chance = uniform(0.0f, 1.0f);
-                if (chance < 1. - config.getTournamentEpsilon) {
-                    sort!(myComp)(tournamentGroups[i]);
+                if (chance > config.getTournamentEpsilon) {
+                    multiSort!("a.paretoRank < b.paretoRank",
+                    "a.crowdingDistance < b.crowdingDistance")
+                    (tournamentGroups[i]);
                 }
-                auto pair = new Individual[2];
+                auto pair = new Individual[](2);
                 pair[0] = tournamentGroups[i][tournamentGroups[i].length - 1];
                 pair[1] = tournamentGroups[i][tournamentGroups[i].length - 2];
                 myParents[newParents] = pair.dup;
@@ -168,42 +153,57 @@ class Population {
     }
 
     void reproduce() {
-        children = new Individual[](0);
+        tournamentSelection();
+        children = new Individual[](config.getNumberOfChildren);
+        int childIndex = 0;
         foreach (i; 0 .. parents.length) {
-            auto chance = uniform(0.0f, 1.0f);
-            if (chance < config.getCrossoverRate) {
-                foreach (j; 0 .. config.getChildrenPerPair) {
-                    auto genotypeLength = to!int(
-                                            parents[i][0].genotype.length);
+            foreach (j; 0 .. config.getChildrenPerPair) {
+                auto newborn = new Individual(config, tsp);
+                int parentIndex = j % config.getChildrenPerPair;
+                newborn.genotype = (
+                                parents[i][parentIndex].genotype.dup);
+                auto chance = uniform(0.0f, 1.0f);
+                if (chance < config.getCrossoverRate) {
                     auto crossoverPoint = uniform(0, tsp.numberOfCities);
-                    auto newborn = new Individual(config, tsp);
-                    newborn.genotype = (
-                        parents[i][0].genotype[0..crossoverPoint].dup
-                        ~ parents[i][1].genotype[crossoverPoint ..
-                        parents[i][1].genotype.length].dup);
-                    children.length++;
-                    children[children.length - 1] = newborn;
-                }
-
-            } else {
-                foreach (j; 0 .. config.getChildrenPerPair) {
-                    int parentIndex = j % config.getChildrenPerPair;
-                    auto newborn = new Individual(config, tsp);
-                    if (chance < config.getMutationRate) {
-                        auto genotype = parents[i][0].genotype.dup;
-                        int firstIndex = uniform(0, tsp.numberOfCities);
-                        int secondIndex = uniform(0, tsp.numberOfCities);
-                        int firstTmp = genotype[firstIndex];
-                        genotype[firstIndex] = genotype[secondIndex];
-                        genotype[secondIndex] = firstTmp;
-                        newborn.genotype = genotype;
-                    } else {
-                        newborn.genotype = (
-                                        parents[i][parentIndex].genotype.dup);
+                    // TODO: randomize which parents genome is selected first
+                    auto mutatedGenomeFirst =
+                    parents[i][0].genotype[0 .. crossoverPoint].dup;
+                    auto mutatedGenomeLast =
+                    parents[i][1].genotype[crossoverPoint .. $].dup;
+                    auto possibleCities = new int[](tsp.numberOfCities);
+                    foreach(v; 0 .. tsp.numberOfCities) {
+                        possibleCities[v] = v;
                     }
-                    children.length++;
-                    children[children.length - 1] = newborn;
+                    int[] duplicatedIndexes;
+                    foreach(v; 0 .. crossoverPoint) {
+                        possibleCities[mutatedGenomeFirst[v]] = int.max;
+                    }
+                    foreach(v; 0 .. mutatedGenomeLast.length) {
+                        if (mutatedGenomeFirst.canFind(mutatedGenomeLast[v])) {
+                            duplicatedIndexes ~= cast(int)v;
+                        } else {
+                            possibleCities[mutatedGenomeLast[v]] = int.max;
+                        }
+                    }
+                    sort(possibleCities);
+                    possibleCities = possibleCities[0 .. duplicatedIndexes.length];
+                    randomShuffle(possibleCities);
+                    foreach(v; 0 .. duplicatedIndexes.length) {
+                        mutatedGenomeLast[duplicatedIndexes[v]] =
+                        possibleCities[v];
+                    }
+                    newborn.genotype = mutatedGenomeFirst ~ mutatedGenomeLast;
+
                 }
+                chance = uniform(0.0f, 1.0f);
+                if (chance < config.getMutationRate) {
+                    int firstIndex = uniform(0, tsp.numberOfCities);
+                    int secondIndex = uniform(0, tsp.numberOfCities);
+                    int firstTmp = newborn.genotype[firstIndex];
+                    newborn.genotype[firstIndex] = newborn.genotype[secondIndex];
+                    newborn.genotype[secondIndex] = firstTmp;
+                }
+                children[childIndex++] = newborn;
             }
         }
     }

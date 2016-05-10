@@ -35,9 +35,11 @@ def main():
 
     for generation in range(config.getGenerations):
         print("Generation:", generation + 1)
+        print("evaluating");
         population.evaluate()
         #population.adultSelection()
         #population.parentSelection()
+        print("reproducing")
         population.reproduce()
 
 if __name__ == "__main__":

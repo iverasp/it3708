@@ -41,7 +41,19 @@ class Individual {
     }
 
     override string toString() {
-        return "Rank: " ~ to!string(paretoRank) ~ " Crowding: " ~ to!string(crowdingDistance) ~ " Distance: " ~ to!string(distanceValue) ~ ", Cost: " ~ to!string(costValue);
+        string distance = (crowdingDistance == float.infinity
+            || crowdingDistance == 1f
+            || crowdingDistance == 2f)
+            ? "\t\tDistance: " : "\tDistance: ";
+        string crowding = (paretoRank < 10) ? "\t\tCrowding: " : "\tCrowding: ";
+        return "Rank: "
+            ~ to!string(paretoRank)
+            ~ crowding
+            ~ to!string(crowdingDistance)
+            ~ distance
+            ~ to!string(distanceValue)
+            ~ "\tCost: "
+            ~ to!string(costValue);
     }
 
     void evaluateFitness() {
