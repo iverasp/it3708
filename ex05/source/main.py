@@ -58,7 +58,10 @@ class MTSP(App):
         self.population.reproduce()
 
         # Add datas to plot
-        self.graph.add_datas(self.population.getFronts())
+        self.graph.add_datas(
+            self.population.getFronts(),
+            self.generation == self.qc.generations
+        )
 
         if not self.generation == self.qc.generations:
             Clock.schedule_once(self.run_evolver, 0)

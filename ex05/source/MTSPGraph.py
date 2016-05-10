@@ -5,6 +5,10 @@ from kivy.uix.label import Label
 from random import random
 
 class MTSPGraph(BoxLayout):
+
+    green = [0, 1, 0, 1]
+    blue = [0, 0, 1, 1]
+
     def __init__(self):
         super(MTSPGraph, self).__init__()
 
@@ -28,6 +32,9 @@ class MTSPGraph(BoxLayout):
         )
 
         self.plot = []
+        self.plot.append(MeshLinePlot(color=self.green))
+        self.plot.append(MeshLinePlot(color=self.blue))
+        self.plot[1]._set_mode('points')
 
         self.orientation = 'vertical'
         self.add_widget(self.graph)
@@ -35,22 +42,31 @@ class MTSPGraph(BoxLayout):
     def generate_color(self, n):
         return [random() for _ in range(4)]
 
-    def add_datas(self, fronts):
-        green = [0, 1, 0, 1]
-        for plot in self.plot:
-            self.graph.remove_plot(plot)
-        self.plot = []
-        ## add first pareto front
-        self.plot.append(MeshLinePlot(color=green))
+    def add_datas(self, fronts, end=False):
+        if end:
+            for plot in self.plot:
+                self.graph.remove_plot(plot)
+            self.plot = []
+            ## add first pareto front
+            self.plot.append(MeshLinePlot(color=self.green))
+        else:
+            self.plot[0].points.clear()
+            self.plot[1].points.clear()
+
         for individual in fronts[0].getIndividuals():
             self.plot[0].points.append((individual.getDistanceValue(), individual.getCostValue()))
 
         ## add all other fronts
-        for i in range(1, len(fronts)):
-            self.plot.append(MeshLinePlot(color=self.generate_color(i)))
-            #self.plot[i]._set_mode('points')
-            for individual in fronts[i].getIndividuals():
-                self.plot[i].points.append((individual.getDistanceValue(), individual.getCostValue()))
+        if end:
+            for i in range(1, len(fronts)):
+                self.plot.append(MeshLinePlot(color=self.generate_color(i)))
+                #self.plot[i]._set_mode('points')
+                for individual in fronts[i].getIndividuals():
+                    self.plot[i].points.append((individual.getDistanceValue(), individual.getCostValue()))
+        else:
+            for i in range(1, len(fronts)):
+                for individual in fronts[i].getIndividuals():
+                    self.plot[1].points.append((individual.getDistanceValue(), individual.getCostValue()))
 
         for plot in self.plot:
             self.graph.add_plot(plot)
