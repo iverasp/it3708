@@ -139,17 +139,17 @@ class Population {
                 auto chance = uniform(0.0f, 1.0f);
                 if (chance > config.getTournamentEpsilon) {
                     multiSort!("a.paretoRank < b.paretoRank",
-                    "a.crowdingDistance < b.crowdingDistance")
+                    "a.crowdingDistance > b.crowdingDistance")
                     (tournamentGroups[i]);
                 }
                 auto pair = new Individual[](2);
-                pair[0] = tournamentGroups[i][tournamentGroups[i].length - 1];
-                pair[1] = tournamentGroups[i][tournamentGroups[i].length - 2];
+                pair[0] = tournamentGroups[i][0];
+                pair[1] = tournamentGroups[i][1];
                 myParents[newParents] = pair.dup;
                 ++newParents;
             }
-        parents = myParents.dup;
         }
+        parents = myParents;
     }
 
     void reproduce() {
