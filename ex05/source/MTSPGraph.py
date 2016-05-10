@@ -10,10 +10,10 @@ class MTSPGraph(BoxLayout):
         self.graph = Graph(
             xlabel="Distance",
             ylabel="Cost",
-            x_ticks_minor=10000,
-            x_ticks_major=50000,
-            y_ticks_minor=250,
-            y_ticks_major=500,
+            x_ticks_minor=0,
+            x_ticks_major=10000,
+            y_ticks_minor=0,
+            y_ticks_major=100,
             y_grid_label=True,
             x_grid_label=True,
             padding=5,
@@ -22,7 +22,7 @@ class MTSPGraph(BoxLayout):
             xmin=0,
             xmax=150000,
             ymin=0,
-            ymax=2000,
+            ymax=1500,
             size=(1200, 800)
         )
 
