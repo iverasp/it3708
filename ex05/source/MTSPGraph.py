@@ -20,9 +20,9 @@ class MTSPGraph(BoxLayout):
             x_grid=True,
             y_grid=True,
             xmin=0,
-            xmax=150000,
+            xmax=200000,
             ymin=0,
-            ymax=1500,
+            ymax=2000,
             size=(1200, 800)
         )
 

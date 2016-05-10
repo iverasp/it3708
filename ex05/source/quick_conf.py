@@ -1,10 +1,10 @@
 class QuickConf:
-    generations = 100
-    population_size = 2000
-    number_of_children = 2000
+    generations = 1000
+    population_size = 1000
+    number_of_children = 1000
     genotype_length = 48
-    tournament_epsilon = 0.1
-    tournament_group_size = 200
-    crossover_rate = 0.2
+    tournament_epsilon = 0.9
+    tournament_group_size = 10
+    crossover_rate = 0.9
     children_per_pair = 2
-    mutation_rate = 0.8
+    mutation_rate = 0.9
