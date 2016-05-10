@@ -1,7 +1,7 @@
 class QuickConf:
     generations = 100
-    population_size = 1000
-    number_of_children = 1000
+    population_size = 2000
+    number_of_children = 2000
     genotype_length = 48
     tournament_epsilon = 0.8
     tournament_group_size = 100
