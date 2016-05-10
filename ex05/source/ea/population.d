@@ -22,6 +22,7 @@ class Population {
     float standardDeviation;
     int[] cities;
     TSP tsp;
+    ParetoFront[] fronts;
 
     this(EaConfig config, TSP tsp) {
         this.config = config;
@@ -70,7 +71,7 @@ class Population {
                 adults ~= parent[1].dup;
             }
         }
-        writeln("number of adults: " ~ to!string(adults.length));
+        //writeln("number of adults: " ~ to!string(adults.length));
         auto sortedAdults = adults.dup;
         multiSort!("a.distanceValue < b.distanceValue", "a.costValue < b.costValue")(sortedAdults);
         for (int i = 1; i < sortedAdults.length; i++) {
@@ -97,7 +98,7 @@ class Population {
 
         multiSort!("a.paretoRank < b.paretoRank", "a.distanceValue < b.distanceValue")(sortedAdults);
         rankCounter = 0;
-        ParetoFront[] fronts;
+        fronts.length = 0;
         fronts ~= new ParetoFront();
         for (int i = 0; i < sortedAdults.length; i++) {
             if (sortedAdults[i].paretoRank > rankCounter) {
@@ -108,9 +109,9 @@ class Population {
             fronts[rankCounter].individuals ~= sortedAdults[i];
         }
 
-        foreach (individual; fronts[0].individuals) {
-            writeln(to!string(individual));
-        }
+        //foreach (individual; fronts[0].individuals) {
+        //    writeln(to!string(individual));
+        //}
         adults = sortedAdults.dup;
     }
 
@@ -206,6 +207,10 @@ class Population {
                 children[childIndex++] = newborn;
             }
         }
+    }
+
+    ParetoFront[] getFronts() {
+        return fronts;
     }
 
     void generateInformation() {

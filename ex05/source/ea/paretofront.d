@@ -35,4 +35,12 @@ public class ParetoFront {
         return x1 + x2;
     }
 
+    override string toString() {
+        return "hello world";
+    }
+
+    Individual[] getIndividuals() {
+        return individuals;
+    }
+
 }
