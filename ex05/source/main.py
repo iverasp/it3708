@@ -28,7 +28,6 @@ def main():
         qc.tournament_group_size,
         qc.crossover_rate,
         qc.children_per_pair,
-        qc.mutation_type,
         qc.mutation_rate,
     )
     population = Population(config, tsp)
@@ -37,8 +36,6 @@ def main():
         print("Generation:", generation + 1)
         print("evaluating");
         population.evaluate()
-        #population.adultSelection()
-        #population.parentSelection()
         print("reproducing")
         population.reproduce()
 

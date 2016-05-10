@@ -38,7 +38,7 @@ extern(C) void PydMain() {
     wrap_class!(
         EaConfig,
         Init!(),
-        Init!(int,int,int,int,float,int,float,int,string,float),
+        Init!(int,int,int,int,float,int,float,int,float),
         Property!(EaConfig.getGenerations),
         Property!(EaConfig.getPopulationSize),
         Property!(EaConfig.getNumberOfChildren),
@@ -47,7 +47,6 @@ extern(C) void PydMain() {
         Property!(EaConfig.getTournamentGroupSize),
         Property!(EaConfig.getCrossoverRate),
         Property!(EaConfig.getChildrenPerPair),
-        Property!(EaConfig.getMutationType),
         Property!(EaConfig.getMutationRate),
     )();
     wrap_class!(

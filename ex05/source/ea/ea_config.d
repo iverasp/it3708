@@ -12,7 +12,6 @@ class EaConfig {
     auto tournamentGroupSize = 20;
     auto crossoverRate = 0.1f;
     auto childrenPerPair = 2;
-    auto mutationType = "g";
     auto mutationRate = 1.0f;
 
     this(
@@ -24,7 +23,6 @@ class EaConfig {
         int tournamentGroupSize,
         float crossoverRate,
         int childrenPerPair,
-        string mutationType,
         float mutationRate,
     ) {
         this.generations = generations;
@@ -35,7 +33,6 @@ class EaConfig {
         this.tournamentGroupSize = tournamentGroupSize;
         this.crossoverRate = crossoverRate;
         this.childrenPerPair = childrenPerPair;
-        this.mutationType = mutationType;
         this.mutationRate = mutationRate;
     }
 
@@ -47,6 +44,5 @@ class EaConfig {
     @property auto getTournamentGroupSize(){ return tournamentGroupSize; }
     @property auto getCrossoverRate(){ return crossoverRate; }
     @property auto getChildrenPerPair(){ return childrenPerPair; }
-    @property auto getMutationType(){ return mutationType; }
     @property auto getMutationRate(){ return mutationRate; }
 }
