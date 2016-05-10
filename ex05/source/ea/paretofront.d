@@ -42,5 +42,4 @@ public class ParetoFront {
     Individual[] getIndividuals() {
         return individuals;
     }
-
 }
