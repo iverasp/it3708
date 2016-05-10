@@ -4,6 +4,7 @@ import pyd.pyd;
 import ea.population;
 import ea.individual;
 import ea.ea_config;
+import ea.paretofront;
 import tsp.tsp;
 
 public class DBindings { }
@@ -22,7 +23,8 @@ extern(C) void PydMain() {
         Property!(Population.getStandardDeviation),
         Def!(Population.evaluate),
         Def!(Population.reproduce),
-        Def!(Population.generateInformation)
+        Def!(Population.generateInformation),
+        Def!(Population.getFronts),
     )();
     wrap_class!(
         Individual,
@@ -34,6 +36,8 @@ extern(C) void PydMain() {
         Property!(Individual.getValues),
         Def!(Individual.calcValues),
         Def!(Individual.evaluateFitness),
+        Def!(Individual.getDistanceValue),
+        Def!(Individual.getCostValue),
     )();
     wrap_class!(
         EaConfig,
@@ -53,6 +57,10 @@ extern(C) void PydMain() {
     wrap_class!(
         TSP,
         Init!(int[][], int[][]),
-        Def!(TSP.getTravelValue)
+        Def!(TSP.getTravelValue),
+    )();
+    wrap_class!(
+        ParetoFront,
+        Def!(ParetoFront.getIndividuals),
     )();
 }

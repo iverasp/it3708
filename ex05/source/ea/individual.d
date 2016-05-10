@@ -40,6 +40,14 @@ class Individual {
         costValue = tsp.getTravelValue(this.genotype, false);
     }
 
+    float getDistanceValue() {
+        return distanceValue;
+    }
+
+    float getCostValue() {
+        return costValue;
+    }
+
     override string toString() {
         string distance = (crowdingDistance == float.infinity
             || crowdingDistance == 1f
