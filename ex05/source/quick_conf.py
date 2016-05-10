@@ -1,5 +1,5 @@
 class QuickConf:
-    generations = 100
+    generations = 10
     population_size = 2000
     number_of_children = 2000
     genotype_length = 48
