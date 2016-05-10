@@ -2,6 +2,7 @@ from kivy.garden.graph import Graph, MeshLinePlot, Plot
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 
+from random import random
 
 class MTSPGraph(BoxLayout):
     def __init__(self):
@@ -26,29 +27,30 @@ class MTSPGraph(BoxLayout):
             size=(1200, 800)
         )
 
-        red = [1, 0, 0, 1]
-        green = [0, 1, 0, 1]
-        blue = [0, 0, 1, 1]
+        self.plot = []
 
         self.orientation = 'vertical'
         self.add_widget(self.graph)
 
-        self.plot = []
-        # pareto front
-        self.plot.append(MeshLinePlot(color=green))
-        self.plot.append(MeshLinePlot(color=blue))
-        self.plot[1]._set_mode('points')
-
-        for plot in self.plot:
-            self.graph.add_plot(plot)
+    def generate_color(self, n):
+        return [random() for _ in range(4)]
 
     def add_datas(self, fronts):
-        self.plot[0].points.clear()
-        self.plot[1].points.clear()
+        green = [0, 1, 0, 1]
+        for plot in self.plot:
+            self.graph.remove_plot(plot)
+        self.plot = []
         ## add first pareto front
+        self.plot.append(MeshLinePlot(color=green))
         for individual in fronts[0].getIndividuals():
             self.plot[0].points.append((individual.getDistanceValue(), individual.getCostValue()))
 
+        ## add all other fronts
         for i in range(1, len(fronts)):
+            self.plot.append(MeshLinePlot(color=self.generate_color(i)))
+            #self.plot[i]._set_mode('points')
             for individual in fronts[i].getIndividuals():
-                self.plot[1].points.append((individual.getDistanceValue(), individual.getCostValue()))
+                self.plot[i].points.append((individual.getDistanceValue(), individual.getCostValue()))
+
+        for plot in self.plot:
+            self.graph.add_plot(plot)
