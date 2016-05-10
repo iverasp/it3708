@@ -63,11 +63,11 @@ class Population {
 
     void evaluate() {
         findObjectiveFunctionValues();
-        adults = children;
+        adults = children.dup;
         if (parents) {
             foreach(parent; parents) {
-                adults ~= parent[0];
-                adults ~= parent[1];
+                adults ~= parent[0].dup;
+                adults ~= parent[1].dup;
             }
         }
         writeln("number of adults: " ~ to!string(adults.length));
@@ -111,7 +111,7 @@ class Population {
         foreach (individual; fronts[0].individuals) {
             writeln(to!string(individual));
         }
-        adults = sortedAdults;
+        adults = sortedAdults.dup;
     }
 
     void tournamentSelection() {
@@ -149,7 +149,7 @@ class Population {
                 ++newParents;
             }
         }
-        parents = myParents;
+        parents = myParents.dup;
     }
 
     void reproduce() {
@@ -167,9 +167,9 @@ class Population {
                     auto crossoverPoint = uniform(0, tsp.numberOfCities);
                     // TODO: randomize which parents genome is selected first
                     auto mutatedGenomeFirst =
-                    parents[i][0].genotype[0 .. crossoverPoint].dup;
+                        parents[i][0].genotype[0 .. crossoverPoint].dup;
                     auto mutatedGenomeLast =
-                    parents[i][1].genotype[crossoverPoint .. $].dup;
+                        parents[i][1].genotype[crossoverPoint .. $].dup;
                     auto possibleCities = new int[](tsp.numberOfCities);
                     foreach(v; 0 .. tsp.numberOfCities) {
                         possibleCities[v] = v;

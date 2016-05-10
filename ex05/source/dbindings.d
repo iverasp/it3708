@@ -33,7 +33,6 @@ extern(C) void PydMain() {
         Property!(Individual.setFitness),
         Property!(Individual.getValues),
         Def!(Individual.calcValues),
-        Def!(Individual.evaluateFitness),
     )();
     wrap_class!(
         EaConfig,

@@ -20,13 +20,14 @@ class Individual {
     Individual[] dominatedBy;
     int paretoRank;
     float crowdingDistance = float.infinity;
+    float random;
 
     this(EaConfig config, TSP tsp) {
         this.config = config;
         this.tsp = tsp;
         this.genotypeLength = config.getGenotypeLength;
         genotype = new int[](config.getGenotypeLength);
-        fitness = 0.0f;
+        random = uniform(0f, 1000f);
     }
 
     @property int[] getGenotype() { return genotype; }
@@ -53,10 +54,16 @@ class Individual {
             ~ distance
             ~ to!string(distanceValue)
             ~ "\tCost: "
-            ~ to!string(costValue);
+            ~ to!string(costValue)
+            ~ "\tRandom: "
+            ~ to!string(random);
     }
 
-    void evaluateFitness() {
-
+    @property auto dup() {
+        Individual copy = new Individual(this.config, this.tsp);
+        copy.genotype = this.genotype.dup;
+        copy.distanceValue = this.distanceValue;
+        copy.costValue = this.costValue;
+        return copy;
     }
 }
