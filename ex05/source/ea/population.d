@@ -36,7 +36,7 @@ class Population {
 
     override string toString() {
         return ("Population: " ~ to!string(config.getPopulationSize)
-                ~ " Genotype length: " ~ to!string(config.getGenotypeLength));
+                ~ " Genotype length: " ~ to!string(tsp.numberOfCities));
     }
 
     @property Individual[] getChildren() { return children; }
@@ -171,10 +171,7 @@ class Population {
                         parents[i][0].genotype[0 .. crossoverPoint].dup;
                     auto mutatedGenomeLast =
                         parents[i][1].genotype[crossoverPoint .. $].dup;
-                    auto possibleCities = new int[](tsp.numberOfCities);
-                    foreach(v; 0 .. tsp.numberOfCities) {
-                        possibleCities[v] = v;
-                    }
+                    auto possibleCities = cities.dup;
                     int[] duplicatedIndexes;
                     foreach(v; 0 .. crossoverPoint) {
                         possibleCities[mutatedGenomeFirst[v]] = int.max;

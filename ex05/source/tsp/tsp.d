@@ -24,6 +24,12 @@ class TSP {
                 value += values[cities[i+1]][cities[i]];
             }
         }
+        if (cities[0] > cities[$ - 1]) {
+            value += values[cities[0]][cities[$ - 1]];
+        } else {
+            value += values[cities[$ - 1]][cities[0]];
+        }
+
         return value;
     }
 }
