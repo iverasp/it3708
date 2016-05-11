@@ -36,7 +36,7 @@ class Population {
 
     override string toString() {
         return ("Population: " ~ to!string(config.getPopulationSize)
-                ~ " Genotype length: " ~ to!string(config.getGenotypeLength));
+                ~ " Genotype length: " ~ to!string(tsp.numberOfCities + 1));
     }
 
     @property Individual[] getChildren() { return children; }
@@ -50,7 +50,7 @@ class Population {
             auto individual = new Individual(config, tsp);
             int[] randomGenotype = cities.dup;
             randomShuffle(randomGenotype[]);
-            individual.setGenotype(randomGenotype);
+            individual.setGenotype(randomGenotype ~ randomGenotype[0]);
             result[i] = individual;
         }
         return result;
@@ -165,16 +165,13 @@ class Population {
                                 parents[i][parentIndex].genotype.dup);
                 auto chance = uniform(0.0f, 1.0f);
                 if (chance < config.getCrossoverRate) {
-                    auto crossoverPoint = uniform(0, tsp.numberOfCities);
+                    auto crossoverPoint = uniform(1, tsp.numberOfCities);
                     // TODO: randomize which parents genome is selected first
                     auto mutatedGenomeFirst =
                         parents[i][0].genotype[0 .. crossoverPoint].dup;
                     auto mutatedGenomeLast =
-                        parents[i][1].genotype[crossoverPoint .. $].dup;
-                    auto possibleCities = new int[](tsp.numberOfCities);
-                    foreach(v; 0 .. tsp.numberOfCities) {
-                        possibleCities[v] = v;
-                    }
+                        parents[i][1].genotype[crossoverPoint .. $ - 1].dup;
+                    auto possibleCities = cities.dup;
                     int[] duplicatedIndexes;
                     foreach(v; 0 .. crossoverPoint) {
                         possibleCities[mutatedGenomeFirst[v]] = int.max;
@@ -193,13 +190,13 @@ class Population {
                         mutatedGenomeLast[duplicatedIndexes[v]] =
                         possibleCities[v];
                     }
-                    newborn.genotype = mutatedGenomeFirst ~ mutatedGenomeLast;
+                    newborn.genotype = mutatedGenomeFirst ~ mutatedGenomeLast ~ mutatedGenomeFirst[0];
 
                 }
                 chance = uniform(0.0f, 1.0f);
                 if (chance < config.getMutationRate) {
-                    int firstIndex = uniform(0, tsp.numberOfCities);
-                    int secondIndex = uniform(0, tsp.numberOfCities);
+                    int firstIndex = uniform(1, tsp.numberOfCities);
+                    int secondIndex = uniform(1, tsp.numberOfCities);
                     int firstTmp = newborn.genotype[firstIndex];
                     newborn.genotype[firstIndex] = newborn.genotype[secondIndex];
                     newborn.genotype[secondIndex] = firstTmp;
