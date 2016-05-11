@@ -4,7 +4,7 @@ class QuickConf:
     number_of_children = 1000
     genotype_length = 48
     tournament_epsilon = 0.1
-    tournament_group_size = 100
-    crossover_rate = 1.0
+    tournament_group_size = 50
+    crossover_rate = 0.1
     children_per_pair = 2
-    mutation_rate = 1.0
+    mutation_rate = 0.9
