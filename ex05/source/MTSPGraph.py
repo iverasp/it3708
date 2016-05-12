@@ -34,6 +34,7 @@ class MTSPGraph(BoxLayout):
         self.plot = []
         self.plot.append(MeshLinePlot(color=self.green))
         self.plot.append(MeshLinePlot(color=self.blue))
+        self.plot[0]._set_mode('points')
         self.plot[1]._set_mode('points')
 
         self.orientation = 'vertical'
@@ -49,6 +50,7 @@ class MTSPGraph(BoxLayout):
             self.plot = []
             ## add first pareto front
             self.plot.append(MeshLinePlot(color=self.green))
+            self.plot[0]._set_mode('points')
         else:
             self.plot[0].points.clear()
             self.plot[1].points.clear()
@@ -60,6 +62,7 @@ class MTSPGraph(BoxLayout):
         if end:
             for i in range(1, len(fronts)):
                 self.plot.append(MeshLinePlot(color=self.generate_color(i)))
+                self.plot[i]._set_mode('points')
                 #self.plot[i]._set_mode('points')
                 for individual in fronts[i].getIndividuals():
                     self.plot[i].points.append((individual.getDistanceValue(), individual.getCostValue()))

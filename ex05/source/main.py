@@ -23,6 +23,9 @@ from kivy.config import Config
 Config.set('graphics', 'width', '1200')
 Config.set('graphics', 'height', '800')
 
+#from kivy.core.window import Window
+#Window.clearcolor = (1, 1, 1, 1)
+
 class MTSP(App):
 
     graph = MTSPGraph()

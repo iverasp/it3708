@@ -151,6 +151,25 @@ class Population {
             }
         }
         parents = myParents.dup;
+
+        Individual[] sortedAdults;
+        foreach (parent; parents) {
+            sortedAdults ~= parent[0];
+            sortedAdults ~= parent[1];
+        }
+
+        multiSort!("a.paretoRank < b.paretoRank", "a.distanceValue < b.distanceValue")(sortedAdults);
+        int rankCounter = 0;
+        fronts.length = 0;
+        fronts ~= new ParetoFront();
+        for (int i = 0; i < sortedAdults.length; i++) {
+            if (sortedAdults[i].paretoRank > rankCounter) {
+                fronts[rankCounter].calc();
+                ++rankCounter;
+                fronts ~= new ParetoFront();
+            }
+            fronts[rankCounter].individuals ~= sortedAdults[i];
+        }
     }
 
     void reproduce() {
